@@ -63,6 +63,30 @@ public class Paciente extends Usuario {
     public String toString() {
         return super.toString() +"Paciente{" + "contactosDeEmergencaia=" + contactosDeEmergencaia + ", fotoPath=" + fotoPath + ", telefono=" + telefono + ", antecedentes=" + antecedentes + '}';        
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
     
     
     

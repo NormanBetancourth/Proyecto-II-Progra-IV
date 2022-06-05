@@ -1,0 +1,45 @@
+body {
+    font-family: "Roboto", sans-serif !important;
+  }
+  #login-img,
+  #login-btn {
+    background-image: linear-gradient(
+      to right,
+      #83e5b4,
+      #73e0a2,
+      #65db8e,
+      #59d578,
+      #50cf61,
+      #40cf6a,
+      #2bce73,
+      #00ce7c,
+      #00d2a2,
+      #00d4c3,
+      #00d4dd,
+      #06d3ee
+    );
+  }
+  
+  #sing-in-btn{
+    background-color: #fd4a61;
+  }
+  
+  #login-btn {
+    min-width: inherit;
+  }
+  body {
+    max-width: 99vw;
+  }
+  
+  #img-heading {
+    color: white;
+  }
+  
+  #form-container {
+    min-height: 53vh;
+  }
+  
+  .form-group {
+    min-width: 400px;
+  }
+  

@@ -1,0 +1,37 @@
+body {
+    font-family: "Roboto", sans-serif !important;
+  }
+  
+  #main-container {
+    background-color: white;
+    border-radius: 20px;
+  }
+  
+  .btn {
+    background-image: linear-gradient(
+      to right,
+      #83e5b4,
+      #73e0a2,
+      #65db8e,
+      #59d578,
+      #50cf61,
+      #40cf6a,
+      #2bce73,
+      #00ce7c,
+      #00d2a2,
+      #00d4c3,
+      #00d4dd,
+      #06d3ee
+    );
+  }
+  
+  input[type='checkbox']:checked ~ .day-infor {
+  
+    visibility: visible;
+  
+  }
+  
+  .day-infor{
+    visibility: hidden;
+  }
+  
