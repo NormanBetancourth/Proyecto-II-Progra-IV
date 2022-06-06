@@ -80,10 +80,13 @@ errorMessage = (status, place) => {
   return;
 };
 
+
+
 const load = () => {
   $("form").submit(function (e) {
     e.preventDefault();
   });
+  
 };
 
 const singIn = () => {

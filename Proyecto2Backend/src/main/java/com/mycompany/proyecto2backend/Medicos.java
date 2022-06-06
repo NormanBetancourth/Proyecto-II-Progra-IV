@@ -24,18 +24,18 @@ import model.Horario;
 
 /**
  *
- * @author norma
  */
 
 
-//String nombre, String id, String tipo, String password, String especialidad, float fee, String localidad, String fotoPath, String presentacion, Horario horario
+//password,especialidad, fee, localidad, clinica, fotoPath, presentacion, estado, nombre,id, tipo
+
 
 @Path("/medicos")
 public class Medicos {
     ArrayList<Medico> user = new ArrayList();
     public void cargarDatos(){
-        user.add(new Medico("Norman", "111", "Medico", "111", "Cirugía", 120000, "San Jose", "./", "Soy Norman"));
-        user.add(new Medico("Jose", "222", "Medico", "222", "Pediatría", 80000, "Heredia", "./", "Soy Jose"));
+        user.add(new Medico("111", "Cirugia", 120000,"San Jose", "Clorito", "./", "Hola soy norman", "Activo", "Norman", "111", "Medico"));
+        user.add(new Medico("222", "Pediatría", 80000,"Heredia", "San Bosco", "./", "Hola soy Jose", "Activo", "JOSE", "222", "Medico"));
     }
     
     //POST
