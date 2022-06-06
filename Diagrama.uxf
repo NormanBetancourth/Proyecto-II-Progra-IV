@@ -109,6 +109,8 @@
     </coordinates>
     <panel_attributes>Antecedente
 --
+- id
+- paciente
 - tipo
 - fecha
 - descripcion
@@ -161,6 +163,7 @@ bg=green</panel_attributes>
     </coordinates>
     <panel_attributes>Horario
 --
+- id
 - medico
 - {fecha:[inicio, salida]}
 - frecuencia

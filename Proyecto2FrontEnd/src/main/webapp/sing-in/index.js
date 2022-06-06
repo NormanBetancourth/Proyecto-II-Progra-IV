@@ -57,7 +57,8 @@ function addDoctor() {
     let location = document.getElementsByName("location")[0].value;
     let foto = document.getElementsByName("foto")[0].value;
   
-    var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, horario:mappedDays, presentacion:'', tipo:'' };
+    var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
+    //TODO: crear el horario y mandarlo al server
     
     (async () => {
       try {

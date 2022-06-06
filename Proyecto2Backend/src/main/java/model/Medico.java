@@ -15,9 +15,9 @@ public class Medico extends Usuario {
     String localidad;
     String fotoPath;
     String presentacion;
-    Horario horario;
+    //Horario
 
-    public Medico(String nombre, String id, String tipo, String password, String especialidad, float fee, String localidad, String fotoPath, String presentacion, Horario horario) {
+    public Medico(String nombre, String id, String tipo, String password, String especialidad, float fee, String localidad, String fotoPath, String presentacion) {
         super(nombre, id, tipo);
         this.password = password;
         this.especialidad = especialidad;
@@ -25,7 +25,6 @@ public class Medico extends Usuario {
         this.localidad = localidad;
         this.fotoPath = fotoPath;
         this.presentacion = presentacion;
-        this.horario = horario;
     }
 
     public String getNombre() {
@@ -78,10 +77,6 @@ public class Medico extends Usuario {
         return presentacion;
     }
 
-    public Horario getHorario() {
-        return horario;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -106,13 +101,9 @@ public class Medico extends Usuario {
         this.presentacion = presentacion;
     }
 
-    public void setHorario(Horario horario) {
-        this.horario = horario;
-    }
-
     @Override
     public String toString() {
-        return super.toString() +"Medico{" + "password=" + password + ", especialidad=" + especialidad + ", fee=" + fee + ", localidad=" + localidad + ", fotoPath=" + fotoPath + ", presentacion=" + presentacion + ", horario=" + horario + '}';
+        return super.toString() +"Medico{" + "password=" + password + ", especialidad=" + especialidad + ", fee=" + fee + ", localidad=" + localidad + ", fotoPath=" + fotoPath + ", presentacion=" + presentacion + ", horario=" + '}';
     }
     
     

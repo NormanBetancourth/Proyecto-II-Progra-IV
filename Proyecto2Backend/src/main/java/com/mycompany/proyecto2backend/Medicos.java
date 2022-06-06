@@ -34,8 +34,8 @@ import model.Horario;
 public class Medicos {
     ArrayList<Medico> user = new ArrayList();
     public void cargarDatos(){
-        user.add(new Medico("Norman", "111", "Medico", "111", "Cirugía", 120000, "San Jose", "./", "Soy Norman", new Horario()));
-        user.add(new Medico("Jose", "222", "Medico", "222", "Pediatría", 80000, "Heredia", "./", "Soy Jose", new Horario()));
+        user.add(new Medico("Norman", "111", "Medico", "111", "Cirugía", 120000, "San Jose", "./", "Soy Norman"));
+        user.add(new Medico("Jose", "222", "Medico", "222", "Pediatría", 80000, "Heredia", "./", "Soy Jose"));
     }
     
     //POST

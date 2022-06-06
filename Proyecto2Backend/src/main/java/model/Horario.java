@@ -11,6 +11,7 @@ package model;
 public class Horario {
 
     public Horario() {
+        
     }
     //TODO:
     
