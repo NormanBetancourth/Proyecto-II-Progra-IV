@@ -89,6 +89,6 @@ const load = () => {
 const singIn = () => {
     localStorage.setItem('user', null);
     window.location.href = "./sing-in/index.html";
-}
+};
 
 document.addEventListener("DOMContentLoaded", load);
