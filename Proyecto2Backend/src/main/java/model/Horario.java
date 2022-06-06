@@ -8,7 +8,12 @@ package model;
  *
  * @author norma
  */
-class Horario {
+public class Horario {
+
+    public Horario() {
+        
+    }
     //TODO:
+    
     
 }

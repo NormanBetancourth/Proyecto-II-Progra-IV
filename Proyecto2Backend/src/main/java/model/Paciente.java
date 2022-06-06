@@ -11,25 +11,21 @@ import java.util.HashMap;
  * @author norma
  */
 public class Paciente extends Usuario {
-    HashMap<String, String> contactosDeEmergencaia;
     String fotoPath;
     String telefono;
-    HashMap<String, Antecedentes> antecedentes;
+    //antecedentes
+    //contactos de emergencia
 
     public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono) {
         super(nombre, id, tipo);
-        this.contactosDeEmergencaia = new HashMap();
         this.fotoPath = fotoPath;
         this.telefono = telefono;
-        this.antecedentes = new HashMap();
     }
 
     public Paciente() {
     }
 
-    public HashMap<String, String> getContactosDeEmergencaia() {
-        return contactosDeEmergencaia;
-    }
+
 
     public String getFotoPath() {
         return fotoPath;
@@ -39,13 +35,7 @@ public class Paciente extends Usuario {
         return telefono;
     }
 
-    public HashMap<String, Antecedentes> getAntecedentes() {
-        return antecedentes;
-    }
 
-    public void setContactosDeEmergencaia(HashMap<String, String> contactosDeEmergencaia) {
-        this.contactosDeEmergencaia = contactosDeEmergencaia;
-    }
 
     public void setFotoPath(String fotoPath) {
         this.fotoPath = fotoPath;
@@ -55,13 +45,35 @@ public class Paciente extends Usuario {
         this.telefono = telefono;
     }
 
-    public void setAntecedentes(HashMap<String, Antecedentes> antecedentes) {
-        this.antecedentes = antecedentes;
-    }
+
 
     @Override
     public String toString() {
-        return super.toString() +"Paciente{" + "contactosDeEmergencaia=" + contactosDeEmergencaia + ", fotoPath=" + fotoPath + ", telefono=" + telefono + ", antecedentes=" + antecedentes + '}';        
+        return super.toString() +"Paciente{"  + ", fotoPath=" + fotoPath + ", telefono=" + telefono + ", antecedentes="  + '}';        
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     
