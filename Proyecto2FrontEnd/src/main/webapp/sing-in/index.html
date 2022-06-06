@@ -63,6 +63,15 @@
                         <div class="form-group m-sm-3">
                             <input class="form-control form-control-lg" id="location" type="text" name="location" placeholder="Location" required>
                         </div>
+                        <input type="week" name="week" id="camp-week"min="2018-W18" max="2018-W26" required>
+                        
+                        <div class="form-group m-sm-3">
+                            <select class="form-select" aria-label="Default select example" required>
+                                <option value="60" selected>Frecuencia (default cada hora)</option>
+                                <option value="60">Cada hora</option>
+                                <option value="30">Cada media hora</option>
+                            </select>
+                        </div>
                         <div class="form-group m-sm-3">
                             <input class="form-control form-control-lg" id="foto" type="file" name="foto" placeholder="foto">
                         </div>

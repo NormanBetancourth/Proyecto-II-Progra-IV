@@ -17,6 +17,7 @@ const schedule = document.getElementById("schedule-btn");
 const modalCloseBtn = document.getElementById("modal-close-btn");
 const modalSaveBtn = document.getElementById("modal-save-btn");
 
+
 //elementos del modal
 const modalBody = document.getElementById("modal-body");
 //mappedDays para ir cambiando de manerta dinámica los días
@@ -52,13 +53,15 @@ function addDoctor() {
     let id = document.getElementsByName("id")[0].value;
     let password = document.getElementsByName("password")[0].value;
     let name = document.getElementsByName("name")[0].value;
-    let speciality = document.getElementsByName("speciality")[0].value;
+    let speciality = document.getElementsByName("speciality")[0].value; //TODO: traer de la base de datos y mostrar a manera de opciones
     let fee = document.getElementsByName("fee")[0].value;
-    let location = document.getElementsByName("location")[0].value;
+    let location = document.getElementsByName("location")[0].value; //TODO: traer de la base de datos y mostrar a manera de opciones
     let foto = document.getElementsByName("foto")[0].value;
   
     var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
     //TODO: crear el horario y mandarlo al server
+    console.log(doctor);
+    console.log(mappedDays);
     
     (async () => {
       try {
@@ -66,7 +69,8 @@ function addDoctor() {
         console.log(doctor);
         console.log(result);
         if (result === undefined){
-            window.location.href = "./../inicio/index.html";
+            //TODO: mandar horario y medicos
+            // window.location.href = "./../inicio/index.html";
             return;
         }
         errorMessage(405, $("#errorDiv"));
