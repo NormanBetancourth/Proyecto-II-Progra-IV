@@ -1,6 +1,6 @@
 var arrMedicos = new Array();
 var medico = {nombre: "", id:"", especialidad:'', estado: false};
-var urlLocal = "http://127.0.0.1:5500/Admin/";
+var urlLocal = "http://localhost:8080/Proyecto2FrontEnd/";
 var barraMedicos = document.getElementById('div-barra-medicos');
 
 function datosQuemados(){
@@ -86,20 +86,21 @@ function actionRejectMed(event){
 }
 
 
-function actionLogout(event){
+function actionLogout(event) {
     event.preventDefault();
-    document.location = urlLocal+"index.html";
+    document.location = 'http://localhost:8080/Proyecto2FrontEnd/index.html';
 }
 
-function actionMedListados(event){
+function actionMedListados(event) {
     event.preventDefault();
-    document.location = urlLocal+"ver-med/admin-listadoMed.html";
- }
+    document.location = urlLocal + "Vistas/Admin/ver-med/admin-listadoMed.html";
+}
 
- function actionMedListar(event){
+function actionMedListar(event) {
     event.preventDefault();
-    document.location = urlLocal+"listar-med/admin-listar.html";
- }
+    console.log("ENTRO A ESTOOO");
+    document.location = urlLocal +"Vistas/Admin/listar-med/admin-listar.html";
+}
 
 function loaded(){
     //inicializamos el array con datos quemados para prueba
