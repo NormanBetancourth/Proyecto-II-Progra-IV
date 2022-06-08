@@ -11,6 +11,9 @@ const dias = [
 ];
 
 
+var especialidades = [];
+var ciudades = [];
+
 //BTNS
 const singInBtn = document.getElementById("sing-up-btn");
 const schedule = document.getElementById("schedule-btn");
@@ -25,6 +28,7 @@ var mappedDays = [];
 
 schedule.onclick = () => {
     $("#modal-container").modal("show");
+
 };
 
 modalCloseBtn.onclick = () => {
@@ -35,7 +39,7 @@ modalSaveBtn.onclick = () => {
     const selectedDays = Array.from(
       document.querySelectorAll("input[name=mycheckboxes]:checked")
     );
-    mappedDays = [];//TODO: cambiar de Lista a objetos
+    mappedDays = [];
     selectedDays.forEach((element) => {
       mappedDays.push({
         dia: element.parentNode.childNodes[2].childNodes[0].data,
@@ -116,6 +120,49 @@ const search = async (id) => {
 };
 
 
+const cargarComobox = async () => {
+    try {
+        const req = new Request(backend + "/especialidades", {
+          method: "GET",
+          headers: {},
+        });
+        const res = await fetch(req);
+        if (!res.ok) {
+          console.log("Error al cargar especialidades");
+          return;
+        }
+        especialidades = await res.json();
+        console.log('especialidades');
+        console.log(especialidades);
+
+
+
+        const reqCiudades = new Request(backend+"/ciudades", {method: "GET", headers:{}});
+        const resCiudades = await fetch(reqCiudades);
+        if (!res.ok) {
+            console.log("Error al cargar ciudades");
+            return;
+        }
+        ciudades =  await resCiudades.json();
+        console.log('ciudades');
+        console.log(ciudades);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const load2 = () => {
+    $("form").submit(function (e) {
+      e.preventDefault();
+    });
+
+    cargarComobox();
+    LoadSchedule();
+    
+};
+
 function LoadSchedule() {
     let elementos = "";
     dias.forEach((element) => {
@@ -194,5 +241,5 @@ function LoadSchedule() {
     return;
   };
   
-  document.addEventListener("DOMContentLoaded", load);
+  document.addEventListener("DOMContentLoaded", load2);
   
