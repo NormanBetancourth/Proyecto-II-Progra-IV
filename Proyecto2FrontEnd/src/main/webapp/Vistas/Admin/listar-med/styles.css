@@ -46,10 +46,15 @@ body{
 }
 
 #logout-id:hover, #med-listados:hover,#med-listar:hover {
-    border-left:5px solid #06d3ee;
+    border-left:7px solid #06d3ee;
     background-color: #50cc8e;
     cursor: pointer;
 }
+
+#med-listar{
+    border-right:5px solid #06d3ee;
+}
+
 .icon-size{
     font-size: 1.5em;
     padding: 5px;
