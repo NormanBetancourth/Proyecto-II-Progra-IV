@@ -6,7 +6,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Jun 6, 2022, 3:06:26 AM
     Author     : Dell
 */
+@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Open+Sans:ital,wght@0,400;1,300&family=Oswald:wght@600&display=swap');
 body{
+    font-family: 'Dosis', sans-serif;
     background-image: linear-gradient(
         to right,
         #83e5b4,
@@ -32,13 +34,10 @@ body{
     background-color:  #83e5b4;
 }
 .col-size2{
-    max-width: 600px;
-}
-.col-size3{
-    max-width: 300px;
+    max-width: 1000px;
 }
 
-#user-profile, #med-listar, #logout, #med-listados{
+#user-profile, #med-listar, #logout-id, #med-listados{
    height: 80px;
    margin-bottom: 4em;
 }
@@ -46,31 +45,77 @@ body{
     height: 70px;
 }
 
-#med-listar:hover{
- border-left:5px solid black;
- background-color: #50cc8e;
-}
-
-#med-listados:hover{
-    border-left:5px solid black;
+#logout-id:hover, #med-listados:hover,#med-listar:hover {
+    border-left:5px solid #06d3ee;
     background-color: #50cc8e;
-}
-
-#logout:hover{
-    border-left:5px solid black;
-    background-color: #50cc8e;
+    cursor: pointer;
 }
 .icon-size{
     font-size: 1.5em;
     padding: 5px;
-    margin-left: 8px;
+    margin-left: 20px;
 }
 .admin-p{
     margin-left: 8px;
     margin-top: 3px;
 }
+.color-navbar{
+    color: rgb(72, 71, 71);
+}
+.color-admin{
+    color: linear-gradient(
+        to right,
+        #83e5b4,
+        #73e0a2,
+        #65db8e,
+        #59d578,
+        #50cf61,
+        #40cf6a,
+        #2bce73,
+        #00ce7c,
+        #00d2a2,
+        #00d4c3,
+        #00d4dd,
+        #06d3ee
+      );
+}
 
-#med-listar-id, #med-list-id, #logout-id{
-    text-decoration: none;
-    color: black;
+#div-barra-medicos{
+    width: 50%;
+    height: 450px;
+    margin-left: 25%;
+    overflow-y:scroll;
+}
+
+#medico-id{
+    width: 90%;
+    height: 25%;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+#img-med{
+    max-width: 100px;
+}
+
+#info-med{
+    margin-left: 10px;
+}
+
+.p-padd{
+    margin: 0;  
+}
+#buttons-med{
+    margin-left: 12em;
+}
+
+#btn-accept-med, #btn-reject-med{
+    max-height: 35px;
+    max-width: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+#info-med{
+    width: 3em;
 }

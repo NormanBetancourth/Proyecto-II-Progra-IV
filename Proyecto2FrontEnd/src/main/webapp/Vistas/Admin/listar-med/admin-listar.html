@@ -20,46 +20,47 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <body class="p-5">
         <div class="container-xxl bg-white cont-size d-flex border border-2 shadow p-3 mb-5 bg-body rounded">
 
-          <div id="navbar-lateral" class="col col-size1 border border-2">
-              <div class="" id="user-profile">
-                  <div class="d-flex">
-                     <i class="fa-solid fa-user-gear icon-size"></i>
-                     <h4 class="admin-p">ADMIN</h4>
-                  </div>
-              </div>
-              <a href="../../index.html" id="med-listar-id">  
-                 <div class="" id="med-listar">
-                     <div> 
-                         <p>Listar Medicos</p>
-                     </div>
-                 </div>
-               </a>
-
-              <a href="../../index.html" id="med-list-id">  
-                 <div class="" id="med-listados">
-                   <div> 
-                       <p>Ver medicos listados</p>
-                   </div>
-                 </div>
-              </a>
-
-              <a href="../../../index.html" id="logout-id">
-                <div class="" id="logout">
-                  <div> 
-                      <p>Logout</p>
-                  </div>
+          <div id="navbar-lateral" class="col col-size1 border border-2 color-navbar">
+            <div class="" id="user-profile">
+                <div class="d-flex color-admin">
+                   <i class="fa-solid fa-user-gear icon-size"></i>
+                   <h4 class="admin-p">ADMIN</h4>
                 </div>
-              </a>
+            </div>
+
+            <div class="" id="med-listar">
+                <div class="text-center fs-4"> 
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <p>Listar Medicos</p>
+                </div>
+            </div>
+  
+            <div class="" id="med-listados">
+              <div class="text-center fs-4"> 
+                  <i class="fa-solid fa-eye"></i>
+                  <p>Medicos listados</p>
+              </div>
+            </div>
+
+            <div class="" id="logout-id">
+              <div class="text-center fs-4"> 
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <p>Logout</p>
+              </div>
+            </div>
+
           </div>
 
-          <div id="barra-medicos" class="col col-size2">
-              HOLA
-          </div>
+          <div id="sec-barra-medicos" class="col col-size2">
+            <div id="text-barra-med">
+                <p class="fs-5 text-center">Solicitudes de medicos nuevos</p>
+            </div>
+              <div id="div-barra-medicos" class="border border-2 rounded">
 
-          <div id="boton-refresh" class="col col-size3">
-              HOLA
+              </div>
           </div>
 
         </div>
     </body>
+       <script src="admin-listar.js"> </script> 
 </html>
