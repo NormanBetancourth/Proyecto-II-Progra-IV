@@ -1,6 +1,6 @@
 var arrMedicos = new Array();
 var medico = {nombre: "", id:"", especialidad:'', estado: false};
-var urlLocal = "http://127.0.0.1:5500/Proyecto2FrontEnd/"
+var urlLocal = "http://127.0.0.1:5500/Admin/";
 var barraMedicos = document.getElementById('div-barra-medicos');
 
 function datosQuemados(){
@@ -24,11 +24,11 @@ function queueMedicosListar(){
        }
     });
     barraMedicos.innerHTML = medicosHTML;
-    agregarListeners();
+    agregarListenersBtn();
 }
 
 //agregara listeners a cada boton
-function  agregarListeners(){
+function   agregarListenersBtn(){
     var btnAccept = document.querySelectorAll('.btn-list-accept');
     var btnReject = document.querySelectorAll('.btn-list-reject');
     for(var i = 0; i<btnAccept.length ; i++){
@@ -66,6 +66,7 @@ function medicoListado(id){
     });
 }
 
+//listener que se activara cuando se le da click al check de un medico
 function actionAcceptMed(event){
     event.preventDefault();
     //extrae el id del abuelo (es el que posee el id de la persona)
@@ -78,14 +79,27 @@ function actionAcceptMed(event){
 
 }
 
+//listener que se activara cuando se le da click al check de un medico
 function actionRejectMed(event){
     event.preventDefault();
     console.log("Se ha rechazado el medico");
 }
 
-function actionLogout(){
+
+function actionLogout(event){
+    event.preventDefault();
     document.location = urlLocal+"index.html";
 }
+
+function actionMedListados(event){
+    event.preventDefault();
+    document.location = urlLocal+"ver-med/admin-listadoMed.html";
+ }
+
+ function actionMedListar(event){
+    event.preventDefault();
+    document.location = urlLocal+"listar-med/admin-listar.html";
+ }
 
 function loaded(){
     //inicializamos el array con datos quemados para prueba
@@ -94,6 +108,9 @@ function loaded(){
     queueMedicosListar();
     //eventos
     $("#logout-id").on("click", actionLogout);
+    $("#med-listados").on("click", actionMedListados);
+    $("#med-listar").on("click", actionMedListar);
+
     $("#btn-accept-med").on("click", actionAcceptMed);
     $("#btn-reject-med").on("click", actionRejectMed);
 }

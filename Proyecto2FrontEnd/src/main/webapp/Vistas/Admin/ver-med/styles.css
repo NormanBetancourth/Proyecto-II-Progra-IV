@@ -1,0 +1,200 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jun 6, 2022, 3:06:26 AM
+    Author     : Dell
+*/
+@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Open+Sans:ital,wght@0,400;1,300&family=Oswald:wght@600&display=swap');
+body{
+    font-family: 'Dosis', sans-serif;
+    background-image: linear-gradient(
+        to right,
+        #83e5b4,
+        #73e0a2,
+        #65db8e,
+        #59d578,
+        #50cf61,
+        #40cf6a,
+        #2bce73,
+        #00ce7c,
+        #00d2a2,
+        #00d4c3,
+        #00d4dd,
+        #06d3ee
+      );
+}
+
+.cont-size{
+    height: 550px;
+}
+.col-size1{
+    max-width: 200px;
+    background-color:  #83e5b4;
+}
+.col-size2{
+    max-width: 1000px;
+}
+
+#user-profile, #med-listar, #logout-id, #med-listados{
+   height: 80px;
+   margin-bottom: 4em;
+}
+#user-profile{
+    height: 70px;
+}
+
+#logout-id:hover, #med-listados:hover,#med-listar:hover {
+    border-left:7px solid #06d3ee;
+    background-image: linear-gradient(
+        to right,
+        #83e5b4,
+        #73e0a2,
+        #65db8e,
+        #59d578,
+        #50cf61,
+        #40cf6a,
+        #2bce73,
+        #00ce7c,
+        #00d2a2,
+        #00d4c3,
+        #00d4dd,
+        #06d3ee
+      );
+    cursor: pointer;
+}
+
+#med-listados{
+    border-right:5px solid #06d3ee;
+}
+
+.icon-size{
+    font-size: 1.5em;
+    padding: 5px;
+    margin-left: 20px;
+}
+.admin-p{
+    margin-left: 8px;
+    margin-top: 3px;
+}
+.color-navbar{
+    color: rgb(72, 71, 71);
+}
+.color-admin{
+    color: linear-gradient(
+        to right,
+        #83e5b4,
+        #73e0a2,
+        #65db8e,
+        #59d578,
+        #50cf61,
+        #40cf6a,
+        #2bce73,
+        #00ce7c,
+        #00d2a2,
+        #00d4c3,
+        #00d4dd,
+        #06d3ee
+      );
+}
+
+#div-barra-medicos{
+    width: 50%;
+    height: 450px;
+    margin-left: 25%;
+    overflow-y:scroll;
+}
+
+#medico-id{
+    width: 90%;
+    height: 25%;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+#img-med{
+    max-width: 100px;
+}
+
+#info-med{
+    margin-left: 10px;
+}
+
+.p-padd{
+    margin: 0;  
+}
+
+#info-med{
+    width: 3em;
+}
+
+#buttons-med{
+    margin-left: 12em;
+}
+
+#btn-see-med{
+    max-height: 35px;
+    max-width: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+/* Popup */
+.popup {
+    display: flex;
+    visibility: hidden;
+    position: absolute;
+    top: -10%; 
+    left: 35%;
+    width: 28%; 
+    height: 90%;
+    justify-content: center;
+    padding-top: 1em;    
+    background-color: white;
+    z-index:2;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3rem;
+    transition: all 0.5s linear;  
+}
+
+.popup.active {
+  top: 5%; 
+  visibility: visible;
+}
+
+.overlay{
+    display: flex;
+    visibility: hidden;
+    position: absolute;
+    top: 0%; 
+    left: 0%;
+    width: 100%; 
+    height: 100%;
+    background-color: #000;;
+    z-index:1; 
+    opacity:0;
+    transition: all 1s ease;    
+}
+
+.overlay.active {
+  opacity: 0.5;
+  visibility: visible;
+}
+
+/* info Meidico Popup */
+#img-medic-pop{
+    height: 95%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#p-nom-med{
+    text-align: center;
+}
+
+#btnRegresarPop{
+    margin-left: 7em;
+    margin-right: 7em;
+}

@@ -47,12 +47,29 @@ body{
 
 #logout-id:hover, #med-listados:hover,#med-listar:hover {
     border-left:7px solid #06d3ee;
-    background-color: #50cc8e;
+    background-image: linear-gradient(
+        to right,
+        #83e5b4,
+        #73e0a2,
+        #65db8e,
+        #59d578,
+        #50cf61,
+        #40cf6a,
+        #2bce73,
+        #00ce7c,
+        #00d2a2,
+        #00d4c3,
+        #00d4dd,
+        #06d3ee
+      );
     cursor: pointer;
 }
 
 #med-listar{
     border-right:5px solid #06d3ee;
+}
+#med-listados{
+    border-right: none;
 }
 
 .icon-size{
