@@ -19,6 +19,13 @@ public class Especialidad {
         this.descripcion = descripcion;
     }
 
+    public Especialidad() {
+        this.codigo = "";
+        this.nombre = "";
+        this.descripcion = "";
+    }
+    
+
     public String getCodigo() {
         return codigo;
     }

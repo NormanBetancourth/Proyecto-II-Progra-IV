@@ -5,6 +5,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -13,13 +14,20 @@ import java.util.HashMap;
 public class Paciente extends Usuario {
     String fotoPath;
     String telefono;
-    //antecedentes
+    List<Antecedente> antecedente;
     //contactos de emergencia
 
+     public Paciente(Usuario user){
+        super.setNombre(user.getNombre());
+        super.setId(user.getId());
+        super.setTipo(user.getTipo());
+    }
+     
     public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono) {
         super(nombre, id, tipo);
         this.fotoPath = fotoPath;
         this.telefono = telefono;
+        this.antecedente = null;
     }
 
     public Paciente() {
@@ -75,14 +83,13 @@ public class Paciente extends Usuario {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public List<Antecedente> getAntecedente() {
+        return antecedente;
+    }
+
+    public void setAntecedente(List<Antecedente> antecedente) {
+        this.antecedente = antecedente;
+    }
+   
 }

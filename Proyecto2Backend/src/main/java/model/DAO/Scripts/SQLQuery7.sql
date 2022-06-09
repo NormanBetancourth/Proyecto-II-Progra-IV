@@ -63,7 +63,7 @@ create sequence sec_contactos
 create table usuarios(id int not null, nombre varchar(20) not null, tipo varchar(10) not null);
 create table administradores(id int not null, clave varchar(20) not null);
 create table medicos(id int not null, clave varchar(20) not null, especialidad int null, costo decimal(11,4) null, ciudad int  null, clinica varchar(20) null, estado varchar(20) not null, presentacion text null);
-create table pacientes(id int not null);
+create table pacientes(id int not null, telefono varchar(10));
 create table horarios(codigo int not null, id_medico int not null, dia varchar(30) not null, hora_inicio time  not null, hora_final time not null, frecuencia varchar(10) not null); 
 create table ciudades(codigo int not null, nombre varchar(20) not null, provincia varchar(20) not null);
 create table especialidades(codigo int not null, nombre varchar(20) not null, descripcion text null); 
@@ -142,10 +142,10 @@ alter table contactos add constraint contactos_telefono_uk unique (telefono);
 -- Ingresando datos de prueba
 -- Especialidades
 insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'General', 'Previene, detecta y trata enfermedades comunes.');
-insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Cardiologia', 'Estudio, diagnóstico y tratamiento de las enfermedades del corazón y del sistema circulatorio.');
+insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Cardiologia', 'Estudio, diagnï¿½stico y tratamiento de las enfermedades del corazï¿½n y del sistema circulatorio.');
 insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Psicologia', 'Estudia las funciones mentales y de comportamiento.');
-insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Odontologia', 'Diagnóstico y tratamiento del aparato estomagnático.');
-insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Pediatria', 'Atención médica de bebés, niños y adolescentes.');
+insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Odontologia', 'Diagnï¿½stico y tratamiento del aparato estomagnï¿½tico.');
+insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Pediatria', 'Atenciï¿½n mï¿½dica de bebï¿½s, niï¿½os y adolescentes.');
 insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Anestecia General',  null);
 
 
@@ -179,12 +179,12 @@ insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia
 insert into administradores(id, clave) values (100, 'password100');
 
 -- Pacientes
-insert into pacientes(id) values (103);
-insert into pacientes(id) values (104);
+insert into pacientes(id, telefono) values (103, '84201936');
+insert into pacientes(id, telefono) values (104, '89129210');
 
 -- Antecedentes
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Alergia', 'El medicamento zulfa le causa fiebre y zarpullido');
-insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migraña');
+insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migraï¿½a');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 104, 'Cirugia', 'Tumor cerebral');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 104, 'Padecimiento', 'Intolerante a la lactosa');
 
@@ -198,9 +198,9 @@ insert into contactos(numero, id_personal, id_paciente, nombre, telefono) values
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas, 101, 103, '2022-04-10 16:00:00', 'Finalizado', 'Presion normal, ...', 'Problemas respiratorios.', 'Gripe', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,101, 104, '2022-04-11 14:00:00', 'Finalizado', 'Presion normal, ...', 'Chequeo general', 'Deficiencia vitaminas', 'Vitaminas C y B12', 'Diario, una vez al día');
+values (next value for sec_citas,101, 104, '2022-04-11 14:00:00', 'Finalizado', 'Presion normal, ...', 'Chequeo general', 'Deficiencia vitaminas', 'Vitaminas C y B12', 'Diario, una vez al dï¿½a');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,102, 103, '2022-04-10 09:30:00', 'Finalizado', 'Presion normal, ...', 'Dolor de encías', 'Caries', 'Acetaminofen', 'Cada 8 horas');
+values (next value for sec_citas,102, 103, '2022-04-10 09:30:00', 'Finalizado', 'Presion normal, ...', 'Dolor de encï¿½as', 'Caries', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,102, 104, '2022-04-11 20:30:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
 

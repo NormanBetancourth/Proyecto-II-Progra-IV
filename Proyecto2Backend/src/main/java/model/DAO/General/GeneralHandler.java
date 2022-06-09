@@ -12,6 +12,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Ciudad;
+import model.Especialidad;
+import model.Paciente;
 
 /**
  *
@@ -28,7 +33,9 @@ public class GeneralHandler {
         this.executor = new SQLExecutor(usernameBD, passwordBD);
     }
     
-    //METODO QUE ME EXTRAE A UN USUARIO DE LA BD SEGUN SU ID Y LO RETORNA
+     //========================================METODOS DE RETORNO DATABASE ======================================
+    
+    //METODO QUE ME RETORNA A UN USUARIO DE LA BD SEGUN SU ID Y LO RETORNA
     public Usuario retornaUserPorId(String id) {
         Usuario usuario = new Usuario();
         String sql = "select * from usuarios where id = " + id + ";";
@@ -47,7 +54,7 @@ public class GeneralHandler {
         return usuario;
     }
     
-    //METODO QUE ME EXTRAE A UN MEDICO DE LA BD SEGUN SU ID Y LO RETORNA
+    //METODO QUE ME RETORNA A UN MEDICO DE LA BD SEGUN SU ID Y LO RETORNA
     public Medico retornaMedicoPorId(String id) {
         Usuario user = this.retornaUserPorId(id);
         Medico usuario = new Medico(user);
@@ -77,5 +84,239 @@ public class GeneralHandler {
         }
         return usuario;
     }
+    //METODO QUE ME RETORNA A UN MEDICO DE LA BD SEGUN SU ID Y LO RETORNA
 
+    public Paciente retornaPacientePorId(String id) {
+        Usuario user = this.retornaUserPorId(id);
+        Paciente usuario = new Paciente(user);
+        String sql1 = "select * from pacientes where id = " + id + ";";
+        ResultSet rs = null;
+
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            rs = executor.ejecutaQuery(sql1);
+            while (rs.next()) {
+                usuario.setTelefono(rs.getString("telefono"));
+                //NECESITA ESTAR EN LA BASE NO?
+                usuario.setFotoPath("");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return usuario;
+    }
+    
+    //METODO QUE ME RETORNA UNA ESPECIALIDAD SEGUN SU CODIGO
+    public Especialidad retornaEspecialidadPorCodigo(String codigo) {
+        Especialidad especialidad = new Especialidad();
+        String sql = "select * from especialidades where codigo = " + codigo + ";";
+        ResultSet rs;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                especialidad.setCodigo(codigo);
+                especialidad.setNombre(rs.getString("nombre"));
+                especialidad.setDescripcion(rs.getString("descripcion"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return especialidad;
+    }
+    
+    //METODO QUE ME RETORNA UNA CIUDAD SEGUN SU CODIGO
+    public Ciudad retornaCiudadPorCodigo(String codigo) {
+        Ciudad ciudad = new Ciudad();
+        String sql = "select * from ciudades where codigo = " + codigo + ";";
+        ResultSet rs;
+
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                ciudad.setCodigo(codigo);
+                ciudad.setNombre(rs.getString("nombre"));
+                ciudad.setProvincia(rs.getString("provincia"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return ciudad;
+    }
+    //METODO QUE ME RETORNA UN ANTECEDENTE SEGUN SU CODIGO
+
+    
+    //METODO QUE ME RETORNA TODA LA LISTA DE MEDICOS
+    public List<Medico> listarMedicos() {
+        List<Medico> lista = new ArrayList<>();
+        Medico medico = null;
+        String sql = "select * from medicos;";
+        String id;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                    id = rs.getString("id");
+                    medico = this.retornaMedicoPorId(id);
+                    lista.add(medico);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public List<Paciente> listarPacientes() {
+        List<Paciente> lista = new ArrayList<>();
+        Paciente paciente = null;
+        String sql = "select * from pacientes;";
+        String id;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                    id = rs.getString("id");
+                    paciente = this.retornaPacientePorId(id);
+                    lista.add(paciente);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
+    
+    //METODO QUE ME RETORNA TODA LA LISTA DE PACIENTES
+
+    
+     //========================================METODOS DE REGISTRO DATABASE ======================================
+    
+//METODO PARA REGISTRAR UN USUARIO EN LA BASE DE DATOS
+    public boolean registrarUsuario(String username, String id, String tipo) {
+        if (!verificaUsuarioExiste(id)) {
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores1[] = new String[4];
+                valores1[0] = "insert into usuarios(id, nombre,tipo) values (?, ?, ?)";
+                valores1[1] = id;
+                valores1[2] = username;
+                valores1[3] = tipo;
+                executor.prepareStatement(valores1);
+                return true;
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return false;
+    }
+    
+    //METODO PARA REGISTRAR UN MEDICO
+    public boolean registrarMedico(String username, String id, String clave, String especialidad, String costo, String ciudad, String clinica, String presentacion) {
+        try {
+            //registra a un usuario en la base de datos
+            this.registrarUsuario(username, id, "Medico");
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[9];
+            valores1[0] = "insert into medicos(id, especialidad, costo, ciudad, clinica, estado, presentacion, clave) values (?, ?, ?, ?, ?, ?, ?,?);";
+            valores1[1] = id;
+            valores1[2] = especialidad;
+            valores1[3] = costo;
+            valores1[4] = ciudad;
+            valores1[5] = clinica;
+            valores1[6] = "Espera";
+            valores1[7] = presentacion;
+            valores1[8] = clave;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
+    //METODO PARA REGISTRAR UN PACIENTE
+    public boolean registrarPaciente(String id, String username) {
+        try {
+            this.registrarUsuario(username, id, "Paciente");
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[2];
+            valores1[0] = "insert into pacientes(id) values (?);";
+            valores1[1] = id;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+
+        return false;
+    }
+    
+    //ME VERIFICA SI UN USUARIO EXISTE EN LA BD
+    public boolean verificaUsuarioExiste(String id) {
+        ResultSet resultSet;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            resultSet = executor.ejecutaQuery("select * from usuarios");
+            while (resultSet.next()) {
+                if (resultSet.getString("id").equals(id)) {
+                    return true;
+                }
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return false;
+    }
+    
+    //========================================METODOS DE BORRADO DATABASE ======================================
+    public boolean borrarUsuario(String id) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[2];
+            valores1[0] = "delete from usuarios where id = ?;";
+            valores1[1] = id;
+            executor.prepareStatement(valores1);
+            return true;
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+
+        return false;
+    } 
+
+//BORRAR MEDICO POR ID
+    public boolean borrarMedico(String id) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores[] = new String[2];
+            valores[0] = "delete from medicos where id = ?;";
+            valores[1] = id;
+            executor.prepareStatement(valores);
+            this.borrarUsuario(id);
+            return true;
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
+    //BORRAR PACIENTE POR ID
+    public boolean borrarPaciente(String id) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores[] = new String[2];
+            valores[0] = "delete from pacientes where id = ?;";
+            valores[1] = id;
+            executor.prepareStatement(valores);
+            this.borrarUsuario(id);
+            return true;
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
 }
+
+
