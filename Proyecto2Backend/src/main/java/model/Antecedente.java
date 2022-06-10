@@ -8,7 +8,7 @@ package model;
  *
  * @author norma
  */
-class Antecedente {
+public class Antecedente {
     String codigo;
     String tipo;
     String anotacion;
@@ -19,6 +19,11 @@ class Antecedente {
         this.codigo = codigo;
         this.tipo = tipo;
         this.anotacion = anotacion;
+    }
+    public Antecedente() {
+        this.codigo = "";
+        this.tipo = "";
+        this.anotacion = "";
     }
 
     public String getCodigo() {

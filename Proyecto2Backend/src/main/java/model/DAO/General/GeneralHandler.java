@@ -7,6 +7,7 @@ package model.DAO.General;
 import model.DAO.SQLConnection.SQLExecutor;
 import model.Medico;
 import model.Usuario;
+import model.Antecedente;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -60,7 +61,7 @@ public class GeneralHandler {
         Medico usuario = new Medico(user);
         String sql1 = "select * from medicos where id = " + id + ";";
         ResultSet rs = null;
-
+        
         try {
             executor = new SQLExecutor(usernameBD, passwordBD);
             rs = executor.ejecutaQuery(sql1);
@@ -144,8 +145,26 @@ public class GeneralHandler {
         }
         return ciudad;
     }
-    //METODO QUE ME RETORNA UN ANTECEDENTE SEGUN SU CODIGO
-
+    
+    //METODO QUE ME RETORNA UNA LISTA DE ANTECEDENTES SEGUN EL CODIGO DEL PACIENTE
+    public List<Antecedente> listaAntecedentesPorId(String id) {
+        List<Antecedente> lista = new ArrayList<>();
+        String sql = "select * from antecedentes where id_paciente = "+id+";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+               Antecedente antecedente = new Antecedente();
+               antecedente.setAnotacion(rs.getString("anotacion"));
+               antecedente.setCodigo(rs.getString("codigo"));
+               antecedente.setTipo(rs.getString("tipo"));
+               lista.add(antecedente);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
     
     //METODO QUE ME RETORNA TODA LA LISTA DE MEDICOS
     public List<Medico> listarMedicos() {
@@ -167,6 +186,7 @@ public class GeneralHandler {
         return lista;
     }
     
+    //METODO QUE ME RETORNA TODA LA LISTA DE PACIENTES
     public List<Paciente> listarPacientes() {
         List<Paciente> lista = new ArrayList<>();
         Paciente paciente = null;
@@ -178,6 +198,7 @@ public class GeneralHandler {
             while (rs.next()) {
                     id = rs.getString("id");
                     paciente = this.retornaPacientePorId(id);
+//                    paciente.setAntecedente(this.listaAntecedentesPorId(id));
                     lista.add(paciente);
             }
         } catch (SQLException throwables) {
@@ -186,7 +207,6 @@ public class GeneralHandler {
         return lista;
     }
     
-    //METODO QUE ME RETORNA TODA LA LISTA DE PACIENTES
 
     
      //========================================METODOS DE REGISTRO DATABASE ======================================

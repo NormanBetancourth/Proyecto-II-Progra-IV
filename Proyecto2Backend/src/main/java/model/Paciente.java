@@ -14,7 +14,7 @@ import java.util.List;
 public class Paciente extends Usuario {
     String fotoPath;
     String telefono;
-    List<Antecedente> antecedente;
+//    List<Antecedente> antecedentes;
     //contactos de emergencia
 
      public Paciente(Usuario user){
@@ -27,7 +27,7 @@ public class Paciente extends Usuario {
         super(nombre, id, tipo);
         this.fotoPath = fotoPath;
         this.telefono = telefono;
-        this.antecedente = null;
+//        this.antecedentes = null;
     }
 
     public Paciente() {
@@ -57,7 +57,7 @@ public class Paciente extends Usuario {
 
     @Override
     public String toString() {
-        return super.toString() +"Paciente{"  + ", fotoPath=" + fotoPath + ", telefono=" + telefono + ", antecedentes="  + '}';        
+        return super.toString() +"Paciente{"  + ", fotoPath=" + fotoPath + ", telefono=" + telefono+"}";        
     }
 
     public String getNombre() {
@@ -84,12 +84,12 @@ public class Paciente extends Usuario {
         this.tipo = tipo;
     }
 
-    public List<Antecedente> getAntecedente() {
-        return antecedente;
-    }
-
-    public void setAntecedente(List<Antecedente> antecedente) {
-        this.antecedente = antecedente;
-    }
+//    public List<Antecedente> getAntecedente() {
+//        return antecedentes;
+//    }
+//
+//    public void setAntecedente(List<Antecedente> antecedente) {
+//        this.antecedentes = antecedente;
+//    }
    
 }

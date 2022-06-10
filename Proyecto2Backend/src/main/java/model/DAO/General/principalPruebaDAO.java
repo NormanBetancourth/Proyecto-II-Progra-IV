@@ -5,11 +5,13 @@
 package model.DAO.General;
 
 import java.util.List;
+import model.Antecedente;
 import model.Ciudad;
 import model.Especialidad;
 import model.Medico;
 import model.Paciente;
 import model.Usuario;
+import model.serviceBackend.Service;
 
 /**
  *
@@ -34,7 +36,8 @@ public class principalPruebaDAO {
         
         //===prueba de retornar usuario BD [exitosa]====
         Usuario user = gen.retornaUserPorId("120");
-        System.out.println(user.toString());
+        System.out.println("USUARIO MAIN: " + user.toString());
+        
         //===prueba de retornar medico BD [exitosa]===
         Medico med = gen.retornaMedicoPorId("120");
         System.out.println(med.toString());
@@ -48,15 +51,18 @@ public class principalPruebaDAO {
          System.out.println(city.toString());
          
          
-        //===prueba de retornar antecedente de un paciente por id[NULL]===
-          
+        //===prueba de retornar lista de antecedentes de un paciente por id[exitosa]]===
+          List<Antecedente> listAntec = gen.listaAntecedentesPorId("103");
+          System.out.println(listAntec.toString());
           
         //===prueba de retornar lista de medicos[exitosa]===
          List<Medico> listMed = gen.listarMedicos();
          System.out.println(listMed.toString());
-        //===prueba de retornar lista de pacientes[NULL]===
+         
+        //===prueba de retornar lista de pacientes[exitosa]]===
         List<Paciente> listPac = gen.listarPacientes();
         System.out.println(listPac.toString());
+        
         //===prueba de retornar lista de horarios de un medico[NULL]===
         
         
@@ -64,20 +70,24 @@ public class principalPruebaDAO {
         //===prueba de existencia de un usuario[exitosa]===
          String existe = gen.verificaUsuarioExiste("918")? "Existe": "No Existe";
          System.out.println(existe);
-         //===prueba de colocarle un antecedente a un paciente[]===
+         
+         //===prueba de crear un antecedente a un paciente[]===
+         
          
          //=============METODOS DE BORRADO EN LA BD====================//
          
-         //===prueba de borrar medico DB [] ===
+         //===prueba de borrar medico DB [exitosa]] ===
           String borrado = gen.borrarMedico("120")? "Se borro el medico": "No se borro el medico";
           System.out.println( borrado);
           
-         //===prueba de borrar paciente DB [] ===
+         //===prueba de borrar paciente DB [exitosa]] ===
           borrado = gen.borrarPaciente("130")? "Se borro el paciente": "No se borro el paciente";
           System.out.println( borrado);
           
           
           
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
+          List<Medico> medicos = Service.instance().retornarListaMedicos();
+          System.out.println("MEDICOS: "+ medicos.toString());
     }
 }
