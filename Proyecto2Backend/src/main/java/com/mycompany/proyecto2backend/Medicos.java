@@ -78,23 +78,23 @@ public class Medicos {
     
     
     //PUT/ID
-//    @PUT
-//    @Path("{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public void update(@PathParam("id") String id, Medico m){
-//        try {
-//            for (int i = 0; i < user.size() ; i++) {
-//                if (user.get(i).getId().equals(id)) {
-//                    user.set(i, m);
-//                    System.out.println(user.get(i));
-//                    break;
-//                } 
-//            }
-//            System.out.println("no encontrado");
-//        } catch (Exception e) {
-//            throw new NotFoundException();
-//        }
-//    }
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void update(@PathParam("id") String id, Medico m){
+        try {
+            for (int i = 0; i < user.size() ; i++) {
+                if (user.get(i).getId().equals(id)) {
+                    user.set(i, m);
+                    System.out.println(user.get(i));
+                    break;
+                } 
+            }
+            System.out.println("no encontrado");
+        } catch (Exception e) {
+            throw new NotFoundException();
+        }
+    }
     
     //DELETE/ID
     @DELETE
