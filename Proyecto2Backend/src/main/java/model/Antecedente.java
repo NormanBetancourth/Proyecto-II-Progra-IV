@@ -10,16 +10,28 @@ package model;
  */
 class Antecedente {
     String codigo;
+    String idPaciente;
     String tipo;
     String anotacion;
     
     //TODO:
 
-    public Antecedente(String codigo, String tipo, String anotacion) {
+    public Antecedente(String codigo, String idPaciente, String tipo, String anotacion) {
         this.codigo = codigo;
+        this.idPaciente = idPaciente;
         this.tipo = tipo;
         this.anotacion = anotacion;
     }
+
+    public String getIdPaciente() {
+        return idPaciente;
+    }
+
+    public void setIdPaciente(String idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
+   
 
     public String getCodigo() {
         return codigo;

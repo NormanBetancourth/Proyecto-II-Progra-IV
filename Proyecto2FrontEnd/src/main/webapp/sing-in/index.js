@@ -57,10 +57,12 @@ function addDoctor() {
     let id = document.getElementsByName("id")[0].value;
     let password = document.getElementsByName("password")[0].value;
     let name = document.getElementsByName("name")[0].value;
-    let speciality = document.getElementsByName("speciality")[0].value; //TODO: traer de la base de datos y mostrar a manera de opciones
+    let speciality = document.getElementById("speciality")[0].value;
     let fee = document.getElementsByName("fee")[0].value;
-    let location = document.getElementsByName("location")[0].value; //TODO: traer de la base de datos y mostrar a manera de opciones
+    let location = document.getElementById("location")[0].value; 
     let foto = document.getElementsByName("foto")[0].value;
+    console.log("location "+location);
+    console.log("speciality "+speciality);
   
     var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
     //TODO: crear el horario y mandarlo al server
@@ -132,8 +134,6 @@ const cargarComobox = async () => {
           return;
         }
         especialidades = await res.json();
-        console.log('especialidades');
-        console.log(especialidades);
 
 
 
@@ -144,8 +144,6 @@ const cargarComobox = async () => {
             return;
         }
         ciudades =  await resCiudades.json();
-        console.log('ciudades');
-        console.log(ciudades);
 
     } catch (error) {
         console.log(error);
@@ -153,15 +151,36 @@ const cargarComobox = async () => {
 }
 
 
-const load2 = () => {
+const load2 = async () => {
     $("form").submit(function (e) {
       e.preventDefault();
     });
 
-    cargarComobox();
+    await cargarComobox();
+    
     LoadSchedule();
+    loadCities();//carga en el html
+    loadSpecialities();//carga en el html
     
 };
+
+function loadSpecialities() {
+  let elementos = '';
+  let speciality = document.getElementById('speciality');
+  especialidades.forEach(element =>{
+    elementos += `<option value="${element.codigo}">${element.nombre}</option>`
+  });
+  speciality.innerHTML = elementos;
+}
+
+function loadCities() {
+  let elementos = '';
+  let location = document.getElementById('location');
+  ciudades.forEach(element =>{
+    elementos += `<option value="${element.codigo}" >${element.nombre}, ${element.provincia}</option>`
+  });
+  location.innerHTML = elementos;
+}
 
 function LoadSchedule() {
     let elementos = "";
