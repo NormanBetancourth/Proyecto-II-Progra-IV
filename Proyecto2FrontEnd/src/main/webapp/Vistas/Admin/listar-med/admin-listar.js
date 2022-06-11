@@ -1,7 +1,9 @@
 var arrMedicos = new Array();
+var arrMedicos2 = new Array();
 var medico = {nombre: "", id:"", especialidad:'', estado: false};
 var urlLocal = "http://localhost:8080/Proyecto2FrontEnd/";
 var barraMedicos = document.getElementById('div-barra-medicos');
+var backend = "http://localhost:8080/Proyecto2Backend/api";
 
 function datosQuemados(){
     let medico1 = {nombre: "Hector", id:"123", especialidad:'General' ,estado: false};
@@ -13,6 +15,27 @@ function datosQuemados(){
     arrMedicos.push(medico3);
     arrMedicos.push(medico4);
 }
+
+function arrPrint(arr){
+    arr.forEach(function (m) {
+        console.log(m.id);
+    });
+}
+  function fetchAndList(){
+    const request = new Request(backend+'/medicos', {method: 'GET', headers: { }});
+    (async ()=>{
+        try{
+            const response = await fetch(request);
+            if (!response.ok) {errorMessage(response.status,$("#buscarDiv #errorDiv"));return;}
+            arrMedicos2 = await response.json();
+            arrPrint(arrMedicos2);
+        }
+        catch(e){
+           // errorMessage(NET_ERR,$("#buscarDiv #errorDiv"));
+           console.log('Error ocurrido en el fetchAndList');
+        }         
+    })();    
+  } 
 
 //me agregara los div del medico a la barra de listar
 function queueMedicosListar(){
@@ -76,7 +99,6 @@ function actionAcceptMed(event){
     medicoListado(idMedico);
     //Listo nuevamente la lista de medicos
     queueMedicosListar(); //se l ista nuevamente los medicos
-
 }
 
 //listener que se activara cuando se le da click al check de un medico
@@ -112,7 +134,7 @@ function loaded(){
     $("#med-listados").on("click", actionMedListados);
     $("#med-listar").on("click", actionMedListar);
 
-    $("#btn-accept-med").on("click", actionAcceptMed);
+    $("#btn-accept-med").on("click", fetchAndList);
     $("#btn-reject-med").on("click", actionRejectMed);
 }
 

@@ -18,6 +18,11 @@ public class Usuario {
         this.id = id;
         this.tipo = tipo;
     }
+    public Usuario() {
+        this.nombre = "";
+        this.id = "";
+        this.tipo = "";
+    }
 
     public String getNombre() {
         return nombre;
@@ -42,9 +47,6 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" + "nombre=" + nombre + ", id=" + id + ", tipo=" + tipo + '}';
-    }
-
-    public Usuario() {
     }
     
 }

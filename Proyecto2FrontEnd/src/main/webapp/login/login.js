@@ -2,7 +2,7 @@ var medicos = new Array();
 var adminis = new Array();
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 const NET_ERR = 999;
-
+var arrMedicos2 = new Array();
 var user = { id: "", pwd: "" };
 
 const loadUser = () => {
@@ -15,6 +15,7 @@ function login() {
     try {
       loadUser();
       result = await search(user.id);
+      await fetchAndList();
       console.log(result);
       
 
@@ -31,6 +32,30 @@ function login() {
     }
   })();
 }
+
+function arrPrint(arr){
+    arr.forEach(function (m) {
+        console.log(m.id);
+    });
+}
+
+function fetchAndList() {
+    const request = new Request(backend + '/medicos', {method: 'GET', headers: {}});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+               console.log("ERROR FETCH");
+                return;
+            }
+            arrMedicos2 = await response.json();
+            arrPrint(arrMedicos2);
+        } catch (e) {
+            // errorMessage(NET_ERR,$("#buscarDiv #errorDiv"));
+            console.log(e);
+        }
+    })();
+} 
 
 const search = async (id) => {
   try {

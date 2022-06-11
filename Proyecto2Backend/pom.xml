@@ -16,20 +16,6 @@
         <jakartaee>8.0.0</jakartaee>
     </properties>
     
-    <dependencies>
-        <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>${jakartaee}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <version>8.4.1.jre8</version>
-        </dependency>
-    </dependencies>
-    
      <build>
         <plugins>
             <plugin>
@@ -79,4 +65,7 @@
             </plugin>
         </plugins>
     </build>
+<dependencies><dependency><groupId>com.microsoft.sqlserver</groupId><artifactId>mssql-jdbc</artifactId><version>7.2.2.jre11</version></dependency></dependencies>
+
+
 </project>

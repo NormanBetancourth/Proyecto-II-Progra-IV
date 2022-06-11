@@ -3,6 +3,7 @@ package model.DAO.SQLConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.lang.Thread;  
 
 public class SQLExecutor {
     SQLConnector dbConector;
@@ -14,6 +15,7 @@ public class SQLExecutor {
             dbConector = SQLConnector.getInstance(user, password);
         }
         catch (SQLException exception){
+            System.out.println("===ERROR EN EL SQLEXECUTOR===");
             exception.printStackTrace();
         }
     }
@@ -30,6 +32,7 @@ public class SQLExecutor {
         }
         catch (SQLException ex){
             ex.printStackTrace();
+            System.out.println("===ERROR EN EL DBCONECTOR===");
         }
     }
 
@@ -52,6 +55,7 @@ public class SQLExecutor {
                 resultSet.close();
             }
             catch (SQLException ex){
+                System.out.println("===ERROR EN EL METODO CIERRA===");
                 ex.printStackTrace();
             }
         }
@@ -61,6 +65,7 @@ public class SQLExecutor {
                 statement.close();
             }
             catch (SQLException ex){
+                System.out.println("===ERROR EN EL CIERRA2===");
                 ex.printStackTrace();
             }
         }
@@ -70,6 +75,7 @@ public class SQLExecutor {
                 dbConector.cierra();
             }
             catch (Exception ex){
+                System.out.println("===ERROR EN EL CIERRA3===");
                 ex.printStackTrace();
             }
         }
