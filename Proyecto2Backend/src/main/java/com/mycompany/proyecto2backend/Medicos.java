@@ -35,20 +35,6 @@ import model.serviceBackend.Service;
 @Path("/medicos")
 public class Medicos {
     List<Medico> user = new ArrayList();
-    public void cargarDatos(){
-        Usuario usuario = new Usuario();
-        Medico medico = new Medico(usuario);
-        medico.setClinica("clinica");
-        medico.setEspecialidad("especialidad");
-        medico.setEstado("estado");
-        medico.setFee(5000);
-        medico.setFotoPath("path");
-        medico.setLocalidad("localidad");
-        medico.setPassword("password");
-        medico.setPresentacion("presentacion");
-        user.add(medico);
-       // user.add(new Medico("222", "Pediatría", 80000,"Heredia", "San Bosco", "./", "Hola soy Jose", "Activo", "JOSE", "222", "Medico"));
-    }
     
 //    //POST
 //    @POST
@@ -65,30 +51,18 @@ public class Medicos {
     @GET
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
     public List<Medico> read(){
-        cargarDatos();
-        return user;
+        return Service.instance().retornarListaMedicos();
     }
     
     
     
-//    //GET/ID
-//    @GET
-//    @Path("{id}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Medico read(@PathParam("id") String id){
-//        cargarDatos();
-//        try {
-//            for(Medico medico : user){
-//                if (medico.getId().equals(id)) {
-//                    return medico;
-//                }
-//            }
-//        } catch (Exception e) {
-//            throw new NotFoundException();
-//        }
-//        
-//        return null;
-//    }
+    //GET/ID
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Medico read(@PathParam("id") String id){
+        return Service.instance().retornarMedicoPorID(id);
+    }
     
     
     //PUT/ID

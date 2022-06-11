@@ -43,4 +43,8 @@ public class Service {
     public Usuario retornarUsuarioID(String id){
         return genDB.retornaUserPorId(id);
     }
+    
+    public Medico retornarMedicoPorID(String id){
+        return genDB.retornaMedicoPorId(id);
+    }
 }
