@@ -134,7 +134,7 @@ function loaded(){
     $("#med-listados").on("click", actionMedListados);
     $("#med-listar").on("click", actionMedListar);
 
-    $("#btn-accept-med").on("click", fetchAndList);
+    $("#btn-accept-med").on("click", actionAcceptMed);
     $("#btn-reject-med").on("click", actionRejectMed);
 }
 
