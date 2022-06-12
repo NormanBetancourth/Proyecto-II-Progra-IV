@@ -62,4 +62,10 @@ public class Service {
     public void registrarPaciente(Paciente pac){
         genDB.registrarPaciente(pac.getId(), pac.getNombre());
     }
+    
+    public void cambiarEstadoMedico(String id, String estado){
+        genDB.modificarEstadoMedico(id, estado);
+    }
+
+        
 }

@@ -1,48 +1,56 @@
 var arrMedicos = new Array();
-var arrMedicos2 = new Array();
-var medico = {nombre: "", id:"", especialidad:'', estado: false};
+//clinica,especialidad,estado,fee,fotoPath,id,localidad,nombre,password,presentacion,tipo
+var medico = {clinica: "", especialidad: "", estado:"", fee:"", fotoPath:"", id:"", localidad:'', nombre: "", password:"", presentacion:"", tipo:""};
 var urlLocal = "http://localhost:8080/Proyecto2FrontEnd/";
 var barraMedicos = document.getElementById('div-barra-medicos');
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 
-function datosQuemados(){
-    let medico1 = {nombre: "Hector", id:"123", especialidad:'General' ,estado: false};
-    let medico2 = {nombre: "Rebeca", id:"321", especialidad:'Cardiologia' ,estado: false};
-    let medico3 = {nombre: "Norman", id:"231", especialidad:'Cirujano' , estado: false};
-    let medico4 = {nombre: "Brithany", id:"132", especialidad:'Enfermera' , estado: false};
-    arrMedicos.push(medico1);
-    arrMedicos.push(medico2);
-    arrMedicos.push(medico3);
-    arrMedicos.push(medico4);
-}
 
 function arrPrint(arr){
     arr.forEach(function (m) {
-        console.log(m.id);
+        console.log(Object.values(m)+"---"+Object.keys(m));
     });
 }
-  function fetchAndList(){
+
+//actualiza el estado del medico
+function updateEstadoMedico(id, estado) {
+    const request = new Request(backend + '/medicos/' + id + '/'+estado, {method: 'PUT', headers: {}});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                console.log("Error en el updateEstadoMedico 1"); return;
+            }
+            fetchAndList();
+        } catch (e) {
+             console.log("Error en el updateEstadoMedico 2"); return;
+        }
+    })();
+}
+
+//Obtiene la lista de medicos
+ function fetchAndList(){
     const request = new Request(backend+'/medicos', {method: 'GET', headers: { }});
     (async ()=>{
         try{
             const response = await fetch(request);
-            if (!response.ok) {errorMessage(response.status,$("#buscarDiv #errorDiv"));return;}
-            arrMedicos2 = await response.json();
-            arrPrint(arrMedicos2);
+            if (!response.ok) {console.log("Error");return;}
+            arrMedicos = await response.json();
+            queueMedicosListar();
         }
         catch(e){
            // errorMessage(NET_ERR,$("#buscarDiv #errorDiv"));
            console.log('Error ocurrido en el fetchAndList');
         }         
     })();    
-  } 
+ } 
 
 //me agregara los div del medico a la barra de listar
 function queueMedicosListar(){
     barraMedicos.innerHTML = '';
     let medicosHTML = '';
     arrMedicos.forEach(function(m){
-       if(m.estado === false){
+       if(m.estado === "Espera"){
         medicosHTML+=createMed(m);
        }
     });
@@ -84,7 +92,15 @@ function createMed(Pmedico){
 function medicoListado(id){
     arrMedicos.forEach(function(m){
         if(m.id === id){
-            m.estado = true;
+            updateEstadoMedico(id,"Aprobado" );
+        }
+    });
+}
+
+function medicoRechazar(id){
+    arrMedicos.forEach(function(m){
+        if(m.id === id){
+            updateEstadoMedico(id,"Rechazado");
         }
     });
 }
@@ -94,17 +110,15 @@ function actionAcceptMed(event){
     event.preventDefault();
     //extrae el id del abuelo (es el que posee el id de la persona)
     let idMedico = $(this).attr('data-ced');
-    console.log("Se activo el boton del id: "+idMedico);
-    //voy a colocarle su estado en true
+    //voy a colocarle su estado en true y listo los medicos en el array
     medicoListado(idMedico);
-    //Listo nuevamente la lista de medicos
-    queueMedicosListar(); //se l ista nuevamente los medicos
 }
 
 //listener que se activara cuando se le da click al check de un medico
 function actionRejectMed(event){
     event.preventDefault();
-    console.log("Se ha rechazado el medico");
+    let idMedico = $(this).attr('data-ced');
+    medicoRechazar(idMedico);
 }
 
 
@@ -124,11 +138,10 @@ function actionMedListar(event) {
     document.location = urlLocal +"Vistas/Admin/listar-med/admin-listar.html";
 }
 
-function loaded(){
-    //inicializamos el array con datos quemados para prueba
-    datosQuemados();
+async function loaded(){
+    //extraemos el array de la base de datos
+     arrPrint(arrMedicos);
     //evento logout para regresar index
-    queueMedicosListar();
     //eventos
     $("#logout-id").on("click", actionLogout);
     $("#med-listados").on("click", actionMedListados);
@@ -138,6 +151,18 @@ function loaded(){
     $("#btn-reject-med").on("click", actionRejectMed);
 }
 
-document.addEventListener("DOMContentLoaded", loaded);
+  function loaded(){
+    fetchAndList();
+    $("#logout-id").on("click", actionLogout);
+    console.log("AAAA1");
+    $("#med-listados").on("click", actionMedListados);
+    console.log("AAAA2");
+    $("#med-listar").on("click", actionMedListar);
+    console.log("AAAA3");
+    $("#btn-accept-med").on("click", actionAcceptMed);
+    $("#btn-reject-med").on("click", actionRejectMed);
+  }
+  
+  $(loaded);
 
 

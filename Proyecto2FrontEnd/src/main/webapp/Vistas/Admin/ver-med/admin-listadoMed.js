@@ -1,27 +1,52 @@
 var arrMedicos = new Array();
-var medico = {nombre: "", id:"", especialidad:'', estado: false};
+var medico = {clinica: "", especialidad: "", estado:"", fee:"", fotoPath:"", id:"", localidad:'', nombre: "", password:"", presentacion:"", tipo:""};
 var urlLocal = "http://localhost:8080/Proyecto2FrontEnd/";
+var backend = "http://localhost:8080/Proyecto2Backend/api";
 var barraMedicos = document.getElementById('div-barra-medicos');
 var containerPopup =  document.getElementById('infoPopupMed');
 
-function datosQuemados(){
-    let medico1 = {nombre: "Hector", id:"123", especialidad:'General' ,estado: true};
-    let medico2 = {nombre: "Rebeca", id:"321", especialidad:'Cardiologia' ,estado: true};
-    let medico3 = {nombre: "Norman", id:"231", especialidad:'Cirujano' , estado: true};
-    let medico4 = {nombre: "Brithany", id:"132", especialidad:'Enfermera' , estado: false};
-    arrMedicos.push(medico1);
-    arrMedicos.push(medico2);
-    arrMedicos.push(medico3);
-    arrMedicos.push(medico4);
+function fetchAndList() {
+    const request = new Request(backend + '/medicos', {method: 'GET', headers: {}});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                console.log("Error");
+                return;
+            }
+            arrMedicos = await response.json();
+            queueMedicosListados();
+        } catch (e) {
+            console.log('Error ocurrido en el fetchAndList');
+        }
+    })(); 
 }
 
-function queueMedicosListados(){
+function edit(cedula) {
+    let medicoB;
+    const request = new Request(backend + '/medicos/' + cedula, {method: 'GET', headers: {}});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                console.log("Error edit 1");
+                return;
+            }
+            medicoB = await response.json();
+        } catch (e) {
+            console.log("Error edit 2");
+        }
+    })();
+}
+
+//me agregara los div del medico a la barra de listar
+function queueMedicosListados() {
     barraMedicos.innerHTML = '';
     let medicosHTML = '';
-    arrMedicos.forEach(function(m){
-       if(m.estado === true){
-        medicosHTML+=createMed(m);
-       }
+    arrMedicos.forEach(function (m) {
+        if (m.estado === "Aprobado") {
+            medicosHTML += createMed(m);
+        }
     });
     barraMedicos.innerHTML = medicosHTML;
     agregarListenersBtn();
@@ -122,10 +147,8 @@ function actionMedListados(event){
  }
 
 function loaded(){
-    //inicializamos el array con datos quemados para prueba
-    datosQuemados();
-    //evento logout para regresar index
-    queueMedicosListados();
+    //extraemos la lista de medicos de la DB
+    fetchAndList();
     //eventos
     $("#logout-id").on("click", actionLogout);
     $("#med-listados").on("click", actionMedListados);
@@ -133,4 +156,4 @@ function loaded(){
     $("#btnRegresarPop").on("click", togglePopupCerrar);
 
 }
-document.addEventListener("DOMContentLoaded", loaded);
+$(loaded);

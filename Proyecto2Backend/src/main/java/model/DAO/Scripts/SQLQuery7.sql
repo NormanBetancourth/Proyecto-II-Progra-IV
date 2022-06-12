@@ -120,7 +120,7 @@ alter table antecedentes
 alter table usuarios 
 	add constraint usuarios_ck1 Check (tipo in ('Admin','Medico','Paciente'));
 alter table medicos 
-	add constraint medicos_ck1 Check (estado in ('Aprobado','Espera','Recchazado'));
+	add constraint medicos_ck1 Check (estado in ('Aprobado','Espera','Rechazado'));
 alter table ciudades 
 	add constraint ciudades_ck1 Check (provincia in ('San Jose','Heredia','Limon','Cartago','Alajuela','Puntarenas','Guanacaste'));
 alter table horarios
@@ -162,11 +162,15 @@ insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Nic
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Joseph Romero', 'Paciente');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Maria Vargas', 'Paciente');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Felicia Ramirez', 'Medico');
+insert into usuarios(id, nombre, tipo) values (110, 'Maria Carmona', 'Medico');
+insert into usuarios(id, nombre, tipo) values (111, 'Carlos Felicio', 'Medico');
 
 -- Medicos
-insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (101, 'password101', 1, 70000, 1000, 'Athena', 'Aprobado', null);
-insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (102, 'password102', 4, 100000, 1002, 'Pacific Global', 'Aprobado', 'Amante de nuevos retos');
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (101, 'password101', 1, 70000, 1000, 'Athena', 'Espera', null);
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (102, 'password102', 4, 100000, 1002, 'Pacific Global', 'Espera', 'Amante de nuevos retos');
 insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (105, 'password105', 6, 100000, 1003, 'Salud', 'Aprobado', null);
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (110, 'password1011', 3, 700000, 1000, 'Athena-Clinic', 'Espera', null);
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (111, 'password1021', 4, 150000, 1002, 'Pacific-Heredia', 'Espera', 'Amante de nuevos retos');
 
 -- Horarios
 insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 101, 'Lunes', '16:00:00', '20:00:00','00:30');

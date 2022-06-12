@@ -87,6 +87,10 @@ public class principalPruebaDAO {
           
           
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
+          gen.modificarEstadoMedico("101", "Aprobado");
+          
+          
+          
           List<Medico> medicos = Service.instance().retornarListaMedicos();
           System.out.println("MEDICOS: "+ medicos.toString());
     }
