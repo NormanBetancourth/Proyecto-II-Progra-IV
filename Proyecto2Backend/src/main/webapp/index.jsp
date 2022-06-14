@@ -22,6 +22,5 @@
     </head>
     <body>
         <h1>Backend Page</h1>
-        <p><%=actions%></p>
     </body>
 </html>

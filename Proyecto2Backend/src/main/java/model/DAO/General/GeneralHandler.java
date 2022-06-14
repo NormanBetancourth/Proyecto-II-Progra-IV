@@ -454,6 +454,31 @@ public class GeneralHandler {
             }
         }
     }
+     
+     //MODIFICAR INFORMACION DE MEDICO
+     public boolean modificarDatosMedico(String id, String especialidad, String costo, String ciudad, String clinica, String fotoPath, String presentacion) {
+        boolean respuesta = false;
+        if (this.verificaUsuarioExiste(id)) {
+            // El id no se puede cambiar
+            // tampoco su estado
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[6];
+                valores[0] = "update medicos set especialidad = ?, costo = ?, ciudad = ?, clinica = ? where id = ?;";
+                valores[1] = especialidad;
+                valores[2] = costo;
+                valores[3] = ciudad;
+                valores[4] = clinica;
+                valores[5] = id;
+                executor.prepareStatement(valores);
+                respuesta = true;
+
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return respuesta;
+    }
 }
 
 
