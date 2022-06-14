@@ -21,9 +21,16 @@ function login() {
 
       if (result === undefined) {
         errorMessage(404, $("#errorDiv"));
+        return;
       } else {
+        if(result.password === user.pwd) {
           localStorage.setItem("user", JSON.stringify(result));
           window.location.href = "./inicio/index.html";
+          return;
+        }else{
+          errorMessage(404, $("#errorDiv"));
+          return;
+        }
         
       }
     } catch (error) {
@@ -33,11 +40,6 @@ function login() {
   })();
 }
 
-function arrPrint(arr){
-    arr.forEach(function (m) {
-        console.log(m.id);
-    });
-}
 
 function fetchAndList() {
     const request = new Request(backend + '/medicos', {method: 'GET', headers: {}});
@@ -49,7 +51,6 @@ function fetchAndList() {
                 return;
             }
             arrMedicos2 = await response.json();
-            arrPrint(arrMedicos2);
         } catch (e) {
             // errorMessage(NET_ERR,$("#buscarDiv #errorDiv"));
             console.log(e);
