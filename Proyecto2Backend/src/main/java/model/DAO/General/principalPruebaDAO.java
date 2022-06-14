@@ -8,6 +8,7 @@ import java.util.List;
 import model.Antecedente;
 import model.Ciudad;
 import model.Especialidad;
+import model.Horario;
 import model.Medico;
 import model.Paciente;
 import model.Usuario;
@@ -30,7 +31,7 @@ public class principalPruebaDAO {
         gen.registrarPaciente("130", "nombre paciente");
 
         //===prueba de registrar un horario [NULL]===
-        
+        gen.registrarHorario("101", "5010", "Lunes", "13:00:00",  "16:00:00", "00:30");
         
         //=============METODOS DE RETORNOS EN LA BD====================//
         
@@ -50,6 +51,9 @@ public class principalPruebaDAO {
          Ciudad city = gen.retornaCiudadPorCodigo("1000");
          System.out.println(city.toString());
          
+          //===prueba de retornar horario por codigo BD [exitosa]===
+         Horario schedule = gen.retornaHorarioPorCodigo("5000");
+         System.out.println(schedule.toString());
          
         //===prueba de retornar lista de antecedentes de un paciente por id[exitosa]]===
           List<Antecedente> listAntec = gen.listaAntecedentesPorId("103");
@@ -63,8 +67,9 @@ public class principalPruebaDAO {
         List<Paciente> listPac = gen.listarPacientes();
         System.out.println(listPac.toString());
         
-        //===prueba de retornar lista de horarios de un medico[NULL]===
-        
+        //===prueba de retornar lista de horarios de un medico[exitosa]===
+        List<Horario> listHorariosMed = gen.listaHorariosPorMedico("101");
+        System.out.println(listHorariosMed.toString());
         
         //=============METODOS DE VERIFICACION EN LA BD====================//
         //===prueba de existencia de un usuario[exitosa]===
@@ -76,15 +81,17 @@ public class principalPruebaDAO {
          
          //=============METODOS DE BORRADO EN LA BD====================//
          
-         //===prueba de borrar medico DB [exitosa]] ===
+         //===prueba de borrar medico DB [exitosa] ===
           String borrado = gen.borrarMedico("120")? "Se borro el medico": "No se borro el medico";
           System.out.println( borrado);
           
-         //===prueba de borrar paciente DB [exitosa]] ===
+         //===prueba de borrar paciente DB [exitosa] ===
           borrado = gen.borrarPaciente("130")? "Se borro el paciente": "No se borro el paciente";
           System.out.println( borrado);
           
-          
+          //===prueba de borrar Horario DB [exitosa] ===
+          borrado = gen.borrarHorario("5010")? "Se borro el horario": "No se borro el horario";
+          System.out.println(borrado);
           
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
           gen.modificarEstadoMedico("101", "Aprobado");
