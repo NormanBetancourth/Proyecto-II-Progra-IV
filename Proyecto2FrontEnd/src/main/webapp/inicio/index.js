@@ -19,9 +19,9 @@ const schedule = document.querySelector('.grid-container');
 const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
              '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
              '16:00', '16:30', '17:00','17:30', '18:00', '18:30', '19:00', '19:30','20:00'];
-const agenda = [{num: 3, dia:'Miercoles', horaInicio: '10:00', horaFinal:'11:00'},
-              {num: 4, dia:'Jueves', horaInicio: '10:00', horaFinal:'11:00'},
-              {num: 5, dia:'Viernes', horaInicio: '10:00', horaFinal:'11:00'},];
+const agenda = [{num: 3, dia:'Miercoles', horaInicio: '08:00', horaFinal:'11:00'},
+              {num: 4, dia:'Jueves', horaInicio: '13:00', horaFinal:'15:00'},
+              {num: 5, dia:'Viernes', horaInicio: '15:00', horaFinal:'17:00'},];
 
 function Load() {
   InitButtons();
@@ -31,6 +31,54 @@ function Load() {
 }
 
 
+function CalculateRanges() {
+  let horasPorDia = new Map();
+  let rangoMayor = '';
+  let rangoMenor = '';
+  let frec = '';
+  let dia = '';
+
+  agenda.forEach(horario => {
+    rangoMayor = horario.horaFinal.substring(0,2);
+    rangoMenor = horario.horaInicio.substring(0,2);
+    frec = frecuencia.substring(2,4);
+    dia = weekdays[horario.num];
+    let lista = [];
+    if(frec === '00'){
+      while(rangoMayor >= rangoMenor){
+        lista.push(rangoMayor + ':' + frec);
+        rangoMayor -= 1;
+      }
+      horasPorDia.set(dia, lista);
+    }
+    else{
+      while(rangoMayor >= rangoMenor){
+        lista.push(rangoMayor + ':' + '00');
+        lista.push(rangoMayor + ':' + frec);
+        rangoMayor -= 1;
+      }
+      horasPorDia.set(dia, lista);
+    }
+  });
+  console.log(horasPorDia);
+  return horasPorDia;
+}
+
+function EnableHoursAppointments() {
+  const horasCitas = Array.from(document.querySelectorAll('.horaCita'));
+  let rango = CalculateRanges();
+
+  horasCitas.forEach(element => {
+    if(rango.has(element.getAttribute('data-day'))){
+      console.log(rango.get(element.getAttribute('data-day')));
+      if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
+        element.classList.add('enableHourAppointment');
+        element.classList.remove('grid-item');
+        element.textContent = element.getAttribute('data-infor');
+      }
+    }
+  });
+}
 
 Date.prototype.GetLastSaturday = function() {
     let d = new Date(this.valueOf());
@@ -74,29 +122,49 @@ function LoadDays() {
         hora.classList.add('hora');
         const appointment1 = document.createElement('div');
         appointment1.classList.add('grid-item');
-        appointment1.classList.add(weekdays[1]);
-        appointment1.classList.add(horas[i]);
-        appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
+        appointment1.classList.add('horaCita');
+        //appointment1.classList.add(weekdays[1]);
+        //appointment1.classList.add(horas[i]);
+        //appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
+        appointment1.setAttribute('data-day', weekdays[1]);
+        appointment1.setAttribute('data-time', horas[i]);
+        appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
-        appointment2.classList.add(weekdays[2]);
-        appointment2.classList.add(horas[i]);
-        appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
+        appointment2.classList.add('horaCita');
+        //appointment2.classList.add(weekdays[2]);
+        //appointment2.classList.add(horas[i]);
+        //appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
+        appointment2.setAttribute('data-day', weekdays[2]);
+        appointment2.setAttribute('data-time', horas[i]);
+        appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
-        appointment3.classList.add(weekdays[3]);
-        appointment3.classList.add(horas[i]);
-        appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
+        appointment3.classList.add('horaCita');
+        //appointment3.classList.add(weekdays[3]);
+        //appointment3.classList.add(horas[i]);
+        //appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
+        appointment3.setAttribute('data-day', weekdays[3]);
+        appointment3.setAttribute('data-time', horas[i]);
+        appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
-        appointment4.classList.add(weekdays[4]);
-        appointment4.classList.add(horas[i]);
-        appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
+        appointment4.classList.add('horaCita');
+        //appointment4.classList.add(weekdays[4]);
+        //appointment4.classList.add(horas[i]);
+        //appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
+        appointment4.setAttribute('data-day', weekdays[4]);
+        appointment4.setAttribute('data-time', horas[i]);
+        appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
-        appointment5.classList.add(weekdays[5]);
-        appointment5.classList.add(horas[i]);
-        appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
+        appointment5.classList.add('horaCita');
+        //appointment5.classList.add(weekdays[5]);
+        //appointment5.classList.add(horas[i]);
+        //appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
+        appointment5.setAttribute('data-day', weekdays[5]);
+        appointment5.setAttribute('data-time', horas[i]);
+        appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
     
         line += hora.outerHTML;
         line += appointment1.outerHTML;
@@ -116,29 +184,50 @@ function LoadDays() {
         hora.classList.add('hora');
         const appointment1 = document.createElement('div');
         appointment1.classList.add('grid-item');
-        appointment1.classList.add(weekdays[1]);
-        appointment1.classList.add(horas[i]);
-        appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
+        appointment1.classList.add('horaCita');
+        //appointment1.classList.add(weekdays[1]);
+        //appointment1.classList.add(horas[i]);
+        //appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
+        appointment1.setAttribute('data-day', weekdays[1]);
+        appointment1.setAttribute('data-time', horas[i]);
+        appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
-        appointment2.classList.add(weekdays[2]);
-        appointment2.classList.add(horas[i]);
-        appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
+        appointment2.classList.add('horaCita');
+        //appointment2.classList.add(weekdays[2]);
+        //appointment2.classList.add(horas[i]);
+        //appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
+        appointment2.setAttribute('data-day', weekdays[2]);
+        appointment2.setAttribute('data-time', horas[i]);
+        appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
-        appointment3.classList.add(weekdays[3]);
-        appointment3.classList.add(horas[i]);
-        appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
+        appointment3.classList.add('horaCita');
+        //appointment3.classList.add(weekdays[3]);
+        //appointment3.classList.add(horas[i]);
+        //appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
+        appointment3.setAttribute('data-day', weekdays[3]);
+        appointment3.setAttribute('data-time', horas[i]);
+        appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
-        appointment4.classList.add(weekdays[4]);
-        appointment4.classList.add(horas[i]);
-        appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
+        appointment4.classList.add('horaCita');
+        //appointment4.classList.add(weekdays[4]);
+        //appointment4.classList.add(horas[i]);
+        //appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
+        appointment4.setAttribute('data-day', weekdays[4]);
+        appointment4.setAttribute('data-time', horas[i]);
+        appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
-        appointment5.classList.add(weekdays[5]);
-        appointment5.classList.add(horas[i]);
-        appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
+        appointment5.classList.add('horaCita');
+        //appointment5.classList.add(weekdays[5]);
+        //appointment5.classList.add(horas[i]);
+        //appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
+        appointment5.setAttribute('data-day', weekdays[5]);
+        appointment5.setAttribute('data-time', horas[i]);
+        appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
+    
     
         line += hora.outerHTML;
         line += appointment1.outerHTML;
@@ -150,7 +239,6 @@ function LoadDays() {
       schedule.innerHTML = line;
     }
   }
-  
 }
 
 function LoadActualWeek() {
@@ -207,6 +295,7 @@ function LoadActualWeek() {
     } 
   }
   LoadDays();
+  EnableHoursAppointments();
   //console.log(semana);
 }
 
@@ -277,6 +366,7 @@ function LoadWeek() {
       } 
     }
     LoadDays();
+    EnableHoursAppointments();
     //console.log(semana);
   } 
   );
