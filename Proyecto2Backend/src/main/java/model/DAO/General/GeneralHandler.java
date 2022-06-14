@@ -24,7 +24,7 @@ import model.Paciente;
  * @author Dell
  */
 public class GeneralHandler {
-    final String usernameBD = "sas";
+    final String usernameBD = "sass";
 //    final String usernameBD = "sa";
     final String passwordBD = "password";
     SQLExecutor executor;

@@ -43,8 +43,11 @@ modalSaveBtn.onclick = () => {
     selectedDays.forEach((element) => {
       mappedDays.push({
         dia: element.parentNode.childNodes[2].childNodes[0].data,
-        entrada: element.parentNode.childNodes[4].childNodes[3].value,
-        salida: element.parentNode.childNodes[4].childNodes[7].value,
+        horaInicio: element.parentNode.childNodes[4].childNodes[3].value,
+        horaFinal: element.parentNode.childNodes[4].childNodes[7].value,
+        codigo:'',
+        idMedico:'',
+        frecuencia:''
       });
     });
     $("#modal-container").modal("hide");
@@ -61,13 +64,9 @@ function addDoctor() {
     let fee = document.getElementsByName("fee")[0].value;
     let location = document.getElementById("location")[0].value; 
     let foto = document.getElementsByName("foto")[0].value;
-    console.log("location "+location);
-    console.log("speciality "+speciality);
+    let frecuencia = document.getElementById("frecuencia")[0].value;
   
     var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
-    //TODO: crear el horario y mandarlo al server
-    console.log(doctor);
-    console.log(mappedDays);
     
     (async () => {
       try {
@@ -77,6 +76,12 @@ function addDoctor() {
         if (result === undefined){
             //TODO: mandar horario y medicos
             // window.location.href = "./../inicio/index.html";
+            mappedDays.forEach( element => {
+              element.codigo = '-1';
+              element.idMedico = id;
+              element.frecuencia = frecuencia;
+            })
+            console.log(mappedDays);
             return;
         }
         errorMessage(405, $("#errorDiv"));
