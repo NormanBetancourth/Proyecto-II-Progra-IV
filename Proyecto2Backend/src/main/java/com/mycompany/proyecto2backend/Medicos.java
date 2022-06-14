@@ -34,19 +34,6 @@ import model.serviceBackend.Service;
 
 @Path("/medicos")
 public class Medicos {
-    List<Medico> user = new ArrayList();
-    
-//    //POST
-//    @POST
-//    @Consumes (MediaType.APPLICATION_JSON)
-//    public void create(Medico user){
-//        try {
-//            System.out.println("USUARIO al CREAR \n"+user);
-//        } catch (Exception e) {
-//            throw new NotAcceptableException();
-//        }
-//    }
-    
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
@@ -65,42 +52,30 @@ public class Medicos {
     }
     
     
-    //PUT/ID
+    //Actualiza la informacion de todo el medico
+   //backend+'/medicos/'+medico.cedula/+'/'+estado,  {method: 'PUT', headers: { 'Content-Type': 'application/json'},  body: JSON.stringify(persona)});
     @PUT
-    @Path("{id}")
+    @Path("{id}/{estado}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(@PathParam("id") String id, Medico m){
+    public void update(@PathParam("id") String id, @PathParam("estado") String estado) {  
         try {
-            for (int i = 0; i < user.size() ; i++) {
-                if (user.get(i).getId().equals(id)) {
-                    user.set(i, m);
-                    System.out.println(user.get(i));
-                    break;
-                } 
-            }
-            System.out.println("no encontrado");
-        } catch (Exception e) {
-            throw new NotFoundException();
+            System.out.println("=========================ENTROOOOOOOOOOOOOOOOOOOOO AQUIIIIIIIII===================================");
+            Service.instance().cambiarEstadoMedico(id, estado);
+        } catch (Exception ex) {
+            throw new NotFoundException(); 
         }
     }
     
     //DELETE/ID
-//    @DELETE
-//    @Path("{id}")
-//    public void delete(@PathParam("id") String id){
-//        try {
-//            for (int i = 0; i < user.size(); i++) {
-//                if (user.get(i).getId().equals(id)) {
-//                    System.out.println("Se elimina: "+user.get(i));
-//                    user.remove(i);
-//                    break;
-//                }
-//            }
-//            System.out.println(user);
-//        } catch (Exception e) {
-//            throw new NotFoundException();
-//        }
-//    }
+    @DELETE
+    @Path("{id}")
+    public void delete(@PathParam("id") String id){
+       try {
+            
+        } catch (Exception e) {
+            throw new NotFoundException();
+        }
+    }
     
     
     

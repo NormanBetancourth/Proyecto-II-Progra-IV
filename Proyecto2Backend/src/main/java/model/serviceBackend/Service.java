@@ -6,6 +6,8 @@ package model.serviceBackend;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.Antecedente;
+import model.Ciudad;
 import model.DAO.General.GeneralHandler;
 import model.Medico;
 import model.Paciente;
@@ -40,6 +42,10 @@ public class Service {
         return genDB.listarPacientes();
     }
     
+    public List<Antecedente> retornarListaAntecedentesPorID(String id){
+        return genDB.listaAntecedentesPorId(id);
+    }
+    
     public Usuario retornarUsuarioID(String id){
         return genDB.retornaUserPorId(id);
     }
@@ -47,4 +53,19 @@ public class Service {
     public Medico retornarMedicoPorID(String id){
         return genDB.retornaMedicoPorId(id);
     }
+    
+    public void registrarMedico(Medico med){
+        //falta validacion de ser necesaria que el codigo de especialidad y ciudad se pasen a string respectivamente
+        genDB.registrarMedico(med.getNombre(), med.getId(), med.getPassword(), "4", (med.getFee()+""), "1000", med.getClinica(), med.getPresentacion());
+    }
+    
+    public void registrarPaciente(Paciente pac){
+        genDB.registrarPaciente(pac.getId(), pac.getNombre());
+    }
+    
+    public void cambiarEstadoMedico(String id, String estado){
+        genDB.modificarEstadoMedico(id, estado);
+    }
+
+        
 }

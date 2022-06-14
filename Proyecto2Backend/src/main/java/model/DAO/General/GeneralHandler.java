@@ -65,16 +65,16 @@ public class GeneralHandler {
             executor = new SQLExecutor(usernameBD, passwordBD);
             rs = executor.ejecutaQuery(sql1);
             while (rs.next()) {
-                usuario.setEspecialidad(rs.getString("especialidad"));
+                usuario.setEspecialidad(this.retornaEspecialidadPorCodigo(rs.getString("especialidad")).getNombre());
                 if (rs.getString("costo") != null) {
                     usuario.setFee(Float.parseFloat(rs.getString("costo")));
                 } else {
                     usuario.setFee(0);
                 }
-                usuario.setLocalidad(rs.getString("ciudad"));
+                usuario.setLocalidad(this.retornaCiudadPorCodigo(rs.getString("ciudad")).getNombre());
                 usuario.setClinica(rs.getString("clinica"));
                 usuario.setEstado(rs.getString("estado"));
-                usuario.setPresentacion(rs.getString("estado"));
+                usuario.setPresentacion(rs.getString("presentacion"));
                 usuario.setPassword("clave");
                 //NECESITA ESTAR EN LA BASE NO?
                 usuario.setFotoPath("");
@@ -336,6 +336,25 @@ public class GeneralHandler {
         }
         return false;
     }
+    
+     //========================================METODOS DE ACTUALIZACION EN LA BASE DE DATOS ======================================
+    
+     public void modificarEstadoMedico(String id, String estado){
+        if(this.verificaUsuarioExiste(id)){
+            try{
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[3];
+                valores[0] = "update medicos set estado = ? where id = ?;";
+                valores[1] = estado;
+                valores[2] = id;
+                executor.prepareStatement(valores);
+            } catch(Exception throwables){
+                throwables.printStackTrace();
+            }
+        }
+    }
 }
+
+
 
 
