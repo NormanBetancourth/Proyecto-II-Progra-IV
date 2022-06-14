@@ -25,9 +25,8 @@ import model.Paciente;
  * @author Dell
  */
 public class GeneralHandler {
-    //final String usernameBD = "sas";
-    //NOORMAN CAMBIA TU PASS A 'sa' berga >:v
-    final String usernameBD = "sa";
+    final String usernameBD = "sass";
+//    final String usernameBD = "sa";
     final String passwordBD = "password";
     SQLExecutor executor;
 

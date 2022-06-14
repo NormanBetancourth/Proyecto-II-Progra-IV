@@ -43,8 +43,11 @@ modalSaveBtn.onclick = () => {
     selectedDays.forEach((element) => {
       mappedDays.push({
         dia: element.parentNode.childNodes[2].childNodes[0].data,
-        entrada: element.parentNode.childNodes[4].childNodes[3].value,
-        salida: element.parentNode.childNodes[4].childNodes[7].value,
+        horaInicio: element.parentNode.childNodes[4].childNodes[3].value,
+        horaFinal: element.parentNode.childNodes[4].childNodes[7].value,
+        codigo:'',
+        idMedico:'',
+        frecuencia:''
       });
     });
     $("#modal-container").modal("hide");
@@ -57,15 +60,13 @@ function addDoctor() {
     let id = document.getElementsByName("id")[0].value;
     let password = document.getElementsByName("password")[0].value;
     let name = document.getElementsByName("name")[0].value;
-    let speciality = document.getElementsByName("speciality")[0].value; //TODO: traer de la base de datos y mostrar a manera de opciones
+    let speciality = document.getElementById("speciality")[0].value;
     let fee = document.getElementsByName("fee")[0].value;
-    let location = document.getElementsByName("location")[0].value; //TODO: traer de la base de datos y mostrar a manera de opciones
+    let location = document.getElementById("location")[0].value; 
     let foto = document.getElementsByName("foto")[0].value;
+    let frecuencia = document.getElementById("frecuencia")[0].value;
   
     var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
-    //TODO: crear el horario y mandarlo al server
-    console.log(doctor);
-    console.log(mappedDays);
     
     (async () => {
       try {
@@ -75,6 +76,12 @@ function addDoctor() {
         if (result === undefined){
             //TODO: mandar horario y medicos
             // window.location.href = "./../inicio/index.html";
+            mappedDays.forEach( element => {
+              element.codigo = '-1';
+              element.idMedico = id;
+              element.frecuencia = frecuencia;
+            })
+            console.log(mappedDays);
             return;
         }
         errorMessage(405, $("#errorDiv"));
@@ -132,8 +139,6 @@ const cargarComobox = async () => {
           return;
         }
         especialidades = await res.json();
-        console.log('especialidades');
-        console.log(especialidades);
 
 
 
@@ -144,8 +149,6 @@ const cargarComobox = async () => {
             return;
         }
         ciudades =  await resCiudades.json();
-        console.log('ciudades');
-        console.log(ciudades);
 
     } catch (error) {
         console.log(error);
@@ -153,15 +156,36 @@ const cargarComobox = async () => {
 }
 
 
-const load2 = () => {
+const load2 = async () => {
     $("form").submit(function (e) {
       e.preventDefault();
     });
 
-    cargarComobox();
+    await cargarComobox();
+    
     LoadSchedule();
+    loadCities();//carga en el html
+    loadSpecialities();//carga en el html
     
 };
+
+function loadSpecialities() {
+  let elementos = '';
+  let speciality = document.getElementById('speciality');
+  especialidades.forEach(element =>{
+    elementos += `<option value="${element.codigo}">${element.nombre}</option>`
+  });
+  speciality.innerHTML = elementos;
+}
+
+function loadCities() {
+  let elementos = '';
+  let location = document.getElementById('location');
+  ciudades.forEach(element =>{
+    elementos += `<option value="${element.codigo}" >${element.nombre}, ${element.provincia}</option>`
+  });
+  location.innerHTML = elementos;
+}
 
 function LoadSchedule() {
     let elementos = "";
