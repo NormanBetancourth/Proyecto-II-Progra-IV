@@ -9,14 +9,14 @@ package model;
  * @author norma
  */
 public class Medico extends Usuario {
-    String password;
-    String especialidad;//TODO
-    float fee; 
-    String localidad;//TODO
-    String clinica;//TODO
-    String fotoPath;
-    String presentacion;//TODO
-    String estado;//TODO
+    String password;     //editable
+    String especialidad; //editable
+    float fee;           //editable
+    String localidad;    //editable
+    String clinica;      //editable
+    String fotoPath;     //editable
+    String presentacion; //editable
+    String estado;
     
     public Medico(Usuario user){
         super.setNombre(user.getNombre());
