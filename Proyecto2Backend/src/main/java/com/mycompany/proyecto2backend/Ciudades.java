@@ -27,7 +27,7 @@ public class Ciudades {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Ciudad> read() {
         try {
-            return Service.instance().retornarListaEspecialidades();
+            return Service.instance().retornarListaCiudades();
         } catch (Exception ex) {
             throw new NotFoundException();
         }
@@ -39,7 +39,7 @@ public class Ciudades {
     @Produces({MediaType.APPLICATION_JSON})
     public Ciudad read(@PathParam("codigo") String codigo) {
         try {
-            return Service.instance().retornarEspecialidad(codigo);
+            return Service.instance().retornarCiudad(codigo);
         } catch (Exception ex) {
             throw new NotFoundException();
         }
