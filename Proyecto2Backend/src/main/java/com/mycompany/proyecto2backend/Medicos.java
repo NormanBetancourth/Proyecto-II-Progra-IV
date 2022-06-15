@@ -28,44 +28,46 @@ import model.Horario;
 import model.ModelMedicosRest;
 import model.serviceBackend.Service;
 
-/**
- *
- */
-
-
-//password,especialidad, fee, localidad, clinica, fotoPath, presentacion, estado, nombre,id, tipo
+//password,especialidad, fee, localidad, clinica, fotoPath, presentacion, estado, nombre,id
 
 
 @Path("/medicos")
 public class Medicos {
-     //ModelMedicosRest model = new ModelMedicosRest();
      
-     @Context
-     HttpServletRequest request;
-     
+    @Context
+    HttpServletRequest request;
+    
+    //Obtener la lista de medicos
     @GET
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
     public List<Medico> read(){
-        return Service.instance().retornarListaMedicos();
+        try {
+           return Service.instance().retornarListaMedicos();
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
     }
     
     
     
-    //GET/ID
+    //Obtener un medico
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Medico read(@PathParam("id") String id){
-       return Service.instance().retornarMedicoPorID(id);
+        try {
+           return Service.instance().retornarMedicoPorID(id);
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
     }
     
     
-    //Actualiza la informacion de todo el medico
-   //backend+'/medicos/'+medico.cedula/+'/'+estado,  {method: 'PUT', headers: { 'Content-Type': 'application/json'},  body: JSON.stringify(persona)});
+    //Actualizar el estado de un medico
     @PUT
     @Path("{id}/{estado}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void update(@PathParam("id") String id, @PathParam("estado") String estado) {  
+    public void updateEstadoMedico(@PathParam("id") String id, @PathParam("estado") String estado) {  
         try {
         Service.instance().cambiarEstadoMedico(id, estado);
         } catch (Exception ex) {
@@ -73,12 +75,25 @@ public class Medicos {
         }
     }
     
-    //DELETE/ID
+    //Actualizar la informacion de un medico
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateMedico(@PathParam("id") String id, Medico m) {  
+        try {
+        Service.instance().modificarMedico(id, m);
+        } catch (Exception ex) {
+            throw new NotFoundException(); 
+        }
+    }
+    
+    
+    //Borrar un medico
     @DELETE
     @Path("{id}")
     public void delete(@PathParam("id") String id){
        try {
-            
+            Service.instance().borrarMedico(id);
         } catch (Exception e) {
             throw new NotFoundException();
         }

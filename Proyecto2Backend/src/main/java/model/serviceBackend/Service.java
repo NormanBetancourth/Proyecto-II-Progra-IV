@@ -9,6 +9,7 @@ import java.util.List;
 import model.Antecedente;
 import model.Ciudad;
 import model.DAO.General.GeneralHandler;
+import model.Especialidad;
 import model.Horario;
 import model.Medico;
 import model.Paciente;
@@ -41,12 +42,19 @@ public class Service {
     }
     
      public void registrarMedico(Medico med){
-        //falta validacion de ser necesaria que el codigo de especialidad y ciudad se pasen a string respectivamente
         genDB.registrarMedico(med.getNombre(), med.getId(), med.getPassword(), "4", (med.getFee()+""), "1000", med.getClinica(), med.getPresentacion());
     }
      
+     public void borrarMedico(String id){
+         genDB.borrarMedico(id);
+     }
+     
     public void cambiarEstadoMedico(String id, String estado) {
         genDB.modificarEstadoMedico(id, estado);
+    }
+    
+    public void modificarMedico(String id, Medico m){
+        genDB.modificarDatosMedico(id, m.getEspecialidad(), (m.getFee()+""), m.getLocalidad(), m.getClinica(), "fotoPath", m.getPresentacion(), m.getPassword());
     }
      
     public List<Medico> retornarListaMedicos() {
@@ -84,10 +92,27 @@ public class Service {
        genDB.borrarHorario(codigo);
     }
     
-    //===========Metodos de servicio para los Horarios========
+    //===========Metodos de servicio para los Usuarios========
     public Usuario retornarUsuarioID(String id){
         return genDB.retornaUserPorId(id);
     }
-   
-        
+    
+    //===========Metodos de servicio para las Especialidades========
+    public Especialidad retornarEspecialidad(String codigo){
+        return genDB.retornaEspecialidadPorCodigo(codigo);
+    }
+    
+    public List<Especialidad> retornarListaEspecialidades(){
+        return genDB.listarEspecialidades();
+    }
+    
+    //===========Metodos de servicio para las Ciudades========
+    public Ciudad retornarCiudad(String codigo) {
+        return genDB.retornaCiudadPorCodigo(codigo);
+    }
+
+    public List<Ciudad> retornarListaCiudades() {
+        return genDB.listarCiudades();
+    }
+
 }

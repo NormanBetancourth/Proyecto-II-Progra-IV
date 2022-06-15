@@ -13,6 +13,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import model.Ciudad;
+import model.Especialidad;
+import model.serviceBackend.Service;
 
 /**
  *
@@ -21,37 +23,26 @@ import model.Ciudad;
 @Path("/ciudades")
 public class Ciudades {
     
-    ArrayList<Ciudad> ciudades = new ArrayList();
-    void cargarDatos(){
-        ciudades.add(new Ciudad("1", "San Jose", "San Jose"));
-        ciudades.add(new Ciudad("2", "San Pedro", "San Jose"));
-        ciudades.add(new Ciudad("3", "San Barva", "Heredia"));
-    }
-    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Ciudad> read(){
-        cargarDatos();
-        return ciudades;
+    public List<Ciudad> read() {
+        try {
+            return Service.instance().retornarListaEspecialidades();
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
     }
-    
-    
+
+    //Obtener una especialidad  "backend/especialidades/codigoEspecialidad"
     @GET
     @Path("{codigo}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Ciudad read(@PathParam("codigo") String id) {
-        cargarDatos();
+    public Ciudad read(@PathParam("codigo") String codigo) {
         try {
-            for (Ciudad city : ciudades) {
-                if (city.getCodigo().equals(id)) {
-                    return city;
-                }
-            }
-        } catch (Exception e) {
+            return Service.instance().retornarEspecialidad(codigo);
+        } catch (Exception ex) {
             throw new NotFoundException();
         }
-
-        return null;
     }
     
 }
