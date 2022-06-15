@@ -4,7 +4,7 @@ var backend = "http://localhost:8080/Proyecto2Backend/api";
 const NET_ERR = 999;
 var arrMedicos2 = new Array();
 var user = { id: "", pwd: "" };
-
+var error = "";
 const loadUser = () => {
   user.pwd = document.querySelector("#pwd-usr").value;
   user.id = document.querySelector("#id-usr").value;

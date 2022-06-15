@@ -25,8 +25,8 @@ import model.Paciente;
  * @author Dell
  */
 public class GeneralHandler {
-    final String usernameBD = "sass";
-//    final String usernameBD = "sa";
+    //final String usernameBD = "sass";
+    final String usernameBD = "sa";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -202,6 +202,46 @@ public class GeneralHandler {
                     id = rs.getString("id");
                     medico = this.retornaMedicoPorId(id);
                     lista.add(medico);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
+    
+    //METODO QUE ME RETORNA TODA LA LISTA DE ESPECIALIDADES
+    public List<Especialidad> listarEspecialidades() {
+        List<Especialidad> lista = new ArrayList<>();
+        Especialidad esp = null;
+        String sql = "select * from especialidades;";
+        String codigo;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                codigo = rs.getString("codigo");
+                esp = this.retornaEspecialidadPorCodigo(codigo);
+                lista.add(esp);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
+    
+    //METODO QUE ME RETORNA TODA LA LISTA DE ESPECIALIDADES
+    public List<Ciudad> listarCiudades() {
+        List<Ciudad> lista = new ArrayList<>();
+        Ciudad esp = null;
+        String sql = "select * from ciudades;";
+        String codigo;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                codigo = rs.getString("codigo");
+                esp = this.retornaCiudadPorCodigo(codigo);
+                lista.add(esp);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -455,21 +495,22 @@ public class GeneralHandler {
         }
     }
      
-     //MODIFICAR INFORMACION DE MEDICO
-     public boolean modificarDatosMedico(String id, String especialidad, String costo, String ciudad, String clinica, String fotoPath, String presentacion) {
+     //MODIFICAR INFORMACION DE MEDICO gen.modificarDatosMedico("101", "2", "10000", , "1001", "Athenas", "", "clave101","");
+     public boolean modificarDatosMedico(String id, String especialidad, String costo, String ciudad, String clinica, String fotoPath, String presentacion, String clave) {
         boolean respuesta = false;
         if (this.verificaUsuarioExiste(id)) {
-            // El id no se puede cambiar
-            // tampoco su estado
+            // El id y su estado no puede cambiar
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
-                String valores[] = new String[6];
-                valores[0] = "update medicos set especialidad = ?, costo = ?, ciudad = ?, clinica = ? where id = ?;";
+                String valores[] = new String[8];
+                valores[0] = "update medicos set especialidad = ?, costo = ?, ciudad = ?, clinica = ?, clave = ?, presentacion = ? where id = ?;";
                 valores[1] = especialidad;
                 valores[2] = costo;
                 valores[3] = ciudad;
                 valores[4] = clinica;
-                valores[5] = id;
+                valores[5] = clave;
+                valores[6] = presentacion;
+                valores[7] = id;
                 executor.prepareStatement(valores);
                 respuesta = true;
 

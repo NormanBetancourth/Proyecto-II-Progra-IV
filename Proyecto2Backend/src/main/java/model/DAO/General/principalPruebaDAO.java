@@ -71,7 +71,16 @@ public class principalPruebaDAO {
         List<Horario> listHorariosMed = gen.listaHorariosPorMedico("101");
         System.out.println(listHorariosMed.toString());
         
+        //===prueba de retornar lista de horarios de un medico[exitosa]===
+        List<Especialidad> listEspecialidades = gen.listarEspecialidades();
+        System.out.println(listEspecialidades.toString());
+        
+        //===prueba de retornar lista de horarios de un medico[exitosa]===
+        List<Ciudad> listCiudades = gen.listarCiudades();
+        System.out.println(listCiudades.toString());
+        
         //=============METODOS DE VERIFICACION EN LA BD====================//
+        
         //===prueba de existencia de un usuario[exitosa]===
          String existe = gen.verificaUsuarioExiste("918")? "Existe": "No Existe";
          System.out.println(existe);
@@ -94,9 +103,13 @@ public class principalPruebaDAO {
           System.out.println(borrado);
           
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
+          
+           //===prueba de modificar estado de medico DB [exitosa] ===
           gen.modificarEstadoMedico("101", "Aprobado");
           
-          
+           //===prueba de modificarmedico DB [exitosa] ===
+           borrado = gen.modificarDatosMedico("101", "2", "10000","1001", "Athenas", "","presentacion101", "clave101")? "Se actualizo el medico": "No se actualizo el medico";
+           System.out.println( borrado);
           
           List<Medico> medicos = Service.instance().retornarListaMedicos();
           System.out.println("MEDICOS: "+ medicos.toString());
