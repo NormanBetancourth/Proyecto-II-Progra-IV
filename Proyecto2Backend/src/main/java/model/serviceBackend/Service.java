@@ -71,6 +71,10 @@ public class Service {
         return genDB.listarPacientes();
     }
     
+//    public List<Paciente> retornarListaPacientes(String id){
+//        return genDB.listarPacientes(id);
+//    }
+    
     public List<Antecedente> retornarListaAntecedentesPorID(String id){
         return genDB.listaAntecedentesPorId(id);
     }

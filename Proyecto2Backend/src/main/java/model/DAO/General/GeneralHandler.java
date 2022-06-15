@@ -249,6 +249,26 @@ public class GeneralHandler {
         return lista;
     }
     
+//    public List<Paciente> listarPacientes(String idMed) {
+//        List<Paciente> lista = new ArrayList<>();
+//        Paciente paciente = null;
+//        String sql = "select * from pacientes where ;";
+//        String id;
+//        try {
+//            executor = new SQLExecutor(usernameBD, passwordBD);
+//            ResultSet rs = executor.ejecutaQuery(sql);
+//            while (rs.next()) {
+//                id = rs.getString("id");
+//                paciente = this.retornaPacientePorId(id);
+////                    paciente.setAntecedente(this.listaAntecedentesPorId(id));
+//                lista.add(paciente);
+//            }
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//        return lista;
+//    }
+    
     //METODO QUE ME RETORNA TODA LA LISTA DE PACIENTES
     public List<Paciente> listarPacientes() {
         List<Paciente> lista = new ArrayList<>();
@@ -520,6 +540,8 @@ public class GeneralHandler {
         }
         return respuesta;
     }
+
+    
 }
 
 
