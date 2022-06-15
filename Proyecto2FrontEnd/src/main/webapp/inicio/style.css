@@ -67,9 +67,8 @@ button {
     scroll-behavior: smooth;
 }
 
-/* custom scrollbar */
 ::-webkit-scrollbar {
-    width: 15px;
+    width: 15px; 
 }
   
 ::-webkit-scrollbar-track {
@@ -116,7 +115,7 @@ button {
 #weekly-container {
     align-items: center;
     align-content: center;
-    
+    width: 500px;
 }
 
 .grid-container {
