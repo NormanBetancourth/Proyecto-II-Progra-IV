@@ -14,7 +14,7 @@ import java.util.List;
 public class Paciente extends Usuario {
     String fotoPath;
     String telefono;
-//    List<Antecedente> antecedentes;
+    String idMed;
     //contactos de emergencia
 
      public Paciente(Usuario user){
@@ -23,17 +23,20 @@ public class Paciente extends Usuario {
         super.setTipo(user.getTipo());
     }
      
-    public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono) {
+    public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono, String idMed) {
         super(nombre, id, tipo);
         this.fotoPath = fotoPath;
         this.telefono = telefono;
-//        this.antecedentes = null;
+        this.idMed = idMed;
     }
 
     public Paciente() {
+        this.fotoPath="";
+        this.id="";
+        this.idMed="";
+        this.telefono="";
+        this.tipo = "";
     }
-
-
 
     public String getFotoPath() {
         return fotoPath;
@@ -53,43 +56,46 @@ public class Paciente extends Usuario {
         this.telefono = telefono;
     }
 
-
-
-    @Override
-    public String toString() {
-        return super.toString() +"Paciente{"  + ", fotoPath=" + fotoPath + ", telefono=" + telefono+"}";        
+    public String getIdMed() {
+        return idMed;
     }
 
+    public void setIdMed(String idMed) {
+        this.idMed = idMed;
+    }
+    
+    @Override
     public String getNombre() {
         return nombre;
     }
-
+    
+    @Override
     public String getId() {
         return id;
     }
-
+    
+    @Override
     public String getTipo() {
         return tipo;
     }
-
+    
+    @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    @Override
     public void setId(String id) {
         this.id = id;
     }
-
+    
+    @Override
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
-//    public List<Antecedente> getAntecedente() {
-//        return antecedentes;
-//    }
-//
-//    public void setAntecedente(List<Antecedente> antecedente) {
-//        this.antecedentes = antecedente;
-//    }
-   
+    @Override
+    public String toString() {
+        return "Paciente{" +"id="+id+" nombre= "+nombre+ "fotoPath=" + fotoPath + ", telefono=" + telefono + ", idMed=" + idMed +'}';
+    }
+    
 }

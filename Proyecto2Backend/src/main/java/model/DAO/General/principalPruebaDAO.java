@@ -28,7 +28,7 @@ public class principalPruebaDAO {
         gen.registrarMedico("Mauriciooo", "120", "password", "4", "100000", "1000", "clinica", "presentacion");
 
         //===prueba de registrar un paciente [exitosa]===
-        gen.registrarPaciente("130", "nombre paciente");
+        gen.registrarPaciente("130", "nombre paciente", "60901876", "101");
 
         //===prueba de registrar un horario [NULL]===
         gen.registrarHorario("101", "5010", "Lunes", "13:00:00",  "16:00:00", "00:30");
@@ -63,9 +63,13 @@ public class principalPruebaDAO {
          List<Medico> listMed = gen.listarMedicos();
          System.out.println(listMed.toString());
          
-        //===prueba de retornar lista de pacientes[exitosa]]===
+        //===prueba de retornar TODA lista de pacientes[exitosa]]===
         List<Paciente> listPac = gen.listarPacientes();
         System.out.println(listPac.toString());
+        
+        //===prueba de retornar lista de pacientes de cada medico[exitosa]]===
+        List<Paciente> listPacMedico = gen.listarPacientesPorIdMed("101");
+        System.out.println(listPacMedico.toString());
         
         //===prueba de retornar lista de horarios de un medico[exitosa]===
         List<Horario> listHorariosMed = gen.listaHorariosPorMedico("101");
@@ -105,13 +109,15 @@ public class principalPruebaDAO {
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
           
            //===prueba de modificar estado de medico DB [exitosa] ===
-          gen.modificarEstadoMedico("101", "Aprobado");
-          
+           gen.modificarEstadoMedico("101", "Aprobado");
+           
+           //===prueba de modificar datos de paciente DB [exitosa] ===
+           gen.modificarDatosPaciente("103", "8888888", "Fulano");
+           
            //===prueba de modificarmedico DB [exitosa] ===
            borrado = gen.modificarDatosMedico("101", "2", "10000","1001", "Athenas", "","presentacion101", "clave101")? "Se actualizo el medico": "No se actualizo el medico";
            System.out.println( borrado);
           
-          List<Medico> medicos = Service.instance().retornarListaMedicos();
-          System.out.println("MEDICOS: "+ medicos.toString());
+    
     }
 }
