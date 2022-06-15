@@ -10,6 +10,7 @@ const loadUser = () => {
   user.id = document.querySelector("#id-usr").value;
 };
 
+
 function login() {
   (async () => {
     try {
@@ -24,7 +25,7 @@ function login() {
         return;
       } else {
         if(result.password === user.pwd) {
-          localStorage.setItem("user", JSON.stringify(result));
+          const userSession = await saveUserLoged(result.id);
           window.location.href = "./inicio/index.html";
           return;
         }else{
@@ -40,6 +41,28 @@ function login() {
   })();
 }
 
+
+const saveUserLoged = async (id) =>{
+
+  try {
+    const req = new Request(backend+ '/session/login/'+id, {
+      method: 'POST',
+      headers: {}
+    });
+
+
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al guardad user de session");
+      return;
+    }
+    var result = await res.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+
+};
 
 function fetchAndList() {
     const request = new Request(backend + '/medicos', {method: 'GET', headers: {}});
@@ -116,7 +139,6 @@ const load = () => {
 };
 
 const singIn = () => {
-    localStorage.setItem('user', null);
     window.location.href = "./sing-in/index.html";
 };
 
