@@ -35,28 +35,39 @@ import model.serviceBackend.Service;
 //password,especialidad, fee, localidad, clinica, fotoPath, presentacion, estado, nombre,id, tipo
 
 
-@Path("/login")
+@Path("/session")
 public class Login {
     @Context
      HttpServletRequest request;
     
     @POST
-    @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
-    public Usuario login(Usuario usuario){
-        //se verifica que exista el usuario
-        //Se verifica la clave
-        //Se guarda en la sesion
-        //Se guarda el usuario
-        return new Usuario();
+    @Path("login/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Medico login(@PathParam("id") String id ){
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", Service.instance().retornarMedicoPorID(id));
+        Medico m = (Medico) session.getAttribute("user");
+        return m;
     }
     
-    @DELETE
+    @GET
+    @Path("current")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Medico getUser() {
+        HttpSession session = request.getSession(true);
+        Medico m = (Medico) session.getAttribute("user");
+        return m;
+    }
+    
+    
+    @POST
+    @Path("logout")
     public void logout(){
-//        HttpSession session = request.getSession(true);
-//        //remuevo el usuario de la sesion
-//        session.removeAttribute("atribute");
-//        //Se invalida la sesion
-//        session.invalidate();
+        HttpSession session = request.getSession(true);
+        //remuevo el usuario de la sesion
+        session.removeAttribute("user");
+        //Se invalida la sesion
+        session.invalidate();
     }
     
 }
