@@ -64,24 +64,33 @@ public class Service {
     //===========Metodos de servicio para el Paciente========
     
     public void registrarPaciente(Paciente pac) {
-        genDB.registrarPaciente(pac.getId(), pac.getNombre());
+        genDB.registrarPaciente(pac.getId(), pac.getNombre(), pac.getTelefono(), pac.getIdMed());
+    }
+    
+    public Paciente retornarPaciente(String idPac){
+        return genDB.retornaPacientePorId(idPac);
+    }
+    
+    public void borrarPacientePorId(String id) {
+        genDB.borrarPaciente(id);
+    }
+    
+    public void modificarPaciente(Paciente pac){
+        genDB.modificarDatosPaciente(pac.getId(), pac.getTelefono(), pac.getNombre());
     }
     
     public List<Paciente> retornarListaPacientes(){
         return genDB.listarPacientes();
     }
     
-//    public List<Paciente> retornarListaPacientes(String id){
-//        return genDB.listarPacientes(id);
-//    }
+    public List<Paciente> retornarListaPacientesIdMed(String idMed){
+        return genDB.listarPacientesPorIdMed(idMed);
+    }
     
     public List<Antecedente> retornarListaAntecedentesPorID(String id){
         return genDB.listaAntecedentesPorId(id);
     }
-    
-    public void borrarPacientePorId(String id){
-        genDB.borrarPaciente(id);
-    }
+   
     
     //===========Metodos de servicio para los Horarios========
     public void registrarHorario(Horario hor){

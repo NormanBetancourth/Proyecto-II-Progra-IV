@@ -37,6 +37,18 @@ public class Medicos {
     @Context
     HttpServletRequest request;
     
+    
+    //Registrar un medico en la BD
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void create(Medico m) {
+        try {
+            Service.instance().registrarMedico(m); //la clase de servicio invoca al metodo que creara una persona
+        } catch (Exception ex) {
+            throw new NotAcceptableException();
+        }
+    }
+    
     //Obtener la lista de medicos
     @GET
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
@@ -47,9 +59,7 @@ public class Medicos {
             throw new NotFoundException();
         }
     }
-    
-    
-    
+
     //Obtener un medico
     @GET
     @Path("{id}")

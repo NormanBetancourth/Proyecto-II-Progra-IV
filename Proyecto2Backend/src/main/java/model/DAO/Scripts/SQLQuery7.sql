@@ -13,8 +13,8 @@ drop table citas;
 drop table contactos;
 drop table horarios;
 drop table antecedentes;
-drop table medicos;
 drop table pacientes;
+drop table medicos;
 drop table administradores;
 drop table usuarios;
 drop table ciudades;
@@ -63,7 +63,7 @@ create sequence sec_contactos
 create table usuarios(id int not null, nombre varchar(20) not null, tipo varchar(10) not null);
 create table administradores(id int not null, clave varchar(20) not null);
 create table medicos(id int not null, clave varchar(20) not null, especialidad int null, costo decimal(11,4) null, ciudad int  null, clinica varchar(20) null, estado varchar(20) not null, presentacion text null);
-create table pacientes(id int not null, telefono varchar(10));
+create table pacientes(id int not null, telefono varchar(10), idMed int not null);
 create table horarios(codigo int not null, id_medico int not null, dia varchar(30) not null, hora_inicio time  not null, hora_final time not null, frecuencia varchar(10) not null); 
 create table ciudades(codigo int not null, nombre varchar(20) not null, provincia varchar(20) not null);
 create table especialidades(codigo int not null, nombre varchar(20) not null, descripcion text null); 
@@ -100,6 +100,9 @@ alter table medicos
 alter table pacientes
 	add constraint pacientes_fk foreign key(id) 
 		references usuarios(id) on delete cascade;
+alter table pacientes
+	add constraint pacientes_med_fk foreign key(idMed) 
+		references medicos(id);
 alter table horarios
 	add constraint horarios_medico_fk foreign key(id_medico) 
 		references medicos(id) on delete cascade;
@@ -115,7 +118,6 @@ alter table contactos
 alter table antecedentes
 	add constraint antecedentes_paciente_fk foreign key(id_paciente) 
 		references pacientes(id) on delete cascade;
-
 -- CK
 alter table usuarios 
 	add constraint usuarios_ck1 Check (tipo in ('Admin','Medico','Paciente'));
@@ -161,6 +163,8 @@ insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Jua
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Nicolas Suarez', 'Medico');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Joseph Romero', 'Paciente');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Maria Vargas', 'Paciente');
+insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Jose Rojas', 'Paciente');
+insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Marta Mendez', 'Paciente');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Felicia Ramirez', 'Medico');
 insert into usuarios(id, nombre, tipo) values (110, 'Maria Carmona', 'Medico');
 insert into usuarios(id, nombre, tipo) values (111, 'Carlos Felicio', 'Medico');
@@ -183,8 +187,10 @@ insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia
 insert into administradores(id, clave) values (100, 'password100');
 
 -- Pacientes
-insert into pacientes(id, telefono) values (103, '84201936');
-insert into pacientes(id, telefono) values (104, '89129210');
+insert into pacientes(id, telefono, idMed) values (103, '84201936', 101);
+insert into pacientes(id, telefono, idMed) values (104, '89129210', 102);
+insert into pacientes(id, telefono, idMed) values (105, '71201936', 101);
+insert into pacientes(id, telefono, idMed) values (106, '69129870', 102);
 
 -- Antecedentes
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Alergia', 'El medicamento zulfa le causa fiebre y zarpullido');
@@ -210,9 +216,9 @@ values (next value for sec_citas,102, 104, '2022-04-11 20:30:00', 'Finalizado', 
 
 select * from usuarios;
 select * from administradores;
+select * from citas;
 select * from pacientes;
 select * from medicos;
-select * from citas;
 select * from ciudades;
 select * from horarios;
 select * from especialidades;
