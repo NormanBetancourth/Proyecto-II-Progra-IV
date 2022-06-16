@@ -64,7 +64,7 @@ create table usuarios(id int not null, nombre varchar(20) not null, tipo varchar
 create table administradores(id int not null, clave varchar(20) not null);
 create table medicos(id int not null, clave varchar(20) not null, especialidad int null, costo decimal(11,4) null, ciudad int  null, clinica varchar(20) null, estado varchar(20) not null, presentacion text null);
 create table pacientes(id int not null, telefono varchar(10), idMed int not null);
-create table horarios(codigo int not null, id_medico int not null, dia varchar(30) not null, hora_inicio time  not null, hora_final time not null, frecuencia varchar(10) not null); 
+create table horarios(estado varchar(30) not null, id_medico int not null, dia varchar(30) not null, hora_inicio time  not null, hora_final time not null, frecuencia varchar(10) not null); 
 create table ciudades(codigo int not null, nombre varchar(20) not null, provincia varchar(20) not null);
 create table especialidades(codigo int not null, nombre varchar(20) not null, descripcion text null); 
 create table citas(codigo int not null, id_medico int not null, id_paciente int not null, fecha_hora smalldatetime not null, estado varchar(20) not null, signos text not null, motivo text not null, diagnostico text not null, prescripcion text not null, medicamentos text not null);
@@ -82,7 +82,6 @@ alter table ciudades add constraint ciudades_pk primary key(codigo);
 alter table citas add constraint medicos_citas_pk primary key(codigo);
 alter table antecedentes add constraint antecedentes_pk primary key(codigo);
 alter table contactos add constraint contactos_pk primary key(numero);
-alter table horarios add constraint horarios_pk primary key(codigo);
 
 -- FK
 alter table administradores
@@ -133,6 +132,8 @@ alter table antecedentes
 	add constraint antecedentes_ck1 Check (tipo in ('Enfermedad','Alergia', 'Cirugia', 'Padecimiento', 'Otro'));
 alter table horarios 
 	add constraint horarios_ck12 Check (dia in ('Lunes','Martes', 'Miercoles', 'Jueves', 'Viernes'));
+alter table horarios 
+	add constraint horarios_ck13 Check (estado in ('activo','inactivo'));
 
 -- UK
 alter table usuarios add constraint usuarios_nombre_uk unique (nombre);
@@ -177,11 +178,35 @@ insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, pre
 insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (111, 'password1021', 4, 150000, 1002, 'Pacific-Heredia', 'Espera', 'Amante de nuevos retos');
 
 -- Horarios
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 101, 'Lunes', '16:00:00', '20:00:00','00:30');
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 101, 'Martes', '13:00:00', '17:00:00','01:00');
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 102, 'Lunes', '08:00:00', '11:00:00','00:30');
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 102, 'Viernes', '18:00:00', '21:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 101, 'Lunes', '16:00:00', '20:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 101, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 101, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 101, 'Jueves', '8:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 101, 'Viernes', '19:00:00', '22:00:00','00:30');
 
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 102, 'Lunes', '16:00:00', '20:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 102, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 102, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 102, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 102, 'Viernes', '19:00:00', '22:00:00','00:30');
+
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 105, 'Lunes', '16:00:00', '20:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 105, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 105, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 105, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 105, 'Viernes', '19:00:00', '22:00:00','00:30');
+
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 110, 'Lunes', '13:00:00', '15:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 110, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 110, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 110, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 110, 'Viernes', '13:00:00', '15:00:00','00:30');
+
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 111, 'Lunes', '10:00:00', '13:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 111, 'Martes', '07:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 111, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 111, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 111, 'Viernes', '19:00:00', '22:00:00','00:30');
 
 -- Admins
 insert into administradores(id, clave) values (100, 'password100');

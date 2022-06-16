@@ -93,16 +93,18 @@ public class Service {
    
     
     //===========Metodos de servicio para los Horarios========
-    public void registrarHorario(Horario hor){
-        genDB.registrarHorario(hor.getIdMedico(), hor.getCodigo(), hor.getDia(), hor.getHoraInicio(), hor.getHoraFinal(), hor.getFrecuencia());
+    public Horario retornaHorarioMedico(String dia, String idMed){
+        return genDB.retornaHorarioPorIdMedYDia(dia, idMed);
     }
     
-    public Horario retornaHorarioPorCodigo(String codigo){
-        return genDB.retornaHorarioPorCodigo(codigo);
+    //modifica el estado de uno de los horarios del medico 
+    //(indicar el dia que se quiere modificar, a cual medico y cual estado colocarle a ese horario ('activo' o 'inactivo') )
+    public void modificarEstadoHorario(String idMed, String dia, String estado){
+        genDB.modificarEstadoHorario(idMed, dia, estado);
     }
     
-    public void borrarHorarioPorCodigo(String codigo){
-       genDB.borrarHorario(codigo);
+    public List<Horario> retornarHorariosActivos(String idMed){
+        return genDB.retornaHorariosActivosMed(idMed);
     }
     
     //===========Metodos de servicio para los Usuarios========

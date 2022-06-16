@@ -10,14 +10,14 @@ package model;
  */
 public class Horario {
     String idMedico;
-    String codigo;
+    String estado;
     String dia;
     String frecuencia;
     String horaInicio;
     String horaFinal;
 
-    public Horario(String codigo, String idMedico, String dia, String horaInicio, String horaFinal, String frecuencia) {
-        this.codigo = codigo;
+    public Horario(String estado, String idMedico, String dia, String horaInicio, String horaFinal, String frecuencia) {
+        this.estado = estado;
         this.idMedico = idMedico;
         this.dia = dia;
         this.horaInicio = horaInicio;
@@ -26,15 +26,15 @@ public class Horario {
     }
      public Horario() {
         this.idMedico = "";
-        this.codigo = "";
+        this.estado = "";
         this.dia = "";
         this.frecuencia = "";
         this.horaInicio = "";
         this.horaFinal = "";
     }
 
-    public String getCodigo() {
-        return codigo;
+    public String getEstado() {
+        return estado;
     }
 
     public String getIdMedico() {
@@ -57,8 +57,8 @@ public class Horario {
         return frecuencia;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public void setIdMedico(String idMedico) {
@@ -83,6 +83,6 @@ public class Horario {
 
     @Override
     public String toString() {
-        return "Horario{" + "codigo=" + codigo + ", idMedico=" + idMedico + ", dia=" + dia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + ", frecuencia=" + frecuencia + '}';
+        return "Horario{" + "Estado=" + estado + ", idMedico=" + idMedico + ", dia=" + dia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + ", frecuencia=" + frecuencia + '}';
     }
 }

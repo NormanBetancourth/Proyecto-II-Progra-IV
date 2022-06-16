@@ -146,27 +146,56 @@ public class GeneralHandler {
         return ciudad;
     }
     
-        //METODO QUE ME RETORNA UN HORARIO SEGUN SU CODIGO
-    public Horario retornaHorarioPorCodigo(String codigo) {
+        //METODO QUE ME RETORNA UN HORARIO SEGUN SU DIA Y ID_MEDICO
+    public Horario retornaHorarioPorIdMedYDia(String dia, String idMed) {
         Horario horario = new Horario();
-        String sql = "select * from horarios where codigo = " + codigo + ";";
+        String sql = "select * from horarios where id_medico = "+idMed+";";
+        ResultSet rs;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                if(rs.getString("dia").equals(dia)){
+                horario.setEstado(rs.getString("estado"));
+                horario.setDia(rs.getString("dia"));
+                horario.setFrecuencia(rs.getString("frecuencia")); //00:30 o 01:00 -> asi se maneja
+                horario.setHoraInicio(rs.getString("hora_inicio"));
+                horario.setHoraFinal(rs.getString("hora_final"));
+                horario.setIdMedico(rs.getString("id_medico"));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return horario;
+    }
+    
+    //METODO QUE ME RETORNA LA LISTA DE HORARIOS ACTIVOS DE UN MEDICO
+    public List<Horario> retornaHorariosActivosMed(String idMed) {
+        Horario horario =null;
+        List<Horario> lista = new ArrayList<>();
+        String sql = "select * from horarios where id_medico = " + idMed + ";";
         ResultSet rs;
 
         try {
             executor = new SQLExecutor(usernameBD, passwordBD);
             rs = executor.ejecutaQuery(sql);
             while (rs.next()) {
-                horario.setCodigo(codigo);
+                if(rs.getString("estado").equals("activo")){
+                horario = new Horario();
+                horario.setEstado(rs.getString("estado"));
                 horario.setDia(rs.getString("dia"));
                 horario.setFrecuencia(rs.getString("frecuencia")); //00:30 o 01:00 -> asi se maneja
                 horario.setHoraInicio(rs.getString("hora_inicio"));
                 horario.setHoraFinal(rs.getString("hora_final"));
                 horario.setIdMedico(rs.getString("id_medico"));
+                lista.add(horario);
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return horario;
+        return lista;
     }
     
     //METODO QUE ME RETORNA UNA LISTA DE ANTECEDENTES SEGUN EL CODIGO DEL PACIENTE
@@ -290,7 +319,7 @@ public class GeneralHandler {
     }
     
 
-    //METODO QUE ME RETORNA UNA LISTA DE HORARIOS SEGUN EL ID DEL MEDICO
+    //METODO QUE ME RETORNA UNA LISTA DE TODOS LOS HORARIOS SEGUN EL ID DEL MEDICO
     public List<Horario> listaHorariosPorMedico(String idMed) {
         List<Horario> lista = new ArrayList<>();
         String sql = "select * from horarios where id_medico = "+idMed+";";
@@ -298,8 +327,8 @@ public class GeneralHandler {
             executor = new SQLExecutor(usernameBD, passwordBD);
             ResultSet rs = executor.ejecutaQuery(sql);
             while (rs.next()) {
-               Horario horario = new Horario();
-                horario.setCodigo(rs.getString("codigo"));
+                Horario horario = new Horario();
+                horario.setEstado(rs.getString("estado"));
                 horario.setDia(rs.getString("dia"));
                 horario.setFrecuencia(rs.getString("frecuencia")); //00:30 o 01:00 -> asi se maneja
                 horario.setHoraInicio(rs.getString("hora_inicio"));
@@ -351,6 +380,7 @@ public class GeneralHandler {
             valores1[7] = presentacion;
             valores1[8] = clave;
             executor.prepareStatement(valores1);
+            this.RegistrarHorariosDefaultMedico(id);
             return true;
 
         } catch (Exception throwables) {
@@ -379,13 +409,13 @@ public class GeneralHandler {
     }
     
     //METODO QUE REGISTRARA UN HORARIO PARA UN MEDICO
-    public boolean registrarHorario(String idMed, String codigo, String dia,String horaInicio, String horaFinal, String frecuencia ) {
-        if (verificaUsuarioExiste(idMed) && !verificaCodigoHorario(codigo) ) {
+    public boolean registrarHorario(String idMed, String estado, String dia,String horaInicio, String horaFinal, String frecuencia ) {
+        if (verificaUsuarioExiste(idMed)) {
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
                 String valores1[] = new String[7];
-                valores1[0] = "insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (?, ?, ?, ?, ?, ?);";
-                valores1[1] = codigo;
+                valores1[0] = "insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values (?, ?, ?, ?, ?, ?);";
+                valores1[1] = estado;
                 valores1[2] = idMed;
                 valores1[3] = dia;
                 valores1[4] = horaInicio; //'13:00:00' -> se inserta en este formato
@@ -400,6 +430,16 @@ public class GeneralHandler {
         return false;
     }
     
+    //ESTE METODO SE INVOCARA CUANDO SE CREA UN MEDICO (por defecto estaran desactivados)
+    public void RegistrarHorariosDefaultMedico(String idMed){
+        this.registrarHorario(idMed, "inactivo", "Lunes", "13:00:00", "15:00:00", "01:00");
+        this.registrarHorario(idMed, "inactivo", "Martes", "13:00:00", "15:00:00", "01:00");
+        this.registrarHorario(idMed, "inactivo", "Miercoles", "13:00:00", "15:00:00", "01:00");
+        this.registrarHorario(idMed, "inactivo", "Jueves", "13:00:00", "15:00:00", "01:00");
+        this.registrarHorario(idMed, "inactivo", "Viernes", "13:00:00", "15:00:00", "01:00");
+    }
+    
+    
     //========================================METODOS DE VERIFICACION DATABASE ======================================
     
     //ME VERIFICA SI UN USUARIO EXISTE EN LA BD
@@ -410,23 +450,6 @@ public class GeneralHandler {
             resultSet = executor.ejecutaQuery("select * from usuarios");
             while (resultSet.next()) {
                 if (resultSet.getString("id").equals(id)) {
-                    return true;
-                }
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return false;
-    }
-    
-    //ME VERIFICA SI UN CODIGO EXISTE EN LOS HORARIOS DB
-    public boolean verificaCodigoHorario(String codigo) {
-        ResultSet resultSet;
-        try {
-            executor = new SQLExecutor(usernameBD, passwordBD);
-            resultSet = executor.ejecutaQuery("select * from horarios");
-            while (resultSet.next()) {
-                if (resultSet.getString("codigo").equals(codigo)) {
                     return true;
                 }
             }
@@ -461,6 +484,7 @@ public class GeneralHandler {
             valores[1] = id;
             executor.prepareStatement(valores);
             this.borrarUsuario(id);
+            this.borrarHorariosMedico(id);
             return true;
         } catch (Exception throwables) {
             throwables.printStackTrace();
@@ -483,13 +507,13 @@ public class GeneralHandler {
         }
         return false;
     }
-     //BORRAR HORARIO POR CODIGO
-       public boolean borrarHorario(String codigo) {
+     //BORRAR HORARIOS DE UN MEDICO
+       public boolean borrarHorariosMedico(String idMed) {
         try {
             executor = new SQLExecutor(usernameBD, passwordBD);
             String valores1[] = new String[2];
-            valores1[0] = "delete from horarios where codigo = ?;";
-            valores1[1] = codigo;
+            valores1[0] = "delete from horarios where id_medico = ?;";
+            valores1[1] = idMed;
             executor.prepareStatement(valores1);
             return true;
         } catch (Exception throwables) {
@@ -559,6 +583,23 @@ public class GeneralHandler {
             }
         }
         return respuesta;
+    }
+     
+     //MODIFICAR ESTADO DE UN HORARIO DE UN MEDICO
+    public void modificarEstadoHorario(String idMed, String dia, String estado) {
+        if (this.verificaUsuarioExiste(idMed)) {
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[4];
+                valores[0] = "update horarios set estado = ? where id_medico = ? and dia = ?;";
+                valores[1] = estado;
+                valores[2] = idMed;
+                valores[3] = dia;
+                executor.prepareStatement(valores);
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
      
       //MODIFICAR INFORMACION DE PACIENTE

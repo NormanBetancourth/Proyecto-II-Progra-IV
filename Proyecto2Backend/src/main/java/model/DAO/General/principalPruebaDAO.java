@@ -31,7 +31,7 @@ public class principalPruebaDAO {
         gen.registrarPaciente("130", "nombre paciente", "60901876", "101");
 
         //===prueba de registrar un horario [NULL]===
-        gen.registrarHorario("101", "5010", "Lunes", "13:00:00",  "16:00:00", "00:30");
+        //gen.registrarHorario("101", "inactivo", "Lunes", "13:00:00",  "16:00:00", "00:30");
         
         //=============METODOS DE RETORNOS EN LA BD====================//
         
@@ -52,8 +52,8 @@ public class principalPruebaDAO {
          System.out.println(city.toString());
          
           //===prueba de retornar horario por codigo BD [exitosa]===
-         Horario schedule = gen.retornaHorarioPorCodigo("5000");
-         System.out.println(schedule.toString());
+         Horario schedule = gen.retornaHorarioPorIdMedYDia("Lunes", "101");
+         System.out.println("=HORARIO: "+schedule.toString());
          
         //===prueba de retornar lista de antecedentes de un paciente por id[exitosa]]===
           List<Antecedente> listAntec = gen.listaAntecedentesPorId("103");
@@ -75,6 +75,10 @@ public class principalPruebaDAO {
         List<Horario> listHorariosMed = gen.listaHorariosPorMedico("101");
         System.out.println(listHorariosMed.toString());
         
+        //===prueba de retornar lista de horarios ACTIVOS de un medico[exitosa]===
+        List<Horario> listHorariosActivos = gen.retornaHorariosActivosMed("101");
+        System.out.println(listHorariosActivos.toString());
+        
         //===prueba de retornar lista de horarios de un medico[exitosa]===
         List<Especialidad> listEspecialidades = gen.listarEspecialidades();
         System.out.println(listEspecialidades.toString());
@@ -82,6 +86,7 @@ public class principalPruebaDAO {
         //===prueba de retornar lista de horarios de un medico[exitosa]===
         List<Ciudad> listCiudades = gen.listarCiudades();
         System.out.println(listCiudades.toString());
+        
         
         //=============METODOS DE VERIFICACION EN LA BD====================//
         
@@ -102,10 +107,6 @@ public class principalPruebaDAO {
           borrado = gen.borrarPaciente("130")? "Se borro el paciente": "No se borro el paciente";
           System.out.println( borrado);
           
-          //===prueba de borrar Horario DB [exitosa] ===
-          borrado = gen.borrarHorario("5010")? "Se borro el horario": "No se borro el horario";
-          System.out.println(borrado);
-          
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
           
            //===prueba de modificar estado de medico DB [exitosa] ===
@@ -117,7 +118,9 @@ public class principalPruebaDAO {
            //===prueba de modificarmedico DB [exitosa] ===
            borrado = gen.modificarDatosMedico("101", "2", "10000","1001", "Athenas", "","presentacion101", "clave101")? "Se actualizo el medico": "No se actualizo el medico";
            System.out.println( borrado);
-          
+           
+           //===prueba de modificar ESTADO DE UN HORARIO DE UN MEDICO DB [exitosa] ===
+           gen.modificarEstadoHorario("101", "Miercoles", "activo");
     
     }
 }
