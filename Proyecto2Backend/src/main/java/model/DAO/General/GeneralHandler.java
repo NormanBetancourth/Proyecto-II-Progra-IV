@@ -26,7 +26,8 @@ import model.Paciente;
  */
 public class GeneralHandler {
 
-    final String usernameBD = "sa";
+//    final String usernameBD = "sa";
+    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -98,8 +99,11 @@ public class GeneralHandler {
             rs = executor.ejecutaQuery(sql1);
             while (rs.next()) {
                 usuario.setTelefono(rs.getString("telefono"));
-                usuario.setIdMed(rs.getString("idMed"));
+//                usuario.setIdMed(rs.getString("idMed"));
+//                que loco, no carga con el metodo de arriba
+                usuario.setIdMedico(rs.getString("idMed"));
                 usuario.setFotoPath("");
+                
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -259,7 +263,9 @@ public class GeneralHandler {
             ResultSet rs = executor.ejecutaQuery(sql);
             while (rs.next()) {
                 id = rs.getString("id");
+                
                 paciente = this.retornaPacientePorId(id);
+                
                 lista.add(paciente);
             }
         } catch (SQLException throwables) {

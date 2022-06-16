@@ -47,7 +47,8 @@ public class Pacientes {
     @GET
     @Path("{idMed}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Paciente> readListPatients(@PathParam("id") String idMed){
+    public List<Paciente> readListPatients(@PathParam("idMed") String idMed){
+        System.out.println(idMed);
         try {
            return Service.instance().retornarListaPacientesIdMed(idMed);
         } catch (Exception ex) {
@@ -55,17 +56,17 @@ public class Pacientes {
         }
     }
 
-    //Obtener un paciente
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Paciente readPatients(@PathParam("id") String id){
-        try {
-           return Service.instance().retornarPaciente(id);
-        } catch (Exception ex) {
-            throw new NotFoundException();
-        }
-    }
+//    //Obtener un paciente
+//    @GET
+//    @Path("{id}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public Paciente readPatients(@PathParam("id") String id){
+//        try {
+//           return Service.instance().retornarPaciente(id);
+//        } catch (Exception ex) {
+//            throw new NotFoundException();
+//        }
+//    }
     
     //Actualizar la informacion de un paciente (solo enviar la peticion PUT junto al objeto paciente (ojo que de ese objeto no se puede modificar el id del medico, ni del paciente)
     //Solo se modifica el telefono y el nombre del paciente

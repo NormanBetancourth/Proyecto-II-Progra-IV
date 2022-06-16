@@ -15,6 +15,10 @@ public class Paciente extends Usuario {
     String fotoPath;
     String telefono;
     String idMed;
+    
+    public void setIdMedico(String id){
+        idMed = id;
+    }
     //contactos de emergencia
 
      public Paciente(Usuario user){
