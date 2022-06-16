@@ -47,7 +47,8 @@ public class Pacientes {
     @GET
     @Path("{idMed}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Paciente> readListPatients(@PathParam("id") String idMed){
+    public List<Paciente> readListPatients(@PathParam("idMed") String idMed){
+        System.out.println(idMed);
         try {
            return Service.instance().retornarListaPacientesIdMed(idMed);
         } catch (Exception ex) {
@@ -57,7 +58,7 @@ public class Pacientes {
 
     //Obtener un paciente
     @GET
-    @Path("{id}")
+    @Path("data/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Paciente readPatients(@PathParam("id") String id){
         try {
