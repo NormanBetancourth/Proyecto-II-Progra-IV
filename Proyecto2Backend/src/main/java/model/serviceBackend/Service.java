@@ -31,6 +31,7 @@ public class Service {
         return uniqueInstance;
     }
     
+    
 
     private Service() {
      genDB = new GeneralHandler();
