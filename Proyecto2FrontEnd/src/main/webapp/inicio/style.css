@@ -272,3 +272,6 @@ input[type='checkbox']:after {
 }
 
 
+#navbar{
+    border-bottom: 10px solid #20ccaf;
+}
