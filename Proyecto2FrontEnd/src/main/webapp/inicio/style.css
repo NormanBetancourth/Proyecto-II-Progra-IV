@@ -3,20 +3,32 @@
 }
 
 .columna-side {
-    background-color: #77cece;
+    background-color: #fff;
 }
 
 .columna-side * {
-    background-color: #77cece;
+    background-color: #fff;
 }
 
 li {
-    background-color: #77cece;
+    background-color: #fff;
+}
+
+.columna {
+  justify-content: center;
+  background-color: #fff;
+  border-right: solid 4px #b4d6e2;
+  padding: 10px;
+  height: 450px;
 }
 
 
 .bootstrap-datetimepicker-widget .datepicker-days table tbody tr:hover {
     background-color: #eee;
+}
+
+.container-fluid {
+    background-color: #fff;
 }
 
 
@@ -34,7 +46,7 @@ li {
     font-size: 15px;
     font-weight: bold;
     align-items: center;
-    background-color: #b5d1d1;
+    background-color: #fff;
 }
 
 button {
@@ -44,9 +56,8 @@ button {
 
 #container {
   width: 200px;
-  height: 500px;
   align-content: center;
-  background-color: #b5d1d1;
+  background-color: #fff;
 }
 
 #weekdays {
@@ -98,7 +109,6 @@ button {
 #weekly-header {
     background-color: #fff;
     display: flex;
-    margin-top: 10px;
     height: 80px;
     width: 1000px;
     font-weight: bold;
@@ -117,16 +127,15 @@ button {
     align-items: center;
     align-content: center;
     width: 500px;
-    height: 500px;
+    height: 450px;
 }
 
 .grid-container {
-    margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(6, 150px);
     column-gap: 20px;
-    row-gap: 5px;
-    height: 200px;
+    row-gap: 2px;
+    height: 350px;
     width: 1020px;
 }
 
@@ -218,7 +227,7 @@ input[type='checkbox']:after {
 }
 
 .row {
-    background-color: #b5d1d1;
+    background-color: #fff;
     height: fit-content;
     margin: 10px;
 }
