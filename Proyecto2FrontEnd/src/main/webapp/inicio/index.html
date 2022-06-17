@@ -17,62 +17,6 @@
     <div class="container-fluid">
         <div class="row">
            <iframe src="./../components/nav-var/index.html" id="navbar" ></iframe>
-            <!-- <div class="col-sm-auto columna-side" >
-                <div class="d-flex flex-sm-column flex-row flex-nowrap align-items-center sticky-top" >
-                    <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                        <li>
-                            <button>
-                                <a href="#" class="nav-link link-dark  py-3 px-2">
-                                    <em. class="bi-house fs-5"></em.>
-                                </a>
-                            </button>
-                        </li>
-
-                        <li>
-                            <button id="listar-pacientes-btn">
-                                <a href="#" class="nav-link link-dark  py-3 px-2">
-                                    <em. class="bi bi-person-lines-fill fs-5"></em.>
-                                </a>
-                            </button>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark  py-3 px-2">
-                                <em. class="bi bi-calendar2-check-fill fs-5"></em.>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark  py-3 px-2">
-                                <em. class="bi-table fs-5"></em.>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="#" class="nav-link link-dark  py-3 px-2">
-                                <em. class="bi bi-person-circle fs-5"></em.>
-                            </a>
-                           
-                        </li>
-                    </ul>
-                     
-                    <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                        <li>
-                            <a href="#" class="nav-link  py-3 px-2 link-dark text-decoration-none">
-                                <em. class="bi bi-compass h2 fs-5"></em.>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class=" nav-link  py-3 px-2 link-dark text-decoration-none">
-                                <em. class="bi bi-question-circle fs-5"></em.>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class=" nav-link  py-3 px-2 link-dark text-decoration-none">
-                                <em. class="bi bi-box-arrow-left fs-5"></em.>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
             <div class="col-sm-auto columna">
                 <!-- content -->
                 <div id="container">
@@ -118,6 +62,23 @@
                         <div class="grid-item item-header Friday"></div>  
                     </div>
                     <div class="grid-container scroll">
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- Prueba Modal itself -->
+         <div class="modal fade" id="reg-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title"><strong>Administra tus propias citas</strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancel-button">Cancelar</button>
+                       <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="accept-button">Aceptar</button>
                     </div>
                 </div>
             </div>

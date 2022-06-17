@@ -9,8 +9,11 @@ const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
+const modalBody = document.querySelector('#modal-body');
+const pacientes = [{nombre: 'David Bowie', edad: 56, id: 100}, {nombre: 'Lana del Rey', edad: 32, id: 101}];
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const clinicas = ['Clinica A', 'Clininca B', 'Clinica C'];
+let diaHoraSeleccionada = {};
 const calendarios = document.querySelector('.contenedor-calendarios');
 const actualDay = document.querySelector('#weekly-monthDisplay');
 let actualWeek = 0;
@@ -62,7 +65,7 @@ function CalculateRanges() {
       horasPorDia.set(dia, lista);
     }
   });
-  console.log(horasPorDia);
+  //console.log(horasPorDia);
   return horasPorDia;
 }
 
@@ -72,11 +75,15 @@ function EnableHoursAppointments() {
 
   horasCitas.forEach(element => {
     if(rango.has(element.getAttribute('data-day'))){
-      console.log(rango.get(element.getAttribute('data-day')));
+      //console.log(rango.get(element.getAttribute('data-day')));
       if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
+        element.setAttribute('data-bs-toggle', 'modal');
+        element.setAttribute('data-bs-target', "#reg-modal");
         element.classList.add('enableHourAppointment');
         element.classList.remove('grid-item');
-        element.textContent = element.getAttribute('data-infor');
+        // element.textContent = element.getAttribute('data-infor');
+        // element.getAttribute('data-infor').substring(0,5)
+        element.textContent = 'Registrar Cita';
       }
     }
   });
@@ -130,6 +137,7 @@ function LoadDays() {
         //appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
         appointment1.setAttribute('data-day', weekdays[1]);
         appointment1.setAttribute('data-time', horas[i]);
+        appointment1.setAttribute('data-date', semana[0].toDateString());
         appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
@@ -139,6 +147,7 @@ function LoadDays() {
         //appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
         appointment2.setAttribute('data-day', weekdays[2]);
         appointment2.setAttribute('data-time', horas[i]);
+        appointment2.setAttribute('data-date', semana[1].toDateString());
         appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
@@ -148,6 +157,7 @@ function LoadDays() {
         //appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
         appointment3.setAttribute('data-day', weekdays[3]);
         appointment3.setAttribute('data-time', horas[i]);
+        appointment3.setAttribute('data-date', semana[2].toDateString());
         appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
@@ -157,6 +167,7 @@ function LoadDays() {
         //appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
         appointment4.setAttribute('data-day', weekdays[4]);
         appointment4.setAttribute('data-time', horas[i]);
+        appointment4.setAttribute('data-date', semana[3].toDateString());
         appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
@@ -166,6 +177,7 @@ function LoadDays() {
         //appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
         appointment5.setAttribute('data-day', weekdays[5]);
         appointment5.setAttribute('data-time', horas[i]);
+        appointment5.setAttribute('data-date', semana[4].toDateString());
         appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
     
         line += hora.outerHTML;
@@ -192,6 +204,7 @@ function LoadDays() {
         //appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
         appointment1.setAttribute('data-day', weekdays[1]);
         appointment1.setAttribute('data-time', horas[i]);
+        appointment1.setAttribute('data-date', semana[0].toDateString());
         appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
@@ -201,6 +214,7 @@ function LoadDays() {
         //appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
         appointment2.setAttribute('data-day', weekdays[2]);
         appointment2.setAttribute('data-time', horas[i]);
+        appointment2.setAttribute('data-date', semana[1].toDateString());
         appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
@@ -210,6 +224,7 @@ function LoadDays() {
         //appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
         appointment3.setAttribute('data-day', weekdays[3]);
         appointment3.setAttribute('data-time', horas[i]);
+        appointment3.setAttribute('data-date', semana[2].toDateString());
         appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
@@ -219,6 +234,7 @@ function LoadDays() {
         //appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
         appointment4.setAttribute('data-day', weekdays[4]);
         appointment4.setAttribute('data-time', horas[i]);
+        appointment4.setAttribute('data-date', semana[3].toDateString());
         appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
@@ -228,6 +244,7 @@ function LoadDays() {
         //appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
         appointment5.setAttribute('data-day', weekdays[5]);
         appointment5.setAttribute('data-time', horas[i]);
+        appointment5.setAttribute('data-date', semana[4].toDateString());
         appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
     
     
@@ -374,12 +391,62 @@ function LoadWeek() {
   );
 }
 
+function LoadInforModal(event) {
+  let line = '';
+
+  const select = document.createElement('select');
+  select.classList.add('custom-select');
+  select.setAttribute('id', 'inputGroupSelect01');
+
+  pacientes.forEach((element) => {
+    const option = document.createElement('option');
+    option.setAttribute('value', element.id);
+    option.textContent = element.nombre + ', ' + element.id;
+    line += option.outerHTML;
+  });
+
+  //console.log(event.relatedTarget);
+
+  modalBody.innerHTML = `
+  <div class="form-group">
+    <form>
+      <div>
+      <label>Fecha</label>
+      <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+      <label>Hora</label>
+      <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+      <label>Motivo</label>
+      <input type="text" class="form-control" id='motivo-cita' required>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
+        </div>
+        <select class="custom-select mt-3" id="inputGroupSelect01" required>
+          <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
+          ${line}
+        </select>
+    </form>
+  </div>
+  `;
+  
+  // Verificar campo de motivo esta completado antes de enviar
+  // Agregarle al div una clase de citas ya guardadas y que cambie de color
+}
+
+function ResetData() {
+  document.querySelector('#motivo-cita').value = '';
+  document.querySelector('#seleccionar').selected = true;
+}
+
 function AddEvents() {
   document.querySelectorAll('div .day-active').forEach(element => {
-    //console.log(element);
     element.addEventListener('click', LoadWeek);
   });
-}
+  $(document).on('show.bs.modal', modalBody, LoadInforModal);
+  $('#cancel-button').on('click', ResetData);
+};
+
 
 function InitCalendar() {
   const dt = new Date();

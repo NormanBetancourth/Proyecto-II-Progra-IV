@@ -55,6 +55,8 @@ button {
 }
 
 #container {
+  margin-top: -10px;
+  border-top: 10px solid #20ccaf;
   width: 200px;
   align-content: center;
   background-color: #fff;
@@ -124,9 +126,10 @@ button {
 }
 
 #weekly-container {
+    border-top: 10px solid #20ccaf;
     align-items: center;
     align-content: center;
-    width: 500px;
+    width: 1000px;
     height: 450px;
 }
 
@@ -229,10 +232,11 @@ input[type='checkbox']:after {
 .row {
     background-color: #fff;
     height: fit-content;
-    margin: 10px;
+    margin-left: 10px;
 }
 
 #weekly-header {
+    margin: 10px;
     height: 40px;
     flex-direction: row;
     display: flex;
@@ -243,7 +247,6 @@ input[type='checkbox']:after {
 #weekly-header * {
     color: #000000;
     font-weight: bold;
-    margin: 30px;
     display: flex;
 }
 
@@ -272,6 +275,6 @@ input[type='checkbox']:after {
 }
 
 
-#navbar{
-    border-bottom: 10px solid #20ccaf;
+#navbar {
+    margin: -10px;
 }
