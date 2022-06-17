@@ -26,8 +26,8 @@ import model.Paciente;
  */
 public class GeneralHandler {
 
-//    final String usernameBD = "sa";
-    final String usernameBD = "sass";
+    final String usernameBD = "sa";
+//    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -77,7 +77,7 @@ public class GeneralHandler {
                 usuario.setClinica(rs.getString("clinica"));
                 usuario.setEstado(rs.getString("estado"));
                 usuario.setPresentacion(rs.getString("presentacion"));
-                usuario.setPassword("clave");
+                usuario.setPassword(rs.getString("clave"));
                 //NECESITA ESTAR EN LA BASE NO?
                 usuario.setFotoPath("");
             }
@@ -194,6 +194,7 @@ public class GeneralHandler {
                 horario.setHoraFinal(rs.getString("hora_final"));
                 horario.setIdMedico(rs.getString("id_medico"));
                 lista.add(horario);
+                
                 }
             }
         } catch (SQLException throwables) {
@@ -592,22 +593,48 @@ public class GeneralHandler {
     }
      
      //MODIFICAR ESTADO DE UN HORARIO DE UN MEDICO
-    public void modificarEstadoHorario(String idMed, String dia, String estado) {
+    public void modificarHorario(String idMed, String dia, String estado, String horaI, String horaF, String frec) {
         if (this.verificaUsuarioExiste(idMed)) {
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
-                String valores[] = new String[4];
-                valores[0] = "update horarios set estado = ? where id_medico = ? and dia = ?;";
+                String valores[] = new String[7];
+                valores[0] = "update horarios set estado = ?, hora_inicio = ?, hora_final = ?, frecuencia = ? where id_medico = ? and dia = ?;";
                 valores[1] = estado;
-                valores[2] = idMed;
-                valores[3] = dia;
+                valores[2] = horaI;
+                valores[3] = horaF;
+                valores[4] = frec;
+                valores[5] = idMed;
+                valores[6] = dia;
                 executor.prepareStatement(valores);
             } catch (Exception throwables) {
                 throwables.printStackTrace();
             }
         }
     }
+    
+    //
+     public void modificarHorariosMedico(List<Horario> h, String idMed) {
+        if (this.verificaUsuarioExiste(idMed)) {
+            //verifica que la lista que se le mande no este vacia, para setear todos los horarios a valores default u inactivos
+            if(h.size() != 0)
+                putHorariosDeafult(idMed);
+            for(Horario ho : h){
+                //por cada horario que se le haya mandando cambia su estado a activo y les coloca sus valores
+                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraInicio(), ho.getFrecuencia());
+            }
+        }
+    }
      
+     public void putHorariosDeafult(String idMed){
+         modificarHorario(idMed, "Lunes", "inactivo", "00:00:00", "00:00:00", "01:00");
+         modificarHorario(idMed, "Martes", "inactivo", "00:00:00", "00:00:00", "01:00");
+         modificarHorario(idMed, "Miercoles", "inactivo", "00:00:00", "00:00:00", "01:00");
+         modificarHorario(idMed, "Jueves", "inactivo", "00:00:00", "00:00:00", "01:00");
+         modificarHorario(idMed, "Viernes", "inactivo", "00:00:00", "00:00:00", "01:00");
+     }
+     
+     
+    
       //MODIFICAR INFORMACION DE PACIENTE
      public boolean modificarDatosPaciente(String id, String telefono, String nombre) {
         boolean respuesta = false;
