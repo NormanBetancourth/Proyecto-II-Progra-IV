@@ -44,6 +44,7 @@ button {
 
 #container {
   width: 200px;
+  height: 500px;
   align-content: center;
   background-color: #b5d1d1;
 }
@@ -116,6 +117,7 @@ button {
     align-items: center;
     align-content: center;
     width: 500px;
+    height: 500px;
 }
 
 .grid-container {
@@ -124,7 +126,7 @@ button {
     grid-template-columns: repeat(6, 150px);
     column-gap: 20px;
     row-gap: 5px;
-    height: 450px;
+    height: 200px;
     width: 1020px;
 }
 
@@ -217,7 +219,8 @@ input[type='checkbox']:after {
 
 .row {
     background-color: #b5d1d1;
-
+    height: fit-content;
+    margin: 10px;
 }
 
 #weekly-header {
