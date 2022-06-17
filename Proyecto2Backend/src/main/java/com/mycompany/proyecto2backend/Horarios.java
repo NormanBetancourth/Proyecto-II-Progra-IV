@@ -67,17 +67,7 @@ public class Horarios {
         }
     }
 
-//    //Obtener un medico
-//    @GET
-//    @Path("{id}")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Medico read(@PathParam("id") String id) {
-//        try {
-//            return Service.instance().retornarMedicoPorID(id);
-//        } catch (Exception ex) {
-//            throw new NotFoundException();
-//        }
-//    }
+
 //
 //    //Actualizar el estado de un medico
 //    @PUT

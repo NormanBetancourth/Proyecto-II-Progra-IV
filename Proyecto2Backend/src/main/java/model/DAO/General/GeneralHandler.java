@@ -77,7 +77,7 @@ public class GeneralHandler {
                 usuario.setClinica(rs.getString("clinica"));
                 usuario.setEstado(rs.getString("estado"));
                 usuario.setPresentacion(rs.getString("presentacion"));
-                usuario.setPassword("clave");
+                usuario.setPassword(rs.getString("clave"));
                 //NECESITA ESTAR EN LA BASE NO?
                 usuario.setFotoPath("");
             }
