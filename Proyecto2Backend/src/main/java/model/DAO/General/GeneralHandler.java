@@ -215,6 +215,8 @@ public class GeneralHandler {
                antecedente.setAnotacion(rs.getString("anotacion"));
                antecedente.setCodigo(rs.getString("codigo"));
                antecedente.setTipo(rs.getString("tipo"));
+               antecedente.setIdPaciente(rs.getString("id_paciente"));
+                System.out.println(antecedente);
                lista.add(antecedente);
             }
         } catch (SQLException throwables) {

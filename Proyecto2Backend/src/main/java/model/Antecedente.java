@@ -19,6 +19,7 @@ public class Antecedente {
     public Antecedente(String codigo, String idPaciente, String tipo, String anotacion) {
         this.codigo = codigo;
         this.idPaciente = idPaciente;
+        
         this.tipo = tipo;
         this.anotacion = anotacion;
     }
@@ -26,6 +27,7 @@ public class Antecedente {
         this.codigo = "";
         this.tipo = "";
         this.anotacion = "";
+        this.idPaciente = "";
     }
 
     public String getIdPaciente() {
