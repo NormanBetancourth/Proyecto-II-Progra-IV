@@ -379,9 +379,6 @@ function AddEvents() {
     //console.log(element);
     element.addEventListener('click', LoadWeek);
   });
-  listarPacientesBTN.onclick = () =>{
-    window.location.href = "./../listar-pacientes/index.html";
-  };
 }
 
 function InitCalendar() {

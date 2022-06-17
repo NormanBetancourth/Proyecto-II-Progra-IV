@@ -4,6 +4,9 @@ const modalBody = document.getElementById('modal-body');
 const modalCloseBtn = document.getElementById('modal-close-btn');
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 
+
+
+
 var pacientes = [];
 var medico;
 var objEvent = {id:'', type:''};
@@ -169,6 +172,13 @@ const load = async () => {
     medico = await obtenerMedicoSession();
     pacientes = await cargarPacientesDeMedico(medico.id);
     loadUsersOnView();
+     
+//     var listarPacientesBTN =  document.getElementById('listar-pacientes-btn');
+// console.log(listarPacientesBTN);
+// listarPacientesBTN.onclick = () =>{
+//     console.log('aaaaaaaaaaaaaaaaaaaaa');
+//     window.location.href = "/Proyecto2FrontEnd/listar-pacientes/index.html";
+// };
 
 };
 
