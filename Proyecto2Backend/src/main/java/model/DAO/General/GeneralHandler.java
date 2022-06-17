@@ -194,6 +194,7 @@ public class GeneralHandler {
                 horario.setHoraFinal(rs.getString("hora_final"));
                 horario.setIdMedico(rs.getString("id_medico"));
                 lista.add(horario);
+                
                 }
             }
         } catch (SQLException throwables) {

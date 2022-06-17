@@ -85,4 +85,8 @@ public class Horario {
     public String toString() {
         return "Horario{" + "Estado=" + estado + ", idMedico=" + idMedico + ", dia=" + dia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + ", frecuencia=" + frecuencia + '}';
     }
+
+    public void setEstadoV2(String estado) {
+        this.estado = estado;
+    }
 }
