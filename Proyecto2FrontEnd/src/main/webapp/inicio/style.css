@@ -27,6 +27,10 @@ li {
     background-color: #eee;
 }
 
+.container-fluid {
+    background-color: #fff;
+}
+
 
 #header {
   padding: 10px;
@@ -223,7 +227,7 @@ input[type='checkbox']:after {
 }
 
 .row {
-    background-color: #b5d1d1;
+    background-color: #fff;
     height: fit-content;
     margin: 10px;
 }
