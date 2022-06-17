@@ -134,7 +134,6 @@ function actionMedListados(event) {
 
 function actionMedListar(event) {
     event.preventDefault();
-    console.log("ENTRO A ESTOOO");
     document.location = urlLocal +"Vistas/Admin/listar-med/admin-listar.html";
 }
 
@@ -154,11 +153,8 @@ async function loaded(){
   function loaded(){
     fetchAndList();
     $("#logout-id").on("click", actionLogout);
-    console.log("AAAA1");
     $("#med-listados").on("click", actionMedListados);
-    console.log("AAAA2");
     $("#med-listar").on("click", actionMedListar);
-    console.log("AAAA3");
     $("#btn-accept-med").on("click", actionAcceptMed);
     $("#btn-reject-med").on("click", actionRejectMed);
   }

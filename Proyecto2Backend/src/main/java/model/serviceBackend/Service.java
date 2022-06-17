@@ -98,10 +98,9 @@ public class Service {
         return genDB.retornaHorarioPorIdMedYDia(dia, idMed);
     }
     
-    //modifica el estado de uno de los horarios del medico 
-    //(indicar el dia que se quiere modificar, a cual medico y cual estado colocarle a ese horario ('activo' o 'inactivo') )
-    public void modificarEstadoHorario(String idMed, String dia, String estado){
-        genDB.modificarEstadoHorario(idMed, dia, estado);
+
+    public void modificarHorariosMedico(List<Horario> lh, String idMed){
+        genDB.modificarHorariosMedico(lh, idMed);
     }
     
     public List<Horario> retornarHorariosActivos(String idMed){

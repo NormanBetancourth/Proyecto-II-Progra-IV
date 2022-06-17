@@ -38,6 +38,7 @@ public class Horarios {
     @Context
     HttpServletRequest request;
     
+    
     Medico getCurrentMed(){
         HttpSession session = request.getSession(true);
         Medico m = (Medico) session.getAttribute("user");
@@ -45,12 +46,11 @@ public class Horarios {
     }
 
     //Registrar el horario de el medico
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(Horario h) {
+    public void create(List<Horario> h) {
         try {
-            System.out.println(h);
-            //TODO: en espera del metodo de Hector
+            Service.instance().modificarHorariosMedico(h,getCurrentMed().getId());
         } catch (Exception ex) {
             throw new NotAcceptableException();
         }

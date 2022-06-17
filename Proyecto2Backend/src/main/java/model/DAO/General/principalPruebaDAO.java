@@ -4,6 +4,7 @@
  */
 package model.DAO.General;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.Antecedente;
 import model.Ciudad;
@@ -83,7 +84,7 @@ public class principalPruebaDAO {
         List<Especialidad> listEspecialidades = gen.listarEspecialidades();
         System.out.println(listEspecialidades.toString());
         
-        //===prueba de retornar lista de horarios de un medico[exitosa]===
+        //===prueba de retornar lista de ciudades[exitosa]===
         List<Ciudad> listCiudades = gen.listarCiudades();
         System.out.println(listCiudades.toString());
         
@@ -119,8 +120,15 @@ public class principalPruebaDAO {
            borrado = gen.modificarDatosMedico("101", "2", "10000","1001", "Athenas", "","presentacion101", "clave101")? "Se actualizo el medico": "No se actualizo el medico";
            System.out.println( borrado);
            
-           //===prueba de modificar ESTADO DE UN HORARIO DE UN MEDICO DB [exitosa] ===
-           gen.modificarEstadoHorario("101", "Miercoles", "activo");
-    
+           //===PRUEBA DE ACTUALIZAR HORARIOS DE UN MEDICO CON LISTA DE HORARIOS ===
+           Horario h1 = new Horario("","110","Martes","10:00:00","10:00:00","00:30");
+           Horario h2 = new Horario("", "110", "Viernes", "10:00:00", "10:00:00", "00:30");
+           
+           List<Horario> lh = new ArrayList();
+           lh.add(h1);
+           lh.add(h2);
+           
+           gen.modificarHorariosMedico(lh, "110");
+         
     }
 }
