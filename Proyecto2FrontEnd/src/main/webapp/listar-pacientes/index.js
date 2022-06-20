@@ -5,7 +5,7 @@ const modalCloseBtn = document.getElementById('modal-close-btn');
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 
 
-
+var date ;
 
 var pacientes = [];
 var medico;
@@ -46,12 +46,150 @@ table.onclick = async (e) => {
     }
 };
 
+const loadAgendarView = async (id) => {
+    let infoAgenda = `    <form onsubmit="addCita()">
+                            <div class="row justify-content-center text-center">
+                            <div class="col"></div>
+                            <div class="col-6">
+                                <div class="row my-2">
+                                <h4>Agregar una cita</h4>
+                                </div>
+                                <div class="row justify-content-center text-center">
+                                <div class="row justify-content-center text-center">
+                                    <div class="row justify-content-center text-center">
+                                    <div class="col"></div>
+                                    <div class="col my-3 justify-content-center text-center">
+                                        <h6>Seleccione el día</h6>
+                                        <input type="date" required id="date-picker" />
+                                        <button
+                                        type="button"
+                                        class="btn btn-light my-2"
+                                        id="btn-apply"
+                                        >
+                                        Aplicar día
+                                        </button>
+                                    </div>
+                                    <div class="col"></div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <h6>Seleccione la hora</h6>
+                                        <select id="cita-hora" required>
+                                        <option value="Citas disponibles">08:00</option>
+                                        <option value="Citas disponibles">19:00</option>
+                                        </select>
+                                    </div>
+                                    <div class="col"></div>
+                                    </div>
+                                    <div class="row mt-4">
+                                    <h5>Detalle el motivo de la cita</h5>
+                                    <textarea
+                                        id="cita-motivo"
+                                        cols="60"
+                                        rows="10"
+                                        required
+                                        style="resize: none"
+                                    ></textarea>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                            </div>
+                            <div class="row align-items-center text-center">
+                            <div class="col"></div>
+                            <div class="col my-5">
+                                <button type="submit" class="btn btn-primary">Agregar cita</button>
+                            </div>
+                            <div class="col"></div>
+                            </div>
+                        </form>`;
+    modalBody.innerHTML = infoAgenda;
+    const element = document.querySelector('form');
+    element.addEventListener('submit', event => {
+        event.preventDefault();
+    });
 
+    date  = document.getElementById('date-picker');
+    date.min = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
+    const btn  = document.getElementById('btn-apply');
+    btn.onclick = () => {
+        horarioBuild(date.value);  
+    }
+    
+};
+
+const buildLitDay = (dateFormat) =>{
+    let date = new Date(dateFormat);
+    let day = date.getDay();
+    let literalDay;
+
+    if(day === 0) {
+        literalDay = 'Lunes';
+    }
+    if(day === 1) {
+        literalDay = 'Martes';
+    }
+    if(day === 2) {
+        literalDay = 'Miercoles';
+    }
+    if(day === 3) {
+        literalDay = 'Jueves';
+    }
+    if(day === 4) {
+        literalDay = 'Viernes';
+    }
+    if(day === 5) {
+        literalDay = 'Sabado';
+    }
+    if(day === 6) {
+        literalDay = 'Domingo';
+    }
+    return literalDay;
+}
+
+const horarioBuild = async (dateFormat) => {
+    let day = buildLitDay(dateFormat);
+    let horario = await horarioGET();
+    console.log(day);
+    console.log(horario);
+};
+
+const horarioGET = async () => {
+    try {
+        const req = new Request(backend+ '/horarios', {
+            method: 'GET',
+            headers: {}
+        });
+
+        const res = await fetch(req);
+        if (!res.ok) {
+            console.log("error al guardad user de session");
+            return;
+        }
+        var result = await res.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+
+const addCita = async () => {
+    const fecha = document.getElementById('date-picker');
+    const hora = document.getElementById('cita-hora');
+    const motivo = document.getElementById('cita-motivo');
+
+    console.log(fecha.value);
+    console.log(hora.value);
+    console.log(motivo.value);
+};
 
 const loadAntecedentesView = async (id) =>{
     
     let antecedentesDePaciente = await antecedentesGET(id);
-    console.log(antecedentesDePaciente);
     let infoAntecedentes = `    <div class="row">
                                 <div class="col"></div>
                                 <div class="col-10" >
@@ -130,7 +268,6 @@ const loadAntecedentesView = async (id) =>{
 const loadInfoView = async (id) =>{
     //TODO: Hacer que edite la pic
     let pacienteInfo = await cargarPacientePorId(id);
-    console.log(pacienteInfo);
     let infoView = `<div class="row">
                     <div class="col"></div>
                     <div class="col-8">
@@ -180,7 +317,6 @@ const loadInfoView = async (id) =>{
 const loadUsersOnView = async () => {
     var content = '';
     pacientes.forEach(user => {
-        console.log(user);
         content += `<tr data-id="${user.id}" data-event="info">
         <th data-id="${user.id}" data-event="info" scope="row">${user.id}</th>
         <td data-id="${user.id}" data-event="info">${user.nombre}</td>
@@ -209,17 +345,10 @@ const addAntecedente = async () => {
 
     const tipoAntecedente = document.getElementById('antecedente-tipo');
     const detallesAntecedente = document.getElementById('antecedente-detalles');
-    console.log(tipoAntecedente.value);
-    console.log(detallesAntecedente.value);
-    console.log(objEvent.id);
 
     let foo = {anotacion:detallesAntecedente.value, codigo:'-1', idPaciente:objEvent.id, tipo:tipoAntecedente.value}
     antecedentesPOST(foo);
     $("#modal-container").modal("hide");
-
-
-
-
 };
 
 //REST API METHODS
@@ -268,19 +397,16 @@ const updatePatient = async () => {
     let patient = await cargarPacientePorId(patientId);
 
     if(patient.nombre != patientName ){
-        console.log('Nombre diff');
         patient.nombre = patientName;
         ban = true;
     }
 
     if(patient.fotoPath != patientFoto ){
-        console.log('Foto diff');
         patient.fotoPath = patientFoto;
         ban = true;
     }
     
     if(patient.telefono != patientTelefono){
-        console.log('Telefono diff');
         patient.telefono = patientTelefono;
         ban = true;
     }
