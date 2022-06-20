@@ -25,7 +25,7 @@ table.onclick = async (e) => {
             $("#modal-container").modal("show");
         }
         if(e.target.dataset.event === 'antecedentes'){
-            await loadAntecedentesView(objEvent.id);//TODO: hacer antecedentes
+            await loadAntecedentesView(objEvent.id);//TODO: agregar antecedente nuevo
             $("#modal-container").modal("show");
         }
         if(e.target.dataset.event === 'examenes'){
