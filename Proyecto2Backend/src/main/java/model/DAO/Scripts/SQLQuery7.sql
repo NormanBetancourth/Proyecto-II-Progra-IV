@@ -13,8 +13,8 @@ drop table citas;
 drop table contactos;
 drop table horarios;
 drop table antecedentes;
-drop table medicos;
 drop table pacientes;
+drop table medicos;
 drop table administradores;
 drop table usuarios;
 drop table ciudades;
@@ -63,8 +63,8 @@ create sequence sec_contactos
 create table usuarios(id int not null, nombre varchar(20) not null, tipo varchar(10) not null);
 create table administradores(id int not null, clave varchar(20) not null);
 create table medicos(id int not null, clave varchar(20) not null, especialidad int null, costo decimal(11,4) null, ciudad int  null, clinica varchar(20) null, estado varchar(20) not null, presentacion text null);
-create table pacientes(id int not null);
-create table horarios(codigo int not null, id_medico int not null, dia varchar(30) not null, hora_inicio time  not null, hora_final time not null, frecuencia varchar(10) not null); 
+create table pacientes(id int not null, telefono varchar(10), idMed int not null);
+create table horarios(estado varchar(30) not null, id_medico int not null, dia varchar(30) not null, hora_inicio time  not null, hora_final time not null, frecuencia varchar(10) not null); 
 create table ciudades(codigo int not null, nombre varchar(20) not null, provincia varchar(20) not null);
 create table especialidades(codigo int not null, nombre varchar(20) not null, descripcion text null); 
 create table citas(codigo int not null, id_medico int not null, id_paciente int not null, fecha_hora smalldatetime not null, estado varchar(20) not null, signos text not null, motivo text not null, diagnostico text not null, prescripcion text not null, medicamentos text not null);
@@ -82,7 +82,6 @@ alter table ciudades add constraint ciudades_pk primary key(codigo);
 alter table citas add constraint medicos_citas_pk primary key(codigo);
 alter table antecedentes add constraint antecedentes_pk primary key(codigo);
 alter table contactos add constraint contactos_pk primary key(numero);
-alter table horarios add constraint horarios_pk primary key(codigo);
 
 -- FK
 alter table administradores
@@ -100,6 +99,9 @@ alter table medicos
 alter table pacientes
 	add constraint pacientes_fk foreign key(id) 
 		references usuarios(id) on delete cascade;
+alter table pacientes
+	add constraint pacientes_med_fk foreign key(idMed) 
+		references medicos(id);
 alter table horarios
 	add constraint horarios_medico_fk foreign key(id_medico) 
 		references medicos(id) on delete cascade;
@@ -115,12 +117,11 @@ alter table contactos
 alter table antecedentes
 	add constraint antecedentes_paciente_fk foreign key(id_paciente) 
 		references pacientes(id) on delete cascade;
-
 -- CK
 alter table usuarios 
 	add constraint usuarios_ck1 Check (tipo in ('Admin','Medico','Paciente'));
 alter table medicos 
-	add constraint medicos_ck1 Check (estado in ('Aprobado','Espera','Recchazado'));
+	add constraint medicos_ck1 Check (estado in ('Aprobado','Espera','Rechazado'));
 alter table ciudades 
 	add constraint ciudades_ck1 Check (provincia in ('San Jose','Heredia','Limon','Cartago','Alajuela','Puntarenas','Guanacaste'));
 alter table horarios
@@ -131,6 +132,8 @@ alter table antecedentes
 	add constraint antecedentes_ck1 Check (tipo in ('Enfermedad','Alergia', 'Cirugia', 'Padecimiento', 'Otro'));
 alter table horarios 
 	add constraint horarios_ck12 Check (dia in ('Lunes','Martes', 'Miercoles', 'Jueves', 'Viernes'));
+alter table horarios 
+	add constraint horarios_ck13 Check (estado in ('activo','inactivo'));
 
 -- UK
 alter table usuarios add constraint usuarios_nombre_uk unique (nombre);
@@ -142,10 +145,10 @@ alter table contactos add constraint contactos_telefono_uk unique (telefono);
 -- Ingresando datos de prueba
 -- Especialidades
 insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'General', 'Previene, detecta y trata enfermedades comunes.');
-insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Cardiologia', 'Estudio, diagnóstico y tratamiento de las enfermedades del corazón y del sistema circulatorio.');
+insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Cardiologia', 'Estudio, diagnï¿½stico y tratamiento de las enfermedades del corazï¿½n y del sistema circulatorio.');
 insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Psicologia', 'Estudia las funciones mentales y de comportamiento.');
-insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Odontologia', 'Diagnóstico y tratamiento del aparato estomagnático.');
-insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Pediatria', 'Atención médica de bebés, niños y adolescentes.');
+insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Odontologia', 'Diagnï¿½stico y tratamiento del aparato estomagnï¿½tico.');
+insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Pediatria', 'Atenciï¿½n mï¿½dica de bebï¿½s, niï¿½os y adolescentes.');
 insert into especialidades(codigo, nombre, descripcion) values (next value for sec_especialidades, 'Anestecia General',  null);
 
 
@@ -161,30 +164,62 @@ insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Jua
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Nicolas Suarez', 'Medico');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Joseph Romero', 'Paciente');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Maria Vargas', 'Paciente');
+insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Jose Rojas', 'Paciente');
+insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Marta Mendez', 'Paciente');
 insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Felicia Ramirez', 'Medico');
+insert into usuarios(id, nombre, tipo) values (110, 'Maria Carmona', 'Medico');
+insert into usuarios(id, nombre, tipo) values (111, 'Carlos Felicio', 'Medico');
 
 -- Medicos
-insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (101, 'password101', 1, 70000, 1000, 'Athena', 'Aprobado', null);
-insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (102, 'password102', 4, 100000, 1002, 'Pacific Global', 'Aprobado', 'Amante de nuevos retos');
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (101, 'password101', 1, 70000, 1000, 'Athena', 'Espera', null);
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (102, 'password102', 4, 100000, 1002, 'Pacific Global', 'Espera', 'Amante de nuevos retos');
 insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (105, 'password105', 6, 100000, 1003, 'Salud', 'Aprobado', null);
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (110, 'password1011', 3, 700000, 1000, 'Athena-Clinic', 'Espera', null);
+insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (111, 'password1021', 4, 150000, 1002, 'Pacific-Heredia', 'Espera', 'Amante de nuevos retos');
 
 -- Horarios
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 101, 'Lunes', '16:00:00', '20:00:00','00:30');
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 101, 'Martes', '13:00:00', '17:00:00','01:00');
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 102, 'Lunes', '08:00:00', '11:00:00','00:30');
-insert into horarios(codigo, id_medico, dia, hora_inicio, hora_final, frecuencia) values (next value for sec_horarios, 102, 'Viernes', '18:00:00', '21:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 101, 'Lunes', '16:00:00', '20:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 101, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 101, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 101, 'Jueves', '8:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 101, 'Viernes', '19:00:00', '22:00:00','00:30');
 
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 102, 'Lunes', '16:00:00', '20:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 102, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 102, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 102, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 102, 'Viernes', '19:00:00', '22:00:00','00:30');
+
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 105, 'Lunes', '16:00:00', '20:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 105, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 105, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 105, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 105, 'Viernes', '19:00:00', '22:00:00','00:30');
+
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 110, 'Lunes', '13:00:00', '15:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 110, 'Martes', '12:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 110, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 110, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 110, 'Viernes', '13:00:00', '15:00:00','00:30');
+
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 111, 'Lunes', '10:00:00', '13:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 111, 'Martes', '07:00:00', '14:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 111, 'Miercoles', '10:00:00', '12:00:00','00:30');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('activo', 111, 'Jueves', '08:00:00', '10:00:00','01:00');
+insert into horarios(estado, id_medico, dia, hora_inicio, hora_final, frecuencia) values ('inactivo', 111, 'Viernes', '19:00:00', '22:00:00','00:30');
 
 -- Admins
 insert into administradores(id, clave) values (100, 'password100');
 
 -- Pacientes
-insert into pacientes(id) values (103);
-insert into pacientes(id) values (104);
+insert into pacientes(id, telefono, idMed) values (103, '84201936', 101);
+insert into pacientes(id, telefono, idMed) values (104, '89129210', 102);
+insert into pacientes(id, telefono, idMed) values (105, '71201936', 101);
+insert into pacientes(id, telefono, idMed) values (106, '69129870', 102);
 
 -- Antecedentes
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Alergia', 'El medicamento zulfa le causa fiebre y zarpullido');
-insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migraña');
+insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migrana');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 104, 'Cirugia', 'Tumor cerebral');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 104, 'Padecimiento', 'Intolerante a la lactosa');
 
@@ -198,17 +233,17 @@ insert into contactos(numero, id_personal, id_paciente, nombre, telefono) values
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas, 101, 103, '2022-04-10 16:00:00', 'Finalizado', 'Presion normal, ...', 'Problemas respiratorios.', 'Gripe', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,101, 104, '2022-04-11 14:00:00', 'Finalizado', 'Presion normal, ...', 'Chequeo general', 'Deficiencia vitaminas', 'Vitaminas C y B12', 'Diario, una vez al día');
+values (next value for sec_citas,101, 104, '2022-04-11 14:00:00', 'Finalizado', 'Presion normal, ...', 'Chequeo general', 'Deficiencia vitaminas', 'Vitaminas C y B12', 'Diario, una vez al dï¿½a');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,102, 103, '2022-04-10 09:30:00', 'Finalizado', 'Presion normal, ...', 'Dolor de encías', 'Caries', 'Acetaminofen', 'Cada 8 horas');
+values (next value for sec_citas,102, 103, '2022-04-10 09:30:00', 'Finalizado', 'Presion normal, ...', 'Dolor de encï¿½as', 'Caries', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,102, 104, '2022-04-11 20:30:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
 
 select * from usuarios;
 select * from administradores;
+select * from citas;
 select * from pacientes;
 select * from medicos;
-select * from citas;
 select * from ciudades;
 select * from horarios;
 select * from especialidades;

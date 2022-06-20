@@ -19,6 +19,12 @@ public class Ciudad {
         this.provincia = provincia;
     }
 
+    public Ciudad() {
+        this.codigo = "";
+        this.nombre = "";
+        this.provincia = "";
+    }
+
     public String getCodigo() {
         return codigo;
     }

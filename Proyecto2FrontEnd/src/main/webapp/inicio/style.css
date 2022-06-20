@@ -1,0 +1,280 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.columna-side {
+    background-color: #fff;
+}
+
+.columna-side * {
+    background-color: #fff;
+}
+
+li {
+    background-color: #fff;
+}
+
+.columna {
+  justify-content: center;
+  background-color: #fff;
+  border-right: solid 4px #b4d6e2;
+  padding: 10px;
+  height: 450px;
+}
+
+
+.bootstrap-datetimepicker-widget .datepicker-days table tbody tr:hover {
+    background-color: #eee;
+}
+
+.container-fluid {
+    background-color: #fff;
+}
+
+
+#header {
+  padding: 10px;
+  color: #000;
+  font-size: 26px;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+}
+
+#header *{
+    display: flex;
+    font-size: 15px;
+    font-weight: bold;
+    align-items: center;
+    background-color: #fff;
+}
+
+button {
+    border: 0px;
+    background-color: white;
+}
+
+#container {
+  margin-top: -10px;
+  /* border-top: 10px solid #20ccaf; */
+  width: 200px;
+  align-content: center;
+  background-color: #fff;
+}
+
+#weekdays {
+    font-size: 15px;
+    display: flex;
+    color: #000000;
+    width: 100%;
+}
+
+.weekly-container-sup {
+    /* background-color: #77cece;
+    background-color: #206b6b; */
+    background-color: #fff;
+    flex: 1;
+}
+
+.scroll {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+    width: 15px; 
+}
+  
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+  
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background-color: #206b6b;
+    background-color: #77cece;
+}
+
+#weekly-weekdays {
+    font-size: 15px;
+    display: flex;
+    color: #000000;
+    width: 100%;
+}
+
+#weekly-header {
+    background-color: #fff;
+    display: flex;
+    height: 80px;
+    width: 1000px;
+    font-weight: bold;
+}
+
+#weekly-header * {
+    text-align: center;
+    flex: 1;
+    align-self: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#weekly-container {
+    /* border-top: 10px solid #20ccaf; */
+    align-items: center;
+    align-content: center;
+    width: 1000px;
+    height: 450px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 150px);
+    column-gap: 20px;
+    row-gap: 2px;
+    height: 350px;
+    width: 1020px;
+}
+
+.grid-container-header {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(6, 150px);
+    column-gap: 20px;
+    row-gap: 5px;
+}
+
+.item-header {
+    font-weight: bold;
+    background-color: #ffffff;
+}
+
+.hora {
+    background-color: #ffffff;
+}
+
+.grid-item {
+    height: 50px;
+    text-align: center;
+}
+
+#weekdays div {
+  width: 30px;
+  padding: 5px;
+}
+
+#calendar {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day {
+    text-align: center;
+    font-size: 12px;
+    width: 25px;
+    padding: 2.5px;
+    height: 20px;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: white;
+    margin: 1.2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.day:hover {
+    background-color: #81c9e4;
+}
+
+.day + #currentDay {
+    background-color: #b4d6e2;
+}
+
+
+.padding {
+  cursor: default !important;
+  background-color: #FFFCFF !important;
+  box-shadow: none !important;
+}
+
+.dropdown {
+    margin: 10px;
+}
+
+input[type='checkbox'] {
+    margin: 10px;
+    accent-color: gray;
+}
+
+input[type='checkbox']:after {
+    background-color: #77cece;
+    margin: 10px;
+}
+
+.dropdown-toggle {
+    color: #000;
+    text-decoration: none;
+}
+
+.dropdown-toggle:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.row {
+    background-color: #fff;
+    height: fit-content;
+    margin-left: 10px;
+}
+
+#weekly-header {
+    margin: 10px;
+    height: 40px;
+    flex-direction: row;
+    display: flex;
+    background-color: #fff;
+    justify-content: center;
+}
+
+#weekly-header * {
+    color: #000000;
+    font-weight: bold;
+    display: flex;
+}
+
+#horas {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.horaCita {
+    background: #77cece;
+    height: 50px;
+    text-align: center;
+}
+
+.enableHourAppointment {
+    background: #b4d6e2;
+    cursor: pointer;
+    height: 50px;
+    text-align: center;
+}
+
+.enableHourAppointment:hover {
+    background: #a3d0e0;
+}
+
+
+#navbar {
+    margin: -10px;
+}

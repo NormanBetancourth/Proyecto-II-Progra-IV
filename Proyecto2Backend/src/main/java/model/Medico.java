@@ -9,15 +9,21 @@ package model;
  * @author norma
  */
 public class Medico extends Usuario {
-    String password;
-    String especialidad;//TODO
-    float fee; 
-    String localidad;//TODO
-    String clinica;//TODO
-    String fotoPath;
-    String presentacion;//TODO
-    String estado;//TODO
-
+    String password;     //editable
+    String especialidad; //editable
+    float fee;           //editable
+    String localidad;    //editable
+    String clinica;      //editable
+    String fotoPath;     //editable
+    String presentacion; //editable
+    String estado;
+    
+    public Medico(Usuario user){
+        super.setNombre(user.getNombre());
+        super.setId(user.getId());
+        super.setTipo(user.getTipo());
+    }
+    
     public Medico(String password, String especialidad, float fee, String localidad, String clinica, String fotoPath, String presentacion, String estado, String nombre, String id, String tipo) {
         super(nombre, id, tipo);
         this.password = password;
@@ -29,6 +35,19 @@ public class Medico extends Usuario {
         this.presentacion = presentacion;
         this.estado = estado;
     }
+    
+    public Medico() {
+        super("", "", "");
+        this.password = "";
+        this.especialidad = "";
+        this.fee = 0;
+        this.localidad = "";
+        this.clinica = "";
+        this.fotoPath = "";
+        this.presentacion = "";
+        this.estado = "F";
+    }
+    
 
     public String getClinica() {
         return clinica;
@@ -45,10 +64,6 @@ public class Medico extends Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
-    
-
-   
 
     public String getNombre() {
         return nombre;

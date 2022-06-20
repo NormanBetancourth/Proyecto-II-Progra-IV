@@ -18,8 +18,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <title>Administrador</title>     
     </head>
     <body class="p-5">
+      <!--Contenedor-->  
         <div class="container-xxl bg-white cont-size d-flex border border-2 shadow p-3 mb-5 bg-body rounded">
-
+           <!--Barra lateral-->  
           <div id="navbar-lateral" class="col col-size1 border border-2 color-navbar">
             <div class="" id="user-profile">
                 <div class="d-flex color-admin">
@@ -48,19 +49,32 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                   <p>Logout</p>
               </div>
             </div>
-
           </div>
-
+           <!--Barra MEDICOS-->  
           <div id="sec-barra-medicos" class="col col-size2">
             <div id="text-barra-med">
-                <p class="fs-5 text-center">Solicitudes de medicos nuevos</p>
+                <p class="fs-5 text-center">Medicos registrados en el sistema</p>
             </div>
               <div id="div-barra-medicos" class="border border-2 rounded">
-
+                <!--AQUI ADENTRO SE IRAN INSERTANDO MEDICOS PARA MOSTRARLOS-->  
               </div>
           </div>
-
         </div>
+    <!--overly-->    
+    <div id="overlay" class="overlay"></div>    
+    
+    <!--popup-->
+        <div id="popup" class='popup'> 
+            <div class='container'>
+                    <div id="infoPopupMed">	   
+                      
+                    </div> 
+                    <div>
+                    <button id="btnRegresarPop" type="button" class="btn btn-info">Regresar</button>
+                   </div>
+            </div>     
+        </div>
+        
     </body>
-       <script src="admin-listar.js"> </script> 
+       <script src="admin-listadoMed.js"> </script> 
 </html>

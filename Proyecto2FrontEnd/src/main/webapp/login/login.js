@@ -2,27 +2,36 @@ var medicos = new Array();
 var adminis = new Array();
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 const NET_ERR = 999;
-
+var arrMedicos2 = new Array();
 var user = { id: "", pwd: "" };
-
+var error = "";
 const loadUser = () => {
   user.pwd = document.querySelector("#pwd-usr").value;
   user.id = document.querySelector("#id-usr").value;
 };
+
 
 function login() {
   (async () => {
     try {
       loadUser();
       result = await search(user.id);
+      await fetchAndList();
       console.log(result);
       
 
       if (result === undefined) {
         errorMessage(404, $("#errorDiv"));
+        return;
       } else {
-          localStorage.setItem("user", JSON.stringify(result));
+        if(result.password === user.pwd) {
+          const userSession = await saveUserLoged(result.id);
           window.location.href = "./inicio/index.html";
+          return;
+        }else{
+          errorMessage(404, $("#errorDiv"));
+          return;
+        }
         
       }
     } catch (error) {
@@ -31,6 +40,46 @@ function login() {
     }
   })();
 }
+
+
+const saveUserLoged = async (id) =>{
+
+  try {
+    const req = new Request(backend+ '/session/login/'+id, {
+      method: 'POST',
+      headers: {}
+    });
+
+
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al guardad user de session");
+      return;
+    }
+    var result = await res.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+
+};
+
+function fetchAndList() {
+    const request = new Request(backend + '/medicos', {method: 'GET', headers: {}});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+               console.log("ERROR FETCH");
+                return;
+            }
+            arrMedicos2 = await response.json();
+        } catch (e) {
+            // errorMessage(NET_ERR,$("#buscarDiv #errorDiv"));
+            console.log(e);
+        }
+    })();
+} 
 
 const search = async (id) => {
   try {
@@ -90,7 +139,6 @@ const load = () => {
 };
 
 const singIn = () => {
-    localStorage.setItem('user', null);
     window.location.href = "./sing-in/index.html";
 };
 

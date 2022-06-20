@@ -17,20 +17,49 @@ public class Cita {
     String motivo;
     String signos;
     String diagnostico;
-    ArrayList<String> prescripciones;
-    ArrayList<String> Medicamentos;    
+    String estado;
+    String prescripciones;
+    String Medicamentos;    
 
-    public Cita(Medico medico, Paciente paciente, Fecha fecha, String motivo, String signos, String diagnostico, ArrayList<String> prescripciones, ArrayList<String> Medicamentos) {
+    public Cita(Medico medico, Paciente paciente, Fecha fecha, String motivo, String signos, String diagnostico, String estado, String prescripciones, String Medicamentos) {
         this.medico = medico;
         this.paciente = paciente;
         this.fecha = fecha;
         this.motivo = motivo;
         this.signos = signos;
         this.diagnostico = diagnostico;
+        this.estado = estado;
         this.prescripciones = prescripciones;
         this.Medicamentos = Medicamentos;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getPrescripciones() {
+        return prescripciones;
+    }
+
+    public String getMedicamentos() {
+        return Medicamentos;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public void setPrescripciones(String prescripciones) {
+        this.prescripciones = prescripciones;
+    }
+
+    public void setMedicamentos(String Medicamentos) {
+        this.Medicamentos = Medicamentos;
+    }
+
+    
+    
+    
     public Cita() {
     }
     
@@ -60,13 +89,7 @@ public class Cita {
         return diagnostico;
     }
 
-    public ArrayList<String> getPrescripciones() {
-        return prescripciones;
-    }
-
-    public ArrayList<String> getMedicamentos() {
-        return Medicamentos;
-    }
+  
 
     public void setMedico(Medico medico) {
         this.medico = medico;
@@ -92,17 +115,7 @@ public class Cita {
         this.diagnostico = diagnostico;
     }
 
-    public void setPrescripciones(ArrayList<String> prescripciones) {
-        this.prescripciones = prescripciones;
-    }
-
-    public void setMedicamentos(ArrayList<String> Medicamentos) {
-        this.Medicamentos = Medicamentos;
-    }
-
-    @Override
-    public String toString() {
-        return "Cita{" + "medico=" + medico + ", paciente=" + paciente + ", fecha=" + fecha + ", motivo=" + motivo + ", signos=" + signos + ", diagnostico=" + diagnostico + ", prescripciones=" + prescripciones + ", Medicamentos=" + Medicamentos + '}';
-    }
+ 
+  
     
 }

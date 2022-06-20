@@ -5,6 +5,7 @@
 package com.mycompany.proyecto2backend;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
@@ -13,45 +14,33 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import model.Ciudad;
 import model.Especialidad;
+import model.serviceBackend.Service;
 
-/**
- *
- * @author norma
- */
+
 @Path("/especialidades")
 public class Especialidades {
-    ArrayList<Especialidad> especialidades= new ArrayList();
-    
-    public void cargarDatos(){
-        especialidades.add(new Especialidad("1", "Cirugia", "Operar"));
-        especialidades.add(new Especialidad("2", "Pediatria", "Atender ninos"));
-        especialidades.add(new Especialidad("3", "xyz", "desc xyz"));
-    }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Especialidad> read(){
-        cargarDatos();
-        return especialidades;
+    public List<Especialidad> read(){
+         try {
+            return Service.instance().retornarListaEspecialidades();
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
     }
     
+    
+    //Obtener una especialidad  "backend/especialidades/codigoEspecialidad"
     @GET
     @Path("{codigo}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Especialidad read(@PathParam("codigo") String id) {
-        cargarDatos();
+    public Especialidad read(@PathParam("codigo") String codigo) {
         try {
-            for (Especialidad esp : especialidades) {
-                if (esp.getCodigo().equals(id)) {
-                    return esp;
-                }
-            }
-        } catch (Exception e) {
+            return Service.instance().retornarEspecialidad(codigo);
+        } catch (Exception ex) {
             throw new NotFoundException();
         }
-
-        return null;
     }
-    
     
 }

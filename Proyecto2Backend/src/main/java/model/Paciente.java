@@ -5,6 +5,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -13,19 +14,33 @@ import java.util.HashMap;
 public class Paciente extends Usuario {
     String fotoPath;
     String telefono;
-    //antecedentes
+    String idMed;
+    
+    public void setIdMedico(String id){
+        idMed = id;
+    }
     //contactos de emergencia
 
-    public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono) {
+     public Paciente(Usuario user){
+        super.setNombre(user.getNombre());
+        super.setId(user.getId());
+        super.setTipo(user.getTipo());
+    }
+     
+    public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono, String idMed) {
         super(nombre, id, tipo);
         this.fotoPath = fotoPath;
         this.telefono = telefono;
+        this.idMed = idMed;
     }
 
     public Paciente() {
+        this.fotoPath="";
+        this.id="";
+        this.idMed="";
+        this.telefono="";
+        this.tipo = "";
     }
-
-
 
     public String getFotoPath() {
         return fotoPath;
@@ -45,44 +60,46 @@ public class Paciente extends Usuario {
         this.telefono = telefono;
     }
 
-
-
-    @Override
-    public String toString() {
-        return super.toString() +"Paciente{"  + ", fotoPath=" + fotoPath + ", telefono=" + telefono + ", antecedentes="  + '}';        
+    public String getIdMed() {
+        return idMed;
     }
 
+    public void setIdMed(String idMed) {
+        this.idMed = idMed;
+    }
+    
+    @Override
     public String getNombre() {
         return nombre;
     }
-
+    
+    @Override
     public String getId() {
         return id;
     }
-
+    
+    @Override
     public String getTipo() {
         return tipo;
     }
-
+    
+    @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    @Override
     public void setId(String id) {
         this.id = id;
     }
-
+    
+    @Override
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Paciente{" +"id="+id+" nombre= "+nombre+ "fotoPath=" + fotoPath + ", telefono=" + telefono + ", idMed=" + idMed +'}';
+    }
     
 }
