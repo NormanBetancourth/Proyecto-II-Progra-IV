@@ -56,7 +56,7 @@ button {
 
 #container {
   margin-top: -10px;
-  border-top: 10px solid #20ccaf;
+  /* border-top: 10px solid #20ccaf; */
   width: 200px;
   align-content: center;
   background-color: #fff;
@@ -126,7 +126,7 @@ button {
 }
 
 #weekly-container {
-    border-top: 10px solid #20ccaf;
+    /* border-top: 10px solid #20ccaf; */
     align-items: center;
     align-content: center;
     width: 1000px;

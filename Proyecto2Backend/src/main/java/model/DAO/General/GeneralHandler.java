@@ -501,6 +501,22 @@ public class GeneralHandler {
         return false;
     }
     
+    public boolean registrarAntecedente(Antecedente antecedente) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[4];
+            valores1[0] = "insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, ?, ?, ?);";
+            valores1[1] = antecedente.getIdPaciente();
+            valores1[2] = antecedente.getTipo();
+            valores1[3] = antecedente.getAnotacion();
+            executor.prepareStatement(valores1);
+            return true;
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
     //BORRAR PACIENTE POR ID
     public boolean borrarPaciente(String id) {
         try {

@@ -25,7 +25,7 @@ table.onclick = async (e) => {
             $("#modal-container").modal("show");
         }
         if(e.target.dataset.event === 'antecedentes'){
-            await loadAntecedentesView(objEvent.id);//TODO: agregar antecedente nuevo
+            await loadAntecedentesView(objEvent.id);
             $("#modal-container").modal("show");
         }
         if(e.target.dataset.event === 'examenes'){
@@ -58,20 +58,26 @@ const loadAntecedentesView = async (id) =>{
                                     <div class="row align-items-center text-center mt-2">
                                         <h4>Antecedentes</h4>
                                     </div>
-                                    <form onsubmit="">
+                                    <form onsubmit="addAntecedente()">
                                     <div class="row">
                                             <div class="col"></div>
                                             <div class="col   text-center">
                                                 <div class="form-group py-3">
                                                     <label for="exampleInputEmail1">Tipo de antecedente</label>
-                                                    <input type="text" class="form-control" id="id-usr" aria-describedby="emailHelp"  required>
+                                                    <select class="form-select" aria-label="Default select example" id="antecedente-tipo" required>
+                                                    <option value="Enfermedad">Enfermedad</option>
+                                                    <option value="Alergia">Alergia</option>
+                                                    <option value="Cirugia">Cirugia</option>
+                                                    <option value="Padecimiento">Padecimiento</option>
+                                                    <option value="Otro" selected>Otro</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group my-1 ">
                                                     <label for="exampleInputPassword1">Detalles</label>
                                                     <div class="row align-items-center text-center my-3">
-                                                        <textarea type="text" style="min-height: 100px; resize: none;"   id="id-usr"  required></textarea>
+                                                        <textarea type="text"  id="antecedente-detalles" style="min-height: 100px; resize: none;"   id="id-usr"  required></textarea>
                                                         <div class="col mt-4">
-                                                            <button type="button" class="btn btn-primary">Agregar antecedente</button>
+                                                            <button type="submit" class="btn btn-primary">Agregar antecedente</button>
                                                         </div>
                                                     </div>
                                 
@@ -111,6 +117,11 @@ const loadAntecedentesView = async (id) =>{
     });
     const tableAntecedentesBody = document.getElementById('table-body-antecedente');
     tableAntecedentesBody.innerHTML = dataAntecedentes;
+
+    const element = document.querySelector('form');
+    element.addEventListener('submit', event => {
+        event.preventDefault();
+    });
 
 
     
@@ -192,6 +203,23 @@ const loadUsersOnView = async () => {
     });
 
      tableBody.innerHTML = content;
+};
+
+const addAntecedente = async () => {
+
+    const tipoAntecedente = document.getElementById('antecedente-tipo');
+    const detallesAntecedente = document.getElementById('antecedente-detalles');
+    console.log(tipoAntecedente.value);
+    console.log(detallesAntecedente.value);
+    console.log(objEvent.id);
+
+    let foo = {anotacion:detallesAntecedente.value, codigo:'-1', idPaciente:objEvent.id, tipo:tipoAntecedente.value}
+    antecedentesPOST(foo);
+    $("#modal-container").modal("hide");
+
+
+
+
 };
 
 //REST API METHODS
@@ -281,6 +309,23 @@ const antecedentesGET = async (id) =>{
         }
         var result = await res.json();
         return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const antecedentesPOST = async (antecedente) =>{
+    const req = new Request(backend+'/antecedentes',
+        {method: 'POST',
+         headers: { 'Content-Type': 'application/json'},
+         body: JSON.stringify(antecedente)});
+    try {
+        const res = await fetch(req);
+        if (!res.ok){
+            console.log('error al inserta');
+            return;
+        }
+        console.log('Se inserta');
     } catch (error) {
         console.log(error);
     }

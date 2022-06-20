@@ -66,7 +66,7 @@ public class Antecedente {
 
     @Override
     public String toString() {
-        return "Antecedentes{" + "codigo=" + codigo + ", tipo=" + tipo + ", anotacion=" + anotacion + '}';
+        return "Antecedentes{" + "codigo=" + codigo + ", tipo=" + tipo + ", anotacion=" + anotacion + "medic: "+ idPaciente+ '}';
     }
     
     

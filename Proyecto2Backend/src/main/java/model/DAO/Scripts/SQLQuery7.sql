@@ -219,7 +219,7 @@ insert into pacientes(id, telefono, idMed) values (106, '69129870', 102);
 
 -- Antecedentes
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Alergia', 'El medicamento zulfa le causa fiebre y zarpullido');
-insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migra�a');
+insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migrana');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 104, 'Cirugia', 'Tumor cerebral');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 104, 'Padecimiento', 'Intolerante a la lactosa');
 

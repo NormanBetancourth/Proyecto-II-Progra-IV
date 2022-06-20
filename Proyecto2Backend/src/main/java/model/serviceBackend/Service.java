@@ -49,6 +49,9 @@ public class Service {
      public void borrarMedico(String id){
          genDB.borrarMedico(id);
      }
+    public void registrarAntecedente(Antecedente a){
+         genDB.registrarAntecedente(a);
+    }
      
     public void cambiarEstadoMedico(String id, String estado) {
         genDB.modificarEstadoMedico(id, estado);
