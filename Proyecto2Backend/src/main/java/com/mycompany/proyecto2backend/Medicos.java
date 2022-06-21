@@ -103,6 +103,7 @@ public class Medicos {
     //Borrar un medico
     @DELETE
     @Path("{id}")
+    @RolesAllowed({"Admin"})
     public void delete(@PathParam("id") String id){
        try {
             Service.instance().borrarMedico(id);

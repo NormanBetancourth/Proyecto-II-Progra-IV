@@ -43,20 +43,20 @@ public class Login {
     @POST
     @Path("login/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Medico login(@PathParam("id") String id ){
+    public Usuario login(@PathParam("id") String id ){
         HttpSession session = request.getSession(true);
-        session.setAttribute("user", Service.instance().retornarMedicoPorID(id));
-        Medico m = (Medico) session.getAttribute("user");
+        session.setAttribute("user", Service.instance().retornarUsuarioID(id));
+        Usuario m = (Usuario) session.getAttribute("user");
         return m;
     }
     
     @GET
     @Path("current")
     @Produces(MediaType.APPLICATION_JSON)
-    public Medico getUser() {
+    public Usuario getUser() {
         HttpSession session = request.getSession(true);
-        Medico m = (Medico) session.getAttribute("user");
-        return m;
+        Usuario u = (Usuario) session.getAttribute("user");
+        return u;
     }
     
     

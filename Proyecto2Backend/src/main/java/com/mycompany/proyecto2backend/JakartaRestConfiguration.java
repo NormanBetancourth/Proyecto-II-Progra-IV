@@ -1,5 +1,6 @@
 package com.mycompany.proyecto2backend;
 
+import javax.annotation.security.DeclareRoles;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
@@ -8,6 +9,6 @@ import javax.ws.rs.core.Application;
  * @author Juneau
  */
 @ApplicationPath("api")
+@DeclareRoles({"Admin", "Medico"})
 public class JakartaRestConfiguration extends Application {
-    
 }
