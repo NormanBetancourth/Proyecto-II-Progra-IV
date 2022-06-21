@@ -7,6 +7,7 @@ package com.mycompany.proyecto2backend;
 import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.PathParam;
@@ -73,9 +74,10 @@ public class Medicos {
     }
     
     
-    //Actualizar el estado de un medico
+    //Actualizar el estado de un medico (solo el admin puede acceder a este metodo)
     @PUT
     @Path("{id}/{estado}")
+    @RolesAllowed({"Admin"}) //verifica que el rol del usuario sea un admin (esta verificacion la hace junto a la clase autentication)
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateEstadoMedico(@PathParam("id") String id, @PathParam("estado") String estado) {  
         try {
