@@ -233,6 +233,8 @@ insert into contactos(numero, id_personal, id_paciente, nombre, telefono) values
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas, 101, 103, '2022-04-10 16:00:00', 'Finalizado', 'Presion normal, ...', 'Problemas respiratorios.', 'Gripe', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
+values (next value for sec_citas, 101, 104, '2022-04-10 12:00:00', 'Finalizado', 'dolor corporal, ...', 'Problemas fisicos.', 'sobreentrenamiento', 'Yiee baree', 'Cada 2 horas');
+insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,101, 104, '2022-04-11 14:00:00', 'Finalizado', 'Presion normal, ...', 'Chequeo general', 'Deficiencia vitaminas', 'Vitaminas C y B12', 'Diario, una vez al d�a');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,102, 103, '2022-04-10 09:30:00', 'Finalizado', 'Presion normal, ...', 'Dolor de enc�as', 'Caries', 'Acetaminofen', 'Cada 8 horas');

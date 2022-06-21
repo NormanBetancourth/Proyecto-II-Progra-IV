@@ -13,8 +13,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
+import model.Cita;
 import model.Ciudad;
 import model.Especialidad;
 import model.Horario;
@@ -26,8 +28,8 @@ import model.Paciente;
  */
 public class GeneralHandler {
 
-//    final String usernameBD = "sa";
-    final String usernameBD = "sass";
+   final String usernameBD = "sa";
+//    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -351,6 +353,35 @@ public class GeneralHandler {
         return lista;
     }
     
+    //METODO QUE ME RETORNA UNA LISTA DE TODAS LAS CITAS DE UN MEDICO SEGUN EL DIA
+    public List<Cita> listaCitasPorMedicoDia(String idMed, String fecha) {
+        List<Cita> lista = new ArrayList<>();
+        String sql = "select * from citas where id_medico = " + idMed + ";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                String fecH = rs.getString("fecha_hora");
+                if((fecH.substring(0, 10)).equalsIgnoreCase(fecha)){
+                Cita cita = new Cita();
+                cita.setMedico(this.retornaMedicoPorId(idMed));
+                cita.setPaciente(this.retornaPacientePorId(rs.getString("id_paciente")));
+                cita.setFecha(rs.getString("fecha_hora"));
+                cita.setEstado(rs.getString("estado"));
+                cita.setSignos(rs.getString("signos"));
+                cita.setMotivo(rs.getString("motivo"));
+                cita.setDiagnostico(rs.getString("diagnostico"));
+                cita.setPrescripciones(rs.getString("prescripcion"));
+                cita.setMedicamentos(rs.getString("medicamentos"));
+                lista.add(cita);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
+
      //========================================METODOS DE REGISTRO DATABASE ======================================
     
 //METODO PARA REGISTRAR UN USUARIO EN LA BASE DE DATOS
@@ -435,6 +466,30 @@ public class GeneralHandler {
             } catch (Exception throwables) {
                 throwables.printStackTrace();
             }
+        }
+        return false;
+    }
+    
+    //METODO PARA REGISTRAR CITA 
+    public boolean registrarCita(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[10];
+            valores1[0] = "insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) values (next value for sec_citas,?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            valores1[1] = idMed;
+            valores1[2] = idPac;
+            valores1[3] = fec_hora; //'2022-04-11 14:00:00'
+            valores1[4] = "Registrado"; //'Finalizado','Registrado', 'Cancelado'
+            valores1[5] = signos; 
+            valores1[6] = motivo; 
+            valores1[7] = diagnostico; 
+            valores1[8] = prescripcion; 
+            valores1[9] = medicamentos;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
         }
         return false;
     }

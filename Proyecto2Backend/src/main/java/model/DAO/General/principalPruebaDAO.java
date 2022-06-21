@@ -7,6 +7,7 @@ package model.DAO.General;
 import java.util.ArrayList;
 import java.util.List;
 import model.Antecedente;
+import model.Cita;
 import model.Ciudad;
 import model.Especialidad;
 import model.Horario;
@@ -31,8 +32,12 @@ public class principalPruebaDAO {
         //===prueba de registrar un paciente [exitosa]===
         gen.registrarPaciente("130", "nombre paciente", "60901876", "101");
 
-        //===prueba de registrar un horario [NULL]===
+        //===prueba de registrar un horario [exitosa]===
         //gen.registrarHorario("101", "inactivo", "Lunes", "13:00:00",  "16:00:00", "00:30");
+        
+        //=====prueba de registrar una cita[exitosa]===
+        gen.registrarCita("101", "106", "2022-05-10 16:00:00", "Presion alta", "presion", "ebola", "codeina ultra", "cada 3 horas");
+        
         
         //=============METODOS DE RETORNOS EN LA BD====================//
         
@@ -88,6 +93,9 @@ public class principalPruebaDAO {
         List<Ciudad> listCiudades = gen.listarCiudades();
         System.out.println(listCiudades.toString());
         
+        //===prueba de retornar lista de citas[exitosa]===
+        List<Cita> listCitasDia = gen.listaCitasPorMedicoDia("101", "2022-04-10");
+        System.out.println(listCitasDia.toString());
         
         //=============METODOS DE VERIFICACION EN LA BD====================//
         
