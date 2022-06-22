@@ -23,6 +23,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Cita;
 import model.Medico;
+import model.Usuario;
 import model.serviceBackend.Service;
 
 /**
@@ -37,14 +38,16 @@ public class Citas {
     @Context
     HttpServletRequest request;
 
-    Medico getCurrentMed() {
+    Usuario getCurrentMed() {
         HttpSession session = request.getSession(true);
-        Medico m = (Medico) session.getAttribute("user");
+        Usuario m = (Usuario) session.getAttribute("user");
         return m;
     }
 
 
     //Registrar una cita en la BD
+    // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
+    // const request = new Request(backend+'/citas,  {method: 'PUT', headers: { 'Content-Type': 'application/json'},  body: JSON.stringify(CITA)});
     @POST
     @RolesAllowed({"Medico"}) 
     @Consumes(MediaType.APPLICATION_JSON)
@@ -57,6 +60,8 @@ public class Citas {
     }
 
     //Obtener la lista de citas por dia
+    // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
+    // const request = new Request(backend+'/citas/2022-10-09,  {method: 'GET', headers: {));
     @GET
     @Path("{fecha}")
     @Produces({MediaType.APPLICATION_JSON})
