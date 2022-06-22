@@ -15,14 +15,16 @@ public class Horario {
     String frecuencia;
     String horaInicio;
     String horaFinal;
+    int numeroDia;
 
-    public Horario(String estado, String idMedico, String dia, String horaInicio, String horaFinal, String frecuencia) {
+    public Horario(String estado, String idMedico, String dia, String horaInicio, String horaFinal, String frecuencia, int numeroDia) {
         this.estado = estado;
         this.idMedico = idMedico;
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFinal = horaFinal;
         this.frecuencia = frecuencia;
+        this.numeroDia = numeroDia;
     }
      public Horario() {
         this.idMedico = "";
@@ -31,6 +33,7 @@ public class Horario {
         this.frecuencia = "";
         this.horaInicio = "";
         this.horaFinal = "";
+        this.numeroDia = 0;
     }
 
     public String getEstado() {
@@ -81,10 +84,22 @@ public class Horario {
         this.frecuencia = frecuencia;
     }
 
+    public int getNumeroDia() {
+        return numeroDia;
+    }
+
+    public void setNumeroDia(int numeroDia) {
+        this.numeroDia = numeroDia;
+    }
+
+    
+    
     @Override
     public String toString() {
-        return "Horario{" + "Estado=" + estado + ", idMedico=" + idMedico + ", dia=" + dia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + ", frecuencia=" + frecuencia + '}';
+        return "Horario{" + "idMedico=" + idMedico + ", estado=" + estado + ", dia=" + dia + ", frecuencia=" + frecuencia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + ", numeroDia=" + numeroDia + '}';
     }
+
+
 
     public void setEstadoV2(String estado) {
         this.estado = estado;

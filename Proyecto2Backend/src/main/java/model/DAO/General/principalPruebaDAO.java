@@ -129,8 +129,8 @@ public class principalPruebaDAO {
            System.out.println( borrado);
            
            //===PRUEBA DE ACTUALIZAR HORARIOS DE UN MEDICO CON LISTA DE HORARIOS ===
-           Horario h1 = new Horario("","110","Martes","10:00:00","10:00:00","00:30");
-           Horario h2 = new Horario("", "110", "Viernes", "10:00:00", "10:00:00", "00:30");
+           Horario h1 = new Horario("","110","Martes","10:00:00","10:00:00","00:30", 1);
+           Horario h2 = new Horario("", "110", "Viernes", "10:00:00", "10:00:00", "00:30", 2);
            
            List<Horario> lh = new ArrayList();
            lh.add(h1);

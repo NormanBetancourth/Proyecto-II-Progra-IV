@@ -40,14 +40,15 @@ modalSaveBtn.onclick = () => {
       document.querySelectorAll("input[name=mycheckboxes]:checked")
     );
     mappedDays = [];
-    selectedDays.forEach((element) => {
+    selectedDays.forEach((element, index) => {
       mappedDays.push({
         dia: element.parentNode.childNodes[2].childNodes[0].data,
         horaInicio: element.parentNode.childNodes[4].childNodes[3].value,
         horaFinal: element.parentNode.childNodes[4].childNodes[7].value,
         codigo:'',
         idMedico:'',
-        frecuencia:''
+        frecuencia:'',
+        num: index
       });
     });
     $("#modal-container").modal("hide");
