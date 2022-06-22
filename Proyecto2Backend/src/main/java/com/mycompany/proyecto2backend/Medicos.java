@@ -51,6 +51,9 @@ public class Medicos {
     }
     
     //Obtener la lista de medicos
+    //Obtener la lista de citas por dia
+    // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
+    // const request = new Request(backend+'/medicos,  {method: 'GET', headers: {));
     @GET
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
     public List<Medico> read(){

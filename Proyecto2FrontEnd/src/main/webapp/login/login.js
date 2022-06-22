@@ -49,8 +49,6 @@ const saveUserLoged = async (id) =>{
       method: 'POST',
       headers: {}
     });
-
-
     const res = await fetch(req);
     if (!res.ok) {
       console.log("error al guardad user de session");
