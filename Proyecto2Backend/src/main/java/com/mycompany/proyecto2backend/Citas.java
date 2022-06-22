@@ -5,6 +5,7 @@
 package com.mycompany.proyecto2backend;
 
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -45,6 +46,7 @@ public class Citas {
 
     //Registrar una cita en la BD
     @POST
+    @RolesAllowed({"Medico"}) 
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(Cita c) {
         try {
