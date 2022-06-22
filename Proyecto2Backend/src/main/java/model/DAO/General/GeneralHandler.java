@@ -28,8 +28,8 @@ import model.Paciente;
  */
 public class GeneralHandler {
 
-   final String usernameBD = "sa";
-//    final String usernameBD = "sass";
+//   final String usernameBD = "sa";
+    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -202,6 +202,7 @@ public class GeneralHandler {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        System.out.println(lista);
         return lista;
     }
     

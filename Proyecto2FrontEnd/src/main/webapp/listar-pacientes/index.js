@@ -154,6 +154,8 @@ const horarioBuild = async (dateFormat) => {
     let horario = await horarioGET();
     console.log(day);
     console.log(horario);
+    console.log(dateFormat);
+    //TODO: traerse las citas de ese día y quitar los horarios ocupados
 };
 
 const horarioGET = async () => {
