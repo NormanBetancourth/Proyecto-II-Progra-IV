@@ -39,9 +39,9 @@ public class Horarios {
     HttpServletRequest request;
     
     
-    Medico getCurrentMed(){
+    Usuario getCurrentMed(){
         HttpSession session = request.getSession(true);
-        Medico m = (Medico) session.getAttribute("user");
+        Usuario m = (Usuario) session.getAttribute("user");
         return m;
     }
 
