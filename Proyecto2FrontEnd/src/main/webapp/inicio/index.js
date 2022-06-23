@@ -3,7 +3,7 @@ let medicoRegistrado = {};
 let header = '';
 let semana = [];
 let diaHoraSeleccionada = {};
-let frecuencia = '1:00';
+let frecuencia = '01:00';
 const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
              '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
              '16:00', '16:30', '17:00','17:30', '18:00', '18:30', '19:00', '19:30','20:00'];
@@ -27,7 +27,6 @@ function Load() {
   GetMedicoRegistrado();
   InitButtons();
   InitCalendar();
-  LoadActualWeek();
   AddEvents();
 }
 
@@ -77,9 +76,11 @@ const GetHorario = async () =>{
       }
       agenda = await res.json();
       frecuencia = agenda[0].frecuencia;
+      console.log(frecuencia);
       agenda.forEach(element => {
         element.num = RetornaNumDia(element.dia);
       });
+      LoadActualWeek();
       console.log(agenda);
   } catch (error) {
       console.log(error);
@@ -226,7 +227,7 @@ function ReturnNumber(number) {
 function LoadDays() {
   let line = '';
   if( semana.length > 0) {
-    if(frecuencia === '1:00'){
+    if(frecuencia === '01:00'){
       for(let i = 0; i <= 25; i+=2){
         const hora = document.createElement('div');
         hora.textContent = horas[i];
