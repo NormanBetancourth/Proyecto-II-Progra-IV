@@ -2,6 +2,8 @@ let backend = "http://localhost:8080/Proyecto2Backend/api";
 let medicoRegistrado = {};
 let header = '';
 let semana = [];
+let enabled = [];
+let registered = [];
 let diaHoraSeleccionada = {};
 let frecuencia = '01:00';
 const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
@@ -45,7 +47,7 @@ const GetMedicoRegistrado = async () =>{
       medicoRegistrado = await res.json();
       GetHorario();
       GetPacientes();
-      console.log(medicoRegistrado);
+      // console.log(medicoRegistrado);
   } catch (error) {
       console.log(error);
   }
@@ -88,38 +90,6 @@ const GetHorario = async () =>{
   }
 };  
 
-function RetornaHoraDeCita(cita) {
-  // console.log(cita[0].fecha.substring(11, 16))
-  return cita.fecha.substring(11, 16);
-}
-
-const GetCitas = async () =>{
-  for (const [key, value] of fechasCitas.entries()) {
-    // console.log(key, value);
-    try {
-      console.log(value);
-      const req = new Request(backend+ '/citas/' +  fechasCitas.get(key), {
-          method: 'GET',
-          headers: {}
-        });
-
-      // Lee citas pero falta revisar en caso que no existan citas para una fecha
-      const res = await fetch(req);
-      if (!res.ok) {
-          console.log("Error al leer las citas");
-      }
-      let cita = await res.json();
-      console.log(cita);
-        cita.forEach(element => {
-          element.hora = RetornaHoraDeCita(element);
-          citas.push(element);
-        });
-    } catch (error) {
-      console.log(error);
-    }  
-  }  
-  console.log(citas);
-};
 
 const GetPacientes = async () =>{
   try {
@@ -134,11 +104,87 @@ const GetPacientes = async () =>{
           return;
       }
       pacientes = await res.json();
-      console.log(pacientes);
+      // console.log(pacientes);
   } catch (error) {
       console.log(error);
   }
 };
+
+function RetornaHoraDeCita(cita) {
+  // console.log(cita[0].fecha.substring(11, 16))
+  return cita.fecha.substring(11, 16);
+}
+
+function RetornaFechaDeCita(cita) {
+  // console.log(cita.fecha.substring(0, 11));
+  return cita.fecha.substring(0, 10);
+}
+
+const GetCitas = async () =>{
+  for (const [key, value] of fechasCitas.entries()) {
+    // console.log(key, value);
+    try {
+      // console.log(value);
+      const req = new Request(backend+ '/citas/' +  fechasCitas.get(key), {
+          method: 'GET',
+          headers: {}
+        });
+
+      // Lee citas pero falta revisar en caso que no existan citas para una fecha
+      const res = await fetch(req);
+      if (!res.ok) {
+          console.log("Error al leer las citas");
+      }
+      let cita = await res.json();
+      console.log(cita);
+        cita.forEach(element => {
+          element.hora = RetornaHoraDeCita(element);
+          element.fecha = RetornaFechaDeCita(element);
+          citas.push(element);
+        });
+    } catch (error) {
+      console.log(error);
+    }  
+  }  
+  LoadCitas();
+  //console.log(citas);
+};
+
+
+function LoadCitas() {
+  enabled.forEach(element => {
+    console.log('Elemento: ' + element.getAttribute('data-read'));
+    citas.forEach(cita => {
+      if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
+        element.textContent  = 'Atender';
+        registered.push(element);
+      }
+    });
+  });
+}
+
+function EnableHoursAppointments() {
+  const horasCitas = Array.from(document.querySelectorAll('.horaCita'));
+  let rango = CalculateRanges();
+
+  horasCitas.forEach(element => {
+    if(rango.has(element.getAttribute('data-day'))){
+      //console.log(rango.get(element.getAttribute('data-day')));
+      if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
+        // console.log(element.getAttribute('data-read'));
+        fechasCitas.set(weekdays.indexOf(element.getAttribute('data-day')),element.getAttribute('data-read'));
+        element.setAttribute('data-bs-toggle', 'modal');
+        element.setAttribute('data-bs-target', "#reg-modal");
+        element.classList.add('enableHourAppointment');
+        element.classList.remove('grid-item');
+        element.textContent  = 'Registrar Cita';
+        enabled.push(element);
+      }
+    }
+  });
+  //console.log(fechasCitas);
+  GetCitas();
+}
 
 function CalculateRanges() {
   let horasPorDia = new Map();
@@ -171,30 +217,6 @@ function CalculateRanges() {
   });
   //console.log(horasPorDia);
   return horasPorDia;
-}
-
-function EnableHoursAppointments() {
-  const horasCitas = Array.from(document.querySelectorAll('.horaCita'));
-  let rango = CalculateRanges();
-
-  horasCitas.forEach(element => {
-    if(rango.has(element.getAttribute('data-day'))){
-      //console.log(rango.get(element.getAttribute('data-day')));
-      if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
-        console.log(element.getAttribute('data-read'));
-        fechasCitas.set(weekdays.indexOf(element.getAttribute('data-day')),element.getAttribute('data-read'));
-        element.setAttribute('data-bs-toggle', 'modal');
-        element.setAttribute('data-bs-target', "#reg-modal");
-        element.classList.add('enableHourAppointment');
-        element.classList.remove('grid-item');
-        // element.textContent = element.getAttribute('data-infor');
-        // element.getAttribute('data-infor').substring(0,5)
-        element.textContent = 'Registrar Cita';
-      }
-    }
-  });
-  console.log(fechasCitas);
-  GetCitas();
 }
 
 Date.prototype.GetLastSaturday = function() {
