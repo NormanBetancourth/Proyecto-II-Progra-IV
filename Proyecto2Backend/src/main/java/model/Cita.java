@@ -109,6 +109,10 @@ public class Cita {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
+    
+    public void setFecha2(String fecha) {
+        this.fecha = fecha;
+    }
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;

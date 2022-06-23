@@ -28,8 +28,8 @@ import model.Paciente;
  */
 public class GeneralHandler {
 
-   final String usernameBD = "sa";
-//    final String usernameBD = "sass";
+//   final String usernameBD = "sa";
+    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -218,7 +218,6 @@ public class GeneralHandler {
                antecedente.setCodigo(rs.getString("codigo"));
                antecedente.setTipo(rs.getString("tipo"));
                antecedente.setIdPaciente(rs.getString("id_paciente"));
-                System.out.println(antecedente);
                lista.add(antecedente);
             }
         } catch (SQLException throwables) {
@@ -362,17 +361,20 @@ public class GeneralHandler {
             ResultSet rs = executor.ejecutaQuery(sql);
             while (rs.next()) {
                 String fecH = rs.getString("fecha_hora");
+                System.out.println(fecH.substring(0, 10)+" db");
+                System.out.println(fecha + " rest");
                 if((fecH.substring(0, 10)).equalsIgnoreCase(fecha)){
                 Cita cita = new Cita();
                 cita.setMedico(this.retornaMedicoPorId(idMed));
                 cita.setPaciente(this.retornaPacientePorId(rs.getString("id_paciente")));
-                cita.setFecha(rs.getString("fecha_hora"));
+                cita.setFecha2(rs.getString("fecha_hora"));
                 cita.setEstado(rs.getString("estado"));
                 cita.setSignos(rs.getString("signos"));
                 cita.setMotivo(rs.getString("motivo"));
                 cita.setDiagnostico(rs.getString("diagnostico"));
                 cita.setPrescripciones(rs.getString("prescripcion"));
                 cita.setMedicamentos(rs.getString("medicamentos"));
+                
                 lista.add(cita);
                 }
             }

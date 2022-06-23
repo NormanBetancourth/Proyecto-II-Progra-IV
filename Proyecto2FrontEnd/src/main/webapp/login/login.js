@@ -26,7 +26,14 @@ function login() {
       } else {
         if(result.password === user.pwd) {
           const userSession = await saveUserLoged(result.id);
-          window.location.href = "./inicio/index.html";
+          
+          if(result.tipo === 'Medico'){
+            
+            window.location.href = "./inicio/index.html";
+          }else{
+            window.location.href = "./Vistas/Admin/listar-med/admin-listar.html";
+
+          }
           return;
         }else{
           errorMessage(404, $("#errorDiv"));

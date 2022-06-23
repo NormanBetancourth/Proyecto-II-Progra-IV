@@ -66,10 +66,16 @@ public class Citas {
     @Path("{fecha}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Cita> read(@PathParam("fecha") String fecha) {
+        System.out.println(fecha);
         try {
-            return Service.instance().retornarListaDeCitaPorDia(this.getCurrentMed().getId(), fecha);
+            List<Cita> lista = Service.instance().retornarListaDeCitaPorDia(this.getCurrentMed().getId(), fecha);
+            System.out.println("entra en el try");
+            System.out.println(lista);
+            return lista;
         } catch (Exception ex) {
+            System.out.println(ex);
             throw new NotFoundException();
+            
         }
     }
 
