@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Cita {
     Medico medico;
     Paciente paciente;
-    Fecha fecha;
+    String fecha;
     String motivo;
     String signos;
     String diagnostico;
@@ -21,7 +21,7 @@ public class Cita {
     String prescripciones;
     String Medicamentos;    
 
-    public Cita(Medico medico, Paciente paciente, Fecha fecha, String motivo, String signos, String diagnostico, String estado, String prescripciones, String Medicamentos) {
+    public Cita(Medico medico, Paciente paciente, String fecha, String motivo, String signos, String diagnostico, String estado, String prescripciones, String Medicamentos) {
         this.medico = medico;
         this.paciente = paciente;
         this.fecha = fecha;
@@ -58,9 +58,16 @@ public class Cita {
     }
 
     
-    
-    
     public Cita() {
+        this.medico = null;
+        this.paciente = null;
+        this.fecha = null;
+        this.motivo = "";
+        this.signos = "";
+        this.diagnostico = "";
+        this.estado = "";
+        this.prescripciones = "";
+        this.Medicamentos = "";
     }
     
     
@@ -73,7 +80,7 @@ public class Cita {
         return paciente;
     }
 
-    public Fecha getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
@@ -99,7 +106,11 @@ public class Cita {
         this.paciente = paciente;
     }
 
-    public void setFecha(Fecha fecha) {
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+    
+    public void setFecha2(String fecha) {
         this.fecha = fecha;
     }
 
@@ -113,6 +124,11 @@ public class Cita {
 
     public void setDiagnostico(String diagnostico) {
         this.diagnostico = diagnostico;
+    }
+
+    @Override
+    public String toString() {
+        return "Cita{" + "medico=" + medico + ", paciente=" + paciente + ", fecha=" + fecha + ", motivo=" + motivo + ", signos=" + signos + ", diagnostico=" + diagnostico + ", estado=" + estado + ", prescripciones=" + prescripciones + ", Medicamentos=" + Medicamentos + '}';
     }
 
  

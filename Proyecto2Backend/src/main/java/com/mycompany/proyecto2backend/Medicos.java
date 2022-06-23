@@ -7,6 +7,7 @@ package com.mycompany.proyecto2backend;
 import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.PathParam;
@@ -50,6 +51,9 @@ public class Medicos {
     }
     
     //Obtener la lista de medicos
+    //Obtener la lista de citas por dia
+    // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
+    // const request = new Request(backend+'/medicos,  {method: 'GET', headers: {));
     @GET
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
     public List<Medico> read(){
@@ -73,9 +77,10 @@ public class Medicos {
     }
     
     
-    //Actualizar el estado de un medico
+    //Actualizar el estado de un medico (solo el admin puede acceder a este metodo)
     @PUT
     @Path("{id}/{estado}")
+    @RolesAllowed({"Admin"}) //verifica que el rol del usuario sea un admin (esta verificacion la hace junto a la clase autentication)
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateEstadoMedico(@PathParam("id") String id, @PathParam("estado") String estado) {  
         try {
@@ -101,6 +106,7 @@ public class Medicos {
     //Borrar un medico
     @DELETE
     @Path("{id}")
+    @RolesAllowed({"Admin"})
     public void delete(@PathParam("id") String id){
        try {
             Service.instance().borrarMedico(id);

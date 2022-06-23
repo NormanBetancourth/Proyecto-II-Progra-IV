@@ -1,40 +1,135 @@
+let backend = "http://localhost:8080/Proyecto2Backend/api";
+let medicoRegistrado = {};
+let header = '';
+let semana = [];
+let diaHoraSeleccionada = {};
+let frecuencia = '01:00';
+const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+             '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+             '16:00', '16:30', '17:00','17:30', '18:00', '18:30', '19:00', '19:30','20:00'];
+let agenda = [];
+let citas = [];
+let pacientes = [];
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 let nav = 0;
 let clicked = null;
-let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [];
-
-const listarPacientesBTN = document.getElementById('listar-pacientes-btn');
-
+const schedule = document.querySelector('.grid-container');
 const calendar = document.getElementById('calendar');
 const newEventModal = document.getElementById('newEventModal');
 const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 const modalBody = document.querySelector('#modal-body');
-const pacientes = [{nombre: 'David Bowie', edad: 56, id: 100}, {nombre: 'Lana del Rey', edad: 32, id: 101}];
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const clinicas = ['Clinica A', 'Clininca B', 'Clinica C'];
-let diaHoraSeleccionada = {};
 const calendarios = document.querySelector('.contenedor-calendarios');
 const actualDay = document.querySelector('#weekly-monthDisplay');
-let actualWeek = 0;
-let header = '';
-let semana = [];
-const frecuencia = '1:00';
-const schedule = document.querySelector('.grid-container');
-const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-             '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
-             '16:00', '16:30', '17:00','17:30', '18:00', '18:30', '19:00', '19:30','20:00'];
-const agenda = [{num: 3, dia:'Miercoles', horaInicio: '08:00', horaFinal:'11:00'},
-              {num: 4, dia:'Jueves', horaInicio: '13:00', horaFinal:'15:00'},
-              {num: 5, dia:'Viernes', horaInicio: '15:00', horaFinal:'17:00'},];
 
 function Load() {
+  GetMedicoRegistrado();
   InitButtons();
   InitCalendar();
-  LoadActualWeek();
   AddEvents();
 }
 
+const GetMedicoRegistrado = async () =>{
+  try {
+      const req = new Request(backend+ '/session/current', {
+          method: 'GET',
+          headers: {}
+        });
+
+      const res = await fetch(req);
+      if (!res.ok) {
+        console.log("Error al guardar user de session");
+      }
+      medicoRegistrado = await res.json();
+      GetHorario();
+      GetPacientes();
+      console.log(medicoRegistrado);
+  } catch (error) {
+      console.log(error);
+  }
+};
+
+function RetornaNumDia(dia) {
+  let num = 0;
+  switch(dia){
+    case 'Lunes': num = 1; break;
+    case 'Martes': num = 2; break;
+    case 'Miercoles': num = 3; break;
+    case 'Jueves': num = 4; break;
+    case 'Viernes': num = 5; break;
+  }
+  return num;
+}
+
+const GetHorario = async () =>{
+  try {
+      const req = new Request(backend+ '/horarios/horario', {
+          method: 'GET',
+          headers: {}
+        });
+
+      const res = await fetch(req);
+      if (!res.ok) {
+          console.log("Error al leer el horario");
+          return;
+      }
+      agenda = await res.json();
+      frecuencia = agenda[0].frecuencia;
+      console.log(frecuencia);
+      agenda.forEach(element => {
+        element.num = RetornaNumDia(element.dia);
+      });
+      LoadActualWeek();
+      console.log(agenda);
+  } catch (error) {
+      console.log(error);
+  }
+};  
+
+const GetCitas = async () =>{
+  // horario.forEach(element => {
+  //   try {
+  //     const req = new Request(backend+ '/citas/' + element.fecha, {
+  //         method: 'GET',
+  //         headers: {}
+  //       });
+
+  //     const res = await fetch(req);
+  //     if (!res.ok) {
+  //         console.log("Error al leer el horario");
+  //         return;
+  //     }
+  //     // agenda = await res.json();
+  //     let p = await res.json();
+  //     console.log(p);
+  // } catch (error) {
+  //     console.log(error);
+  // }
+
+  //   citas.push({GetCitas()});
+  
+  // })
+};
+
+const GetPacientes = async () =>{
+  try {
+      const req = new Request(backend+ '/pacientes/' + medicoRegistrado.id , {
+          method: 'GET',
+          headers: {}
+        });
+
+      const res = await fetch(req);
+      if (!res.ok) {
+          console.log("Error al leer los pacientes");
+          return;
+      }
+      pacientes = await res.json();
+      console.log(pacientes);
+  } catch (error) {
+      console.log(error);
+  }
+};
 
 function CalculateRanges() {
   let horasPorDia = new Map();
@@ -77,6 +172,8 @@ function EnableHoursAppointments() {
     if(rango.has(element.getAttribute('data-day'))){
       //console.log(rango.get(element.getAttribute('data-day')));
       if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
+        console.log(element.getAttribute('data-read'));
+     
         element.setAttribute('data-bs-toggle', 'modal');
         element.setAttribute('data-bs-target', "#reg-modal");
         element.classList.add('enableHourAppointment');
@@ -120,10 +217,17 @@ function InitButtons() {
   });
 }
 
+function ReturnNumber(number) {
+  if(number <= 9) {
+    return '0' + String(number);
+  }
+  return number;
+}
+
 function LoadDays() {
   let line = '';
   if( semana.length > 0) {
-    if(frecuencia === '1:00'){
+    if(frecuencia === '01:00'){
       for(let i = 0; i <= 25; i+=2){
         const hora = document.createElement('div');
         hora.textContent = horas[i];
@@ -139,6 +243,7 @@ function LoadDays() {
         appointment1.setAttribute('data-time', horas[i]);
         appointment1.setAttribute('data-date', semana[0].toDateString());
         appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
+        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth()) + '-' + ReturnNumber(semana[0].getDay()));
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
         appointment2.classList.add('horaCita');
@@ -149,6 +254,7 @@ function LoadDays() {
         appointment2.setAttribute('data-time', horas[i]);
         appointment2.setAttribute('data-date', semana[1].toDateString());
         appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
+        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth()) + '-' + ReturnNumber(semana[1].getDay()));
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
         appointment3.classList.add('horaCita');
@@ -159,6 +265,7 @@ function LoadDays() {
         appointment3.setAttribute('data-time', horas[i]);
         appointment3.setAttribute('data-date', semana[2].toDateString());
         appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
+        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth()) + '-' + ReturnNumber(semana[2].getDay()));
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
         appointment4.classList.add('horaCita');
@@ -169,6 +276,7 @@ function LoadDays() {
         appointment4.setAttribute('data-time', horas[i]);
         appointment4.setAttribute('data-date', semana[3].toDateString());
         appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
+        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth()) + '-' + ReturnNumber(semana[3].getDay()));
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
         appointment5.classList.add('horaCita');
@@ -179,6 +287,7 @@ function LoadDays() {
         appointment5.setAttribute('data-time', horas[i]);
         appointment5.setAttribute('data-date', semana[4].toDateString());
         appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
+        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth()) + '-' + ReturnNumber(semana[4].getDay()));
     
         line += hora.outerHTML;
         line += appointment1.outerHTML;
@@ -206,6 +315,7 @@ function LoadDays() {
         appointment1.setAttribute('data-time', horas[i]);
         appointment1.setAttribute('data-date', semana[0].toDateString());
         appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
+        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth()) + '-' + ReturnNumber(semana[0].getDay()));
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
         appointment2.classList.add('horaCita');
@@ -216,6 +326,7 @@ function LoadDays() {
         appointment2.setAttribute('data-time', horas[i]);
         appointment2.setAttribute('data-date', semana[1].toDateString());
         appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
+        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth()) + '-' + ReturnNumber(semana[1].getDay()));
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
         appointment3.classList.add('horaCita');
@@ -226,6 +337,7 @@ function LoadDays() {
         appointment3.setAttribute('data-time', horas[i]);
         appointment3.setAttribute('data-date', semana[2].toDateString());
         appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
+        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth()) + '-' + ReturnNumber(semana[2].getDay()));
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
         appointment4.classList.add('horaCita');
@@ -236,6 +348,7 @@ function LoadDays() {
         appointment4.setAttribute('data-time', horas[i]);
         appointment4.setAttribute('data-date', semana[3].toDateString());
         appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
+        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth()) + '-' + ReturnNumber(semana[3].getDay()));
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
         appointment5.classList.add('horaCita');
@@ -246,7 +359,8 @@ function LoadDays() {
         appointment5.setAttribute('data-time', horas[i]);
         appointment5.setAttribute('data-date', semana[4].toDateString());
         appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
-    
+        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth()) + '-' + ReturnNumber(semana[4].getDay()));
+
     
         line += hora.outerHTML;
         line += appointment1.outerHTML;

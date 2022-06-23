@@ -52,7 +52,6 @@ public class Antecedentes {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void add(Antecedente antecedente){
-        System.out.println("aaaaaaaaaASDASDASD");
         System.out.println(antecedente);
         Service.instance().registrarAntecedente(antecedente);
     }

@@ -39,9 +39,9 @@ public class Horarios {
     HttpServletRequest request;
     
     
-    Medico getCurrentMed(){
+    Usuario getCurrentMed(){
         HttpSession session = request.getSession(true);
-        Medico m = (Medico) session.getAttribute("user");
+        Usuario m = (Usuario) session.getAttribute("user");
         return m;
     }
 
@@ -56,11 +56,26 @@ public class Horarios {
         }
     }
 
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
+    public List<Horario> read2() {
+        try {
+            System.out.println(this.getCurrentMed().getId());
+            return Service.instance().retornarHorariosActivos(this.getCurrentMed().getId());
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
+    }
+    
+    
     //Obtener el horario completo de un médico
     @GET
+    @Path("horario")
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
     public List<Horario> read() {
         try {
+            System.out.println(this.getCurrentMed().getId());
             return Service.instance().retornarHorariosActivos(this.getCurrentMed().getId());
         } catch (Exception ex) {
             throw new NotFoundException();

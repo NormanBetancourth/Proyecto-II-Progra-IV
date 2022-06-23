@@ -5,7 +5,7 @@ const modalCloseBtn = document.getElementById('modal-close-btn');
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 
 
-
+var date ;
 
 var pacientes = [];
 var medico;
@@ -40,18 +40,223 @@ table.onclick = async (e) => {
         }
         if(e.target.dataset.event === 'agendar'){
 
-            await loadAgendarView(objEvent.id);//TODO: hacer agenda cita
+            await loadAgendarView(objEvent.id);
             $("#modal-container").modal("show");
         }
     }
 };
 
+const loadAgendarView = async (id) => {
+    let infoAgenda = `    <form onsubmit="addCita()">
+                            <div class="row justify-content-center text-center">
+                            <div class="col"></div>
+                            <div class="col-6">
+                                <div class="row my-2">
+                                <h4>Agregar una cita</h4>
+                                </div>
+                                <div class="row justify-content-center text-center">
+                                <div class="row justify-content-center text-center">
+                                    <div class="row justify-content-center text-center">
+                                    <div class="col"></div>
+                                    <div class="col my-3 justify-content-center text-center">
+                                        <h6>Seleccione el día</h6>
+                                        <input type="date" required id="date-picker" />
+                                        <button
+                                        type="button"
+                                        class="btn btn-light my-2"
+                                        id="btn-apply"
+                                        >
+                                        Aplicar día
+                                        </button>
+                                    </div>
+                                    <div class="col"></div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <h6>Seleccione la hora</h6>
+                                        <select id="cita-hora" required>
 
+
+                                        </select>
+                                    </div>
+                                    <div class="col"></div>
+                                    </div>
+                                    <div class="row mt-4">
+                                    <h5>Detalle el motivo de la cita</h5>
+                                    <textarea
+                                        id="cita-motivo"
+                                        cols="60"
+                                        rows="10"
+                                        required
+                                        style="resize: none"
+                                    ></textarea>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                            </div>
+                            <div class="row align-items-center text-center">
+                            <div class="col"></div>
+                            <div class="col my-5">
+                                <button type="submit" class="btn btn-primary">Agregar cita</button>
+                            </div>
+                            <div class="col"></div>
+                            </div>
+                        </form>`;
+    modalBody.innerHTML = infoAgenda;
+    const element = document.querySelector('form');
+    element.addEventListener('submit', event => {
+        event.preventDefault();
+    });
+
+    date  = document.getElementById('date-picker');
+    date.min = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
+    const btn  = document.getElementById('btn-apply');
+    btn.onclick = () => {
+        horarioBuild(date.value);  
+    }
+    
+};
+
+const buildLitDay = (dateFormat) =>{
+    let date = new Date(dateFormat);
+    let day = date.getDay();
+    let literalDay;
+
+    if(day === 0) {
+        literalDay = 'Lunes';
+    }
+    if(day === 1) {
+        literalDay = 'Martes';
+    }
+    if(day === 2) {
+        literalDay = 'Miercoles';
+    }
+    if(day === 3) {
+        literalDay = 'Jueves';
+    }
+    if(day === 4) {
+        literalDay = 'Viernes';
+    }
+    if(day === 5) {
+        literalDay = 'Sabado';
+    }
+    if(day === 6) {
+        literalDay = 'Domingo';
+    }
+    return literalDay;
+}
+
+const horarioBuild = async (dateFormat) => {
+    let day = buildLitDay(dateFormat);
+    let horario = await horarioGET();
+    var citasPorDia = await CitasPorFechaGET(dateFormat);
+    console.log(day);
+    console.log(horario);
+    console.log(citasPorDia);
+    if(horario[0].frecuencia == "00:30"){
+        //Manejar con frecuencia 30 mins
+        const select =  document.getElementById('cita-hora');
+        var content = ` 
+                        <option value="00:00" id="00:00" selected disabled >Seleccione una Hora</option>
+                        <option value="08:00" id="08:00">08:00</option>
+                        <option value="08:30" id="08:30">08:30</option>
+                        <option value="09:00" id="09:00">09:00</option>
+                        <option value="09:30" id="09:30">09:30</option>
+                        <option value="10:00" id="10:00">10:00</option>
+                        <option value="10:30" id="10:30">10:30</option>
+                        <option value="11:00" id="11:00">11:00</option>
+                        <option value="11:30" id="11:30">11:30</option>
+                        <option value="12:00" id="12:00">12:00</option>
+                        <option value="12:30" id="12:30">12:30</option>
+                        <option value="13:00" id="13:00">13:00</option>
+                        <option value="13:30" id="13:30">13:30</option>
+                        <option value="14:00" id="14:00">14:00</option>
+                        <option value="14:30" id="14:30">14:30</option>
+                        <option value="15:00" id="15:00">15:00</option>
+                        <option value="15:30" id="15:30">15:30</option>
+                        <option value="16:00" id="16:00">16:00</option>
+                        <option value="16:30" id="16:30">16:30</option>
+                        <option value="17:00" id="17:00">17:00</option>
+                        <option value="17:30" id="17:30">17:30</option>
+                        <option value="18:00" id="18:00">18:00</option>
+                        <option value="18:30" id="18:30">18:30</option>
+                        <option value="19:00" id="19:00">19:00</option>
+                        <option value="19:30" id="19:30">19:30</option>
+                        <option value="20:00" id="020:00"">20:00</option>`
+        select.innerHTML = content;
+        
+
+        citasPorDia.forEach(element => {
+            const test = document.getElementById(element.fecha.substring(11, 16));
+            test.setAttribute("disabled", "disabled");
+        });
+    }else{
+        //Manejar con frecuencia 1 hora
+        const select =  document.getElementById('cita-hora')
+        var content = ` 
+                        <option value="00:00" id="00:00" selected disabled >Seleccione una Hora</option>
+                        <option value="08:00" id = "08:00" >08:00</option>
+                        <option value="09:00" id = "09:00" >09:00</option>
+                        <option value="10:00" id = "10:00" >10:00</option>
+                        <option value="11:00" id = "11:00" >11:00</option>
+                        <option value="12:00" id = "12:00" >12:00</option>
+                        <option value="13:00" id = "13:00" >13:00</option>
+                        <option value="14:00" id = "14:00" >14:00</option>
+                        <option value="15:00" id = "15:00" >15:00</option>
+                        <option value="16:00" id = "16:00" >16:00</option>
+                        <option value="17:00" id = "17:00" >17:00</option>
+                        <option value="18:00" id = "18:00" >18:00</option>
+                        <option value="19:00" id = "19:00" >19:00</option>
+                        <option value="20:00" id = "20:00" >20:00</option>`
+
+        select.innerHTML = content;
+
+        citasPorDia.forEach(element => {
+            const test = document.getElementById(element.fecha.substring(11, 16));
+            test.setAttribute("disabled", "disabled");
+        });
+
+    }
+};
+
+
+
+
+
+const addCita = async () => {
+    const fecha = document.getElementById('date-picker');
+    const hora = document.getElementById('cita-hora');
+    const motivo = document.getElementById('cita-motivo');
+
+    if(hora.value == '00:00'){
+        alert("Debes seleccionar una hora para la consulta");
+        return;
+    }
+    $("#modal-container").modal("hide");
+    var pacientePost = await cargarPacientePorId(objEvent.id);
+    var currentMedic = await obtenerMedicoSession();
+    cita = {
+        paciente: pacientePost ,
+        medico: currentMedic,
+        fecha: `${fecha.value}T${hora.value}:00`,
+        motivo: motivo.value,
+        signos: '',
+        diagnostico: '',
+        estado: 'Registrado',
+        prescripciones: '',
+        Medicamentos: ''
+    }
+    console.log(cita);
+
+    await citasPOST(cita);
+};
 
 const loadAntecedentesView = async (id) =>{
     
     let antecedentesDePaciente = await antecedentesGET(id);
-    console.log(antecedentesDePaciente);
     let infoAntecedentes = `    <div class="row">
                                 <div class="col"></div>
                                 <div class="col-10" >
@@ -130,7 +335,6 @@ const loadAntecedentesView = async (id) =>{
 const loadInfoView = async (id) =>{
     //TODO: Hacer que edite la pic
     let pacienteInfo = await cargarPacientePorId(id);
-    console.log(pacienteInfo);
     let infoView = `<div class="row">
                     <div class="col"></div>
                     <div class="col-8">
@@ -180,7 +384,6 @@ const loadInfoView = async (id) =>{
 const loadUsersOnView = async () => {
     var content = '';
     pacientes.forEach(user => {
-        console.log(user);
         content += `<tr data-id="${user.id}" data-event="info">
         <th data-id="${user.id}" data-event="info" scope="row">${user.id}</th>
         <td data-id="${user.id}" data-event="info">${user.nombre}</td>
@@ -209,20 +412,52 @@ const addAntecedente = async () => {
 
     const tipoAntecedente = document.getElementById('antecedente-tipo');
     const detallesAntecedente = document.getElementById('antecedente-detalles');
-    console.log(tipoAntecedente.value);
-    console.log(detallesAntecedente.value);
-    console.log(objEvent.id);
 
     let foo = {anotacion:detallesAntecedente.value, codigo:'-1', idPaciente:objEvent.id, tipo:tipoAntecedente.value}
     antecedentesPOST(foo);
     $("#modal-container").modal("hide");
-
-
-
-
 };
 
 //REST API METHODS
+
+
+const horarioGET = async () => {
+    try {
+        const req = new Request(backend+ '/horarios', {
+            method: 'GET',
+            headers: {}
+        });
+
+        const res = await fetch(req);
+        if (!res.ok) {
+            console.log("error al guardad user de session");
+            return;
+        }
+        var result = await res.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const citasPOST = async (cita) => {
+    const req = new Request(backend+'/citas',
+    {method: 'POST',
+     headers: { 'Content-Type': 'application/json'},
+     body: JSON.stringify(cita)});
+    try {
+        const res = await fetch(req);
+        if (!res.ok){
+            console.log('error agregar una cita');
+            return;
+        }
+        console.log('Se inserta la cita');
+    } catch (error) {
+        console.log(error);
+    }
+
+};
+
 const cargarPacientePorId =async (id) => {
     try {
         const req = new Request(backend+ '/pacientes/data/'+id, {
@@ -268,19 +503,16 @@ const updatePatient = async () => {
     let patient = await cargarPacientePorId(patientId);
 
     if(patient.nombre != patientName ){
-        console.log('Nombre diff');
         patient.nombre = patientName;
         ban = true;
     }
 
     if(patient.fotoPath != patientFoto ){
-        console.log('Foto diff');
         patient.fotoPath = patientFoto;
         ban = true;
     }
     
     if(patient.telefono != patientTelefono){
-        console.log('Telefono diff');
         patient.telefono = patientTelefono;
         ban = true;
     }
@@ -368,6 +600,25 @@ const obtenerMedicoSession = async () => {
         console.log(error);
     }
 
+};
+
+const CitasPorFechaGET = async (fecha) => {
+    const req = new Request(backend+'/citas/'+fecha,
+    {method: 'GET',
+     headers: { }
+    });
+try {
+    const res = await fetch(req);
+    if (!res.ok){
+        console.log('error en traer horarios por fecha');
+        return;
+    }
+    var result = await res.json();
+    return result;
+    
+} catch (error) {
+    console.log(error);
+}
 };
 
 

@@ -83,8 +83,10 @@ public class Horario {
 
     @Override
     public String toString() {
-        return "Horario{" + "Estado=" + estado + ", idMedico=" + idMedico + ", dia=" + dia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + ", frecuencia=" + frecuencia + '}';
+        return "Horario{" + "idMedico=" + idMedico + ", estado=" + estado + ", dia=" + dia + ", frecuencia=" + frecuencia + ", horaInicio=" + horaInicio + ", horaFinal=" + horaFinal + '}';
     }
+
+
 
     public void setEstadoV2(String estado) {
         this.estado = estado;
