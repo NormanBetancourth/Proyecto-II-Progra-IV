@@ -190,8 +190,7 @@ const horarioBuild = async (dateFormat) => {
         
 
         citasPorDia.forEach(element => {
-            
-            const test = document.getElementById(element.fecha.substring(11, 16));
+            const test = document.getElementById();
             test.setAttribute("disabled", "disabled");
         });
     }else{
@@ -212,9 +211,11 @@ const horarioBuild = async (dateFormat) => {
                         <option value="20:00">20:00</option>`
 
         select.innerHTML = content;
-        const test = document.getElementById('cita-hora');
-        console.log(test);
 
+        citasPorDia.forEach(element => {
+            const test = document.getElementById(element.fecha.substring(11, 16));
+            test.setAttribute("disabled", "disabled");
+        });
 
     }
 };
