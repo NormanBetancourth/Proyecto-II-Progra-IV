@@ -40,7 +40,7 @@ table.onclick = async (e) => {
         }
         if(e.target.dataset.event === 'agendar'){
 
-            await loadAgendarView(objEvent.id);//TODO: hacer agenda cita
+            await loadAgendarView(objEvent.id);
             $("#modal-container").modal("show");
         }
     }
@@ -160,7 +160,7 @@ const horarioBuild = async (dateFormat) => {
         //Manejar con frecuencia 30 mins
         const select =  document.getElementById('cita-hora');
         var content = ` 
-                        <option value="00:00" id="00:00">Seleccione una Hora</option>
+                        <option value="00:00" id="00:00" selected disabled >Seleccione una Hora</option>
                         <option value="08:00" id="08:00">08:00</option>
                         <option value="08:30" id="08:30">08:30</option>
                         <option value="09:00" id="09:00">09:00</option>
@@ -190,25 +190,27 @@ const horarioBuild = async (dateFormat) => {
         
 
         citasPorDia.forEach(element => {
-            const test = document.getElementById();
+            const test = document.getElementById(element.fecha.substring(11, 16));
             test.setAttribute("disabled", "disabled");
         });
     }else{
         //Manejar con frecuencia 1 hora
         const select =  document.getElementById('cita-hora')
-        var content = ` <option value="08:00">08:00</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>`
+        var content = ` 
+                        <option value="00:00" id="00:00" selected disabled >Seleccione una Hora</option>
+                        <option value="08:00" id = "08:00" >08:00</option>
+                        <option value="09:00" id = "09:00" >09:00</option>
+                        <option value="10:00" id = "10:00" >10:00</option>
+                        <option value="11:00" id = "11:00" >11:00</option>
+                        <option value="12:00" id = "12:00" >12:00</option>
+                        <option value="13:00" id = "13:00" >13:00</option>
+                        <option value="14:00" id = "14:00" >14:00</option>
+                        <option value="15:00" id = "15:00" >15:00</option>
+                        <option value="16:00" id = "16:00" >16:00</option>
+                        <option value="17:00" id = "17:00" >17:00</option>
+                        <option value="18:00" id = "18:00" >18:00</option>
+                        <option value="19:00" id = "19:00" >19:00</option>
+                        <option value="20:00" id = "20:00" >20:00</option>`
 
         select.innerHTML = content;
 
@@ -220,24 +222,7 @@ const horarioBuild = async (dateFormat) => {
     }
 };
 
-const horarioGET = async () => {
-    try {
-        const req = new Request(backend+ '/horarios', {
-            method: 'GET',
-            headers: {}
-        });
 
-        const res = await fetch(req);
-        if (!res.ok) {
-            console.log("error al guardad user de session");
-            return;
-        }
-        var result = await res.json();
-        return result;
-    } catch (error) {
-        console.log(error);
-    }
-};
 
 
 
@@ -246,9 +231,27 @@ const addCita = async () => {
     const hora = document.getElementById('cita-hora');
     const motivo = document.getElementById('cita-motivo');
 
-    console.log(fecha.value);
-    console.log(hora.value);
-    console.log(motivo.value);
+    if(hora.value == '00:00'){
+        alert("Debes seleccionar una hora para la consulta");
+        return;
+    }
+    $("#modal-container").modal("hide");
+    var pacientePost = await cargarPacientePorId(objEvent.id);
+    var currentMedic = await obtenerMedicoSession();
+    cita = {
+        paciente: pacientePost ,
+        medico: currentMedic,
+        fecha: `${fecha.value}T${hora.value}:00`,
+        motivo: motivo.value,
+        signos: '',
+        diagnostico: '',
+        estado: 'Registrado',
+        prescripciones: '',
+        Medicamentos: ''
+    }
+    console.log(cita);
+
+    await citasPOST(cita);
 };
 
 const loadAntecedentesView = async (id) =>{
@@ -416,6 +419,45 @@ const addAntecedente = async () => {
 };
 
 //REST API METHODS
+
+
+const horarioGET = async () => {
+    try {
+        const req = new Request(backend+ '/horarios', {
+            method: 'GET',
+            headers: {}
+        });
+
+        const res = await fetch(req);
+        if (!res.ok) {
+            console.log("error al guardad user de session");
+            return;
+        }
+        var result = await res.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const citasPOST = async (cita) => {
+    const req = new Request(backend+'/citas',
+    {method: 'POST',
+     headers: { 'Content-Type': 'application/json'},
+     body: JSON.stringify(cita)});
+    try {
+        const res = await fetch(req);
+        if (!res.ok){
+            console.log('error agregar una cita');
+            return;
+        }
+        console.log('Se inserta la cita');
+    } catch (error) {
+        console.log(error);
+    }
+
+};
+
 const cargarPacientePorId =async (id) => {
     try {
         const req = new Request(backend+ '/pacientes/data/'+id, {

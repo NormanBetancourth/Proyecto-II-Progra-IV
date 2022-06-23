@@ -48,13 +48,15 @@ public class Citas {
     //Registrar una cita en la BD
     // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
     // const request = new Request(backend+'/citas,  {method: 'PUT', headers: { 'Content-Type': 'application/json'},  body: JSON.stringify(CITA)});
+    //@RolesAllowed({"Medico", "Usuario"}) 
     @POST
-    @RolesAllowed({"Medico"}) 
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(Cita c) {
         try {
+            System.out.println(c);
             Service.instance().registrarCitaMedicoPaciente(c); //la clase de servicio invoca al metodo que creara una persona
         } catch (Exception ex) {
+            System.out.println(ex);
             throw new NotAcceptableException();
         }
     }
@@ -69,8 +71,6 @@ public class Citas {
         System.out.println(fecha);
         try {
             List<Cita> lista = Service.instance().retornarListaDeCitaPorDia(this.getCurrentMed().getId(), fecha);
-            System.out.println("entra en el try");
-            System.out.println(lista);
             return lista;
         } catch (Exception ex) {
             System.out.println(ex);
