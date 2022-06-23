@@ -22,6 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Cita;
 import model.Medico;
+import model.Usuario;
 import model.serviceBackend.Service;
 
 /**
@@ -36,9 +37,9 @@ public class Citas {
     @Context
     HttpServletRequest request;
 
-    Medico getCurrentMed() {
+    Usuario getCurrentMed() {
         HttpSession session = request.getSession(true);
-        Medico m = (Medico) session.getAttribute("user");
+        Usuario m = (Usuario) session.getAttribute("user");
         return m;
     }
 
@@ -59,10 +60,16 @@ public class Citas {
     @Path("{fecha}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Cita> read(@PathParam("fecha") String fecha) {
+        System.out.println(fecha);
         try {
-            return Service.instance().retornarListaDeCitaPorDia(this.getCurrentMed().getId(), fecha);
+            List<Cita> lista = Service.instance().retornarListaDeCitaPorDia(this.getCurrentMed().getId(), fecha);
+            System.out.println("entra en el try");
+            System.out.println(lista);
+            return lista;
         } catch (Exception ex) {
+            System.out.println(ex);
             throw new NotFoundException();
+            
         }
     }
 
