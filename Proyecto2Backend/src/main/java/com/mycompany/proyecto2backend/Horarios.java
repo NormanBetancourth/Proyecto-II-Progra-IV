@@ -58,6 +58,7 @@ public class Horarios {
 
     //Obtener el horario completo de un médico
     @GET
+    @Path("horario")
     @Produces(MediaType.APPLICATION_JSON)//se coloca produces porque el metodo devuelve datos (en este caos una lista de personas)
     public List<Horario> read() {
         try {

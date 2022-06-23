@@ -5,6 +5,7 @@
 package com.mycompany.proyecto2backend;
 
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -45,7 +46,10 @@ public class Citas {
 
 
     //Registrar una cita en la BD
+    // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
+    // const request = new Request(backend+'/citas,  {method: 'PUT', headers: { 'Content-Type': 'application/json'},  body: JSON.stringify(CITA)});
     @POST
+    @RolesAllowed({"Medico"}) 
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(Cita c) {
         try {
@@ -56,6 +60,8 @@ public class Citas {
     }
 
     //Obtener la lista de citas por dia
+    // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
+    // const request = new Request(backend+'/citas/2022-10-09,  {method: 'GET', headers: {));
     @GET
     @Path("{fecha}")
     @Produces({MediaType.APPLICATION_JSON})
