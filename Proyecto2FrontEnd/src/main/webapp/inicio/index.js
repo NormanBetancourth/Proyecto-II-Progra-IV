@@ -10,6 +10,7 @@ const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '1
 let agenda = [];
 let citas = [];
 let pacientes = [];
+let fechasCitas = new Map();
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 let nav = 0;
 let clicked = null;
@@ -76,7 +77,7 @@ const GetHorario = async () =>{
       }
       agenda = await res.json();
       frecuencia = agenda[0].frecuencia;
-      console.log(frecuencia);
+      //console.log(frecuencia);
       agenda.forEach(element => {
         element.num = RetornaNumDia(element.dia);
       });
@@ -87,29 +88,38 @@ const GetHorario = async () =>{
   }
 };  
 
+function RetornaHoraDeCita(cita) {
+  // console.log(cita[0].fecha.substring(11, 16))
+  return cita.fecha.substring(11, 16);
+}
+
 const GetCitas = async () =>{
-  // horario.forEach(element => {
-  //   try {
-  //     const req = new Request(backend+ '/citas/' + element.fecha, {
-  //         method: 'GET',
-  //         headers: {}
-  //       });
+  for (const [key, value] of fechasCitas.entries()) {
+    console.log(key, value);
+    try {
+      console.log(value);
+      const req = new Request(backend+ '/citas/' +  fechasCitas.get(key), {
+          method: 'GET',
+          headers: {}
+        });
 
-  //     const res = await fetch(req);
-  //     if (!res.ok) {
-  //         console.log("Error al leer el horario");
-  //         return;
-  //     }
-  //     // agenda = await res.json();
-  //     let p = await res.json();
-  //     console.log(p);
-  // } catch (error) {
-  //     console.log(error);
-  // }
-
-  //   citas.push({GetCitas()});
-  
-  // })
+      // Lee citas pero falta revisar en caso que no existan citas para una fecha
+      const res = await fetch(req);
+      if (!res.ok) {
+          console.log("Error al leer las citas");
+      }
+      let obj = await res.json();
+      let cita =  obj !== undefined ? obj : '';
+      if(cita !== ''){
+        console.log('una vez');
+        cita.hora = RetornaHoraDeCita(cita[0]);
+        citas.push(cita);
+      }
+    } catch (error) {
+      console.log(error);
+    }  
+  }  
+  console.log(citas);
 };
 
 const GetPacientes = async () =>{
@@ -173,7 +183,7 @@ function EnableHoursAppointments() {
       //console.log(rango.get(element.getAttribute('data-day')));
       if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
         console.log(element.getAttribute('data-read'));
-     
+        fechasCitas.set(weekdays.indexOf(element.getAttribute('data-day')),element.getAttribute('data-read'));
         element.setAttribute('data-bs-toggle', 'modal');
         element.setAttribute('data-bs-target', "#reg-modal");
         element.classList.add('enableHourAppointment');
@@ -184,6 +194,8 @@ function EnableHoursAppointments() {
       }
     }
   });
+  console.log(fechasCitas);
+  GetCitas();
 }
 
 Date.prototype.GetLastSaturday = function() {
@@ -243,7 +255,7 @@ function LoadDays() {
         appointment1.setAttribute('data-time', horas[i]);
         appointment1.setAttribute('data-date', semana[0].toDateString());
         appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
-        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth()) + '-' + ReturnNumber(semana[0].getDay()));
+        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth() + 1) + '-' + semana[0].getDate());
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
         appointment2.classList.add('horaCita');
@@ -254,7 +266,7 @@ function LoadDays() {
         appointment2.setAttribute('data-time', horas[i]);
         appointment2.setAttribute('data-date', semana[1].toDateString());
         appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
-        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth()) + '-' + ReturnNumber(semana[1].getDay()));
+        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth() + 1) + '-' + semana[1].getDate());
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
         appointment3.classList.add('horaCita');
@@ -265,7 +277,7 @@ function LoadDays() {
         appointment3.setAttribute('data-time', horas[i]);
         appointment3.setAttribute('data-date', semana[2].toDateString());
         appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
-        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth()) + '-' + ReturnNumber(semana[2].getDay()));
+        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth() + 1) + '-' + semana[2].getDate());
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
         appointment4.classList.add('horaCita');
@@ -276,7 +288,7 @@ function LoadDays() {
         appointment4.setAttribute('data-time', horas[i]);
         appointment4.setAttribute('data-date', semana[3].toDateString());
         appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
-        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth()) + '-' + ReturnNumber(semana[3].getDay()));
+        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth() + 1) + '-' + semana[3].getDate());
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
         appointment5.classList.add('horaCita');
@@ -287,7 +299,7 @@ function LoadDays() {
         appointment5.setAttribute('data-time', horas[i]);
         appointment5.setAttribute('data-date', semana[4].toDateString());
         appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
-        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth()) + '-' + ReturnNumber(semana[4].getDay()));
+        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth() + 1) + '-' + semana[4].getDate());
     
         line += hora.outerHTML;
         line += appointment1.outerHTML;
@@ -315,7 +327,7 @@ function LoadDays() {
         appointment1.setAttribute('data-time', horas[i]);
         appointment1.setAttribute('data-date', semana[0].toDateString());
         appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
-        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth()) + '-' + ReturnNumber(semana[0].getDay()));
+        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth() + 1) + '-' + semana[0].getDate());
         const appointment2 = document.createElement('div');
         appointment2.classList.add('grid-item');
         appointment2.classList.add('horaCita');
@@ -326,7 +338,7 @@ function LoadDays() {
         appointment2.setAttribute('data-time', horas[i]);
         appointment2.setAttribute('data-date', semana[1].toDateString());
         appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
-        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth()) + '-' + ReturnNumber(semana[1].getDay()));
+        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth() + 1) + '-' + semana[1].getDate());
         const appointment3 = document.createElement('div');
         appointment3.classList.add('grid-item');
         appointment3.classList.add('horaCita');
@@ -337,7 +349,7 @@ function LoadDays() {
         appointment3.setAttribute('data-time', horas[i]);
         appointment3.setAttribute('data-date', semana[2].toDateString());
         appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
-        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth()) + '-' + ReturnNumber(semana[2].getDay()));
+        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth() + 1) + '-' + semana[2].getDate());
         const appointment4 = document.createElement('div');
         appointment4.classList.add('grid-item');
         appointment4.classList.add('horaCita');
@@ -348,7 +360,7 @@ function LoadDays() {
         appointment4.setAttribute('data-time', horas[i]);
         appointment4.setAttribute('data-date', semana[3].toDateString());
         appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
-        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth()) + '-' + ReturnNumber(semana[3].getDay()));
+        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth() + 1) + '-' + semana[3].getDate());
         const appointment5 = document.createElement('div');
         appointment5.classList.add('grid-item');
         appointment5.classList.add('horaCita');
@@ -359,7 +371,7 @@ function LoadDays() {
         appointment5.setAttribute('data-time', horas[i]);
         appointment5.setAttribute('data-date', semana[4].toDateString());
         appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
-        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth()) + '-' + ReturnNumber(semana[4].getDay()));
+        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth() + 1) + '-' + semana[4].getDate());
 
     
         line += hora.outerHTML;
