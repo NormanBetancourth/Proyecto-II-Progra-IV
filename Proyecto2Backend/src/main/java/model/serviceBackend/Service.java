@@ -9,6 +9,7 @@ import java.util.List;
 import model.Antecedente;
 import model.Cita;
 import model.Ciudad;
+import model.Contacto;
 import model.DAO.General.GeneralHandler;
 import model.Especialidad;
 import model.Horario;
@@ -94,6 +95,11 @@ public class Service {
     
     public List<Antecedente> retornarListaAntecedentesPorID(String id){
         return genDB.listaAntecedentesPorId(id);
+    }
+    
+    
+    public List<Contacto> retornarListaContactosPorID(String id){
+        return genDB.listaContactosPorId(id);
     }
    
     

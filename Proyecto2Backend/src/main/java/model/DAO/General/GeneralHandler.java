@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Cita;
 import model.Ciudad;
+import model.Contacto;
 import model.Especialidad;
 import model.Horario;
 import model.Paciente;
@@ -730,6 +731,28 @@ public class GeneralHandler {
             }
         }
         return respuesta;
+    }
+
+    public List<Contacto> listaContactosPorId(String id) {
+        List<Contacto> lista = new ArrayList<>();
+        String sql = "select * from contactos where id_paciente = " + id + ";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                Contacto contacto = new Contacto();
+                contacto.setNumero(rs.getString("numero"));
+                contacto.setIdPaciente(rs.getString("id_paciente"));
+                contacto.setId(rs.getString("id_personal"));
+                contacto.setNombre(rs.getString("nombre"));
+                contacto.setTelefono(rs.getString("telefono"));
+                
+                lista.add(contacto);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
     }
 
     

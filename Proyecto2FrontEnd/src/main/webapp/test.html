@@ -26,61 +26,69 @@
   </head>
   <body>
     <form onsubmit="">
-      <div class="row justify-content-center text-center">
-        <div class="col"></div>
-        <div class="col-6">
-          <div class="row my-2">
-            <h4>Agregar una cita</h4>
-          </div>
-          <div class="row justify-content-center text-center">
-            <div class="row justify-content-center text-center">
-              <div class="row justify-content-center text-center">
-                <div class="col"></div>
-                <div class="col my-3 justify-content-center text-center">
-                  <h6>Seleccione el día</h6>
-                  <input type="date" required id="date-picker" />
-                  <button
-                    type="button"
-                    class="btn btn-light my-2"
-                    id="btn-apply"
-                  >
-                    Aplicar día
-                  </button>
+      <div class="row">
+        <div class="col" ></div>
+        <div class="col-10" >
+          <div class="row">
+            <div class="row aling-items-center text-center mt-4">
+              <h5>Contactos de NAME-USER</h5>
+            </div>
+            <div class="row aling-items-center text-center mt-5">
+              <h6>Agregar Nuevo Contacto</h6>
+            </div>
+            <div class="row aling-items-center text-center my-2" >
+              <div class="col"></div>
+              <div class="col" >
+                <div class="form-group my-4">
+                  <input type="text" class="form-control" id="contacto-id" placeholder="Id" required>
                 </div>
-                <div class="col"></div>
-              </div>
-              <div class="row">
-                <div class="col"></div>
-                <div class="col">
-                  <h6>Seleccione la hora</h6>
-                  <select id="cita" required>
-                    <option value="Citas disponibles">08:00</option>
-                    <option value="Citas disponibles">19:00</option>
-                  </select>
+                <div class="form-group my-4">
+                  <input type="text" class="form-control" id="contacto-nombre" placeholder="Nombre" required>
                 </div>
-                <div class="col"></div>
+                <div class="form-group my-4">
+                  <input type="text" class="form-control" id="contacto-telefono" placeholder="Telefono" required>
+                </div>
+                <div class="form-group my-4">
+                  <button type="submit" class="btn btn-success">Agregar</button>
+                </div>
               </div>
-              <div class="row mt-4">
-                <h5>Detalle el motivo de la cita</h5>
-                <textarea
-                  id="cita-motivo"
-                  cols="60"
-                  rows="10"
-                  required
-                  style="resize: none"
-                ></textarea>
-              </div>
+              <div class="col"></div>
             </div>
           </div>
+          <div class="row"  style="background-color: white;">
+            
+            <table class="table table-hover text-center align-items-center" id="table-container">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Teléfono</th>
+                  <th scope="col">Editar</th>
+                  <th scope="col">Eliminar</th>
+                </tr>
+              </thead>
+
+              <tbody id="table-body">
+                <tr id="id-USER">
+                  <td>89999</td>
+                  <td>Mark</td>
+                  <td>6767677</td>
+                  <td>
+                    <button type="button" class="btn btn-primary">✎</button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger">X</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+          </div>
+
+
+          
         </div>
-        <div class="col"></div>
-      </div>
-      <div class="row align-items-center text-center">
-        <div class="col"></div>
-        <div class="col my-5">
-          <button type="submit" class="btn btn-primary">Agregar cita</button>
-        </div>
-        <div class="col"></div>
+        <div class="col" ></div>
       </div>
     </form>
 
