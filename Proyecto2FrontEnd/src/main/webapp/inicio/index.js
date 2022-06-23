@@ -95,7 +95,7 @@ function RetornaHoraDeCita(cita) {
 
 const GetCitas = async () =>{
   for (const [key, value] of fechasCitas.entries()) {
-    console.log(key, value);
+    // console.log(key, value);
     try {
       console.log(value);
       const req = new Request(backend+ '/citas/' +  fechasCitas.get(key), {
@@ -108,13 +108,12 @@ const GetCitas = async () =>{
       if (!res.ok) {
           console.log("Error al leer las citas");
       }
-      let obj = await res.json();
-      let cita =  obj !== undefined ? obj : '';
-      if(cita !== ''){
-        console.log('una vez');
-        cita.hora = RetornaHoraDeCita(cita[0]);
-        citas.push(cita);
-      }
+      let cita = await res.json();
+      console.log(cita);
+        cita.forEach(element => {
+          element.hora = RetornaHoraDeCita(element);
+          citas.push(element);
+        });
     } catch (error) {
       console.log(error);
     }  
