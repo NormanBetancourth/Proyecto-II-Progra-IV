@@ -672,7 +672,7 @@ const horarioGET = async () => {
 };
 
 const citasPOST = async (cita) => {
-  const req = new Request(backend + "/citas", {
+  const req = new Request(backend + "/citas/fix", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(cita),

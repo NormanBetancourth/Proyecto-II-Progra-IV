@@ -60,6 +60,18 @@ public class Citas {
             throw new NotAcceptableException();
         }
     }
+    @POST
+    @Path("/fix")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void create2(Cita c) {
+        try {
+            System.out.println(c);
+            Service.instance().registrarCitaMedicoPaciente2(c); //la clase de servicio invoca al metodo que creara una persona
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
 
     //Obtener la lista de citas por dia
     // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              

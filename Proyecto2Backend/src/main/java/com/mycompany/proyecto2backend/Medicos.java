@@ -33,7 +33,7 @@ import model.Usuario;
 import model.Horario;
 import model.ModelMedicosRest;
 import model.serviceBackend.Service;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
 
 
 //password,especialidad, fee, localidad, clinica, fotoPath, presentacion, estado, nombre,id
@@ -84,18 +84,19 @@ public class Medicos {
         }
     }
     
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA) 
-    @Path("{cedula}/imagen")
-    public void addImage(@PathParam("cedula") String cedula, @FormDataParam("imagen") InputStream in) {  
-        try{
-                OutputStream out = new FileOutputStream(new File(location + cedula));
-                in.transferTo(out);
-                out.close();
-            } catch (Exception ex) {
-                throw new NotAcceptableException(); 
-            }
-    }
+    
+//    @POST
+//    @Consumes(MediaType.MULTIPART_FORM_DATA) 
+//    @Path("{cedula}/imagen")
+//    public void addImage(@PathParam("cedula") String cedula, @FormDataParam("imagen") InputStream in) {  
+//        try{
+//                OutputStream out = new FileOutputStream(new File(location + cedula));
+//                in.transferTo(out);
+//                out.close();
+//            } catch (Exception ex) {
+//                throw new NotAcceptableException(); 
+//            }
+//    }
     
     
     //Actualizar el estado de un medico (solo el admin puede acceder a este metodo)
