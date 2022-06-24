@@ -692,11 +692,12 @@ public class GeneralHandler {
      public void modificarHorariosMedico(List<Horario> h, String idMed) {
         if (this.verificaUsuarioExiste(idMed)) {
             //verifica que la lista que se le mande no este vacia, para setear todos los horarios a valores default u inactivos
-            if(h.size() != 0)
+            if(h.size() != 0){
                 putHorariosDeafult(idMed);
+            }
             for(Horario ho : h){
                 //por cada horario que se le haya mandando cambia su estado a activo y les coloca sus valores
-                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraInicio(), ho.getFrecuencia());
+                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraFinal(), ho.getFrecuencia());
             }
         }
     }

@@ -90,16 +90,22 @@ function resetDoc(){
 function addDoctor() {
     let frecuencia = document.getElementById("frecuencia")[0].value;
     console.log("frec: "+frecuencia);
+    frecuencia = frecuencia+'';
+    if(frecuencia === '60'){
+        frecuencia = '01:00';
+    }else{
+        frecuencia = '00:30';
+    }
     (async () => {
       try {
-         addMed(); //funciona
+         await addMed(); //funciona
          console.log("Se ha agredo el medico");
             mappedDays.forEach(element => {
                 element.codigo = '-1';
                 element.idMedico = doctor.id;
                 element.frecuencia = frecuencia;
             });
-         addSchedule(doctor.id);
+         await addSchedule();
          console.log("Se pudo agregar el horario");
         
        resetDoc();
@@ -135,9 +141,9 @@ function addMed() {
     })();
 } 
 
-function addSchedule(id) {
+function addSchedule() {
     load();
-    const request = new Request(backend + '/horarios/'+id,
+    const request = new Request(backend + '/horarios/'+doctor.id,
             {method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(mappedDays)});

@@ -129,14 +129,14 @@ public class principalPruebaDAO {
            System.out.println( borrado);
            
            //===PRUEBA DE ACTUALIZAR HORARIOS DE UN MEDICO CON LISTA DE HORARIOS ===
-           Horario h1 = new Horario("","110","Martes","10:00:00","10:00:00","00:30");
-           Horario h2 = new Horario("", "110", "Viernes", "10:00:00", "10:00:00", "00:30");
+           Horario h1 = new Horario("","102","Martes","10:00","13:00","60");
+           Horario h2 = new Horario("", "102", "Viernes", "10:00", "12:00", "60");
            
            List<Horario> lh = new ArrayList();
            lh.add(h1);
            lh.add(h2);
-           
-           gen.modificarHorariosMedico(lh, "110");
+           System.out.println(lh.toString());
+           gen.modificarHorariosMedico(lh, "102");
          
     }
 }
