@@ -79,20 +79,20 @@ public class Citas {
         }
     }
     
-    @GET
-    @Path("paciente/{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Cita> readPorPacientes(@PathParam("id") String id) {
-        System.out.println(id);
-        try {
-            List<Cita> lista = Service.instance().retornarListaDeCitaPorPaciente(this.getCurrentMed().getId(), id);
-            return lista;
-        } catch (Exception ex) {
-            System.out.println(ex);
-            throw new NotFoundException();
-
-        }
-    }
+//    @GET
+//    @Path("paciente/{id}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public List<Cita> readPorPacientes(@PathParam("id") String id) {
+//        System.out.println(id);
+//        try {
+//            List<Cita> lista = Service.instance().retornarListaDeCitaPorPaciente(this.getCurrentMed().getId(), id);
+//            return lista;
+//        } catch (Exception ex) {
+//            System.out.println(ex);
+//            throw new NotFoundException();
+//
+//        }
+//    }
 
     //Actualizar el estado de una cita (solo el admin puede acceder a este metodo)
     @PUT
