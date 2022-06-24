@@ -278,3 +278,14 @@ input[type='checkbox']:after {
 #navbar {
     margin: -10px;
 }
+
+.citaRegistrada {
+    background-color: #61aaaa;
+    cursor: pointer;
+    height: 50px;
+    text-align: center;
+}
+
+.citaRegistrada:hover {
+    background: #a3cccc;
+}

@@ -1,7 +1,7 @@
 var metaData = {id:'', pwd:''};
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 const NET_ERR = 999;
-
+var doctor = {clinica: "", especialidad: "", estado: "Espera", fee: "", fotoPath: "", id: "", localidad: "", nombre: "", password: "", presentacion: "presentacion...", tipo: "Medico"};
 const dias = [
     { dia: "Lunes", num: 0 },
     { dia: "Martes", num: 1 },
@@ -47,7 +47,7 @@ modalSaveBtn.onclick = () => {
         horaFinal: element.parentNode.childNodes[4].childNodes[7].value,
         codigo:'',
         idMedico:'',
-        frecuencia:'',
+        frecuencia:''
       });
     });
     $("#modal-container").modal("hide");
@@ -56,41 +56,105 @@ modalSaveBtn.onclick = () => {
 };
 
 
-function addDoctor() {
-    let id = document.getElementsByName("id")[0].value;
-    let password = document.getElementsByName("password")[0].value;
-    let name = document.getElementsByName("name")[0].value;
-    let speciality = document.getElementById("speciality")[0].value;
-    let fee = document.getElementsByName("fee")[0].value;
-    let location = document.getElementById("location")[0].value; 
+function loadDoctor(){
     let foto = document.getElementsByName("foto")[0].value;
+    console.log($("#id").val());
+    doctor.id = $("#id").val();
+    console.log($("#name").val());
+    doctor.nombre = $("#name").val();
+    console.log($("#password").val());
+    doctor.password = $("#password").val();
+    console.log($("#location").val());
+    doctor.localidad = $("#location").val();
+    console.log($("#clinica").val());
+    doctor.clinica = $("#clinica").val();
+    console.log($("#speciality").val());
+    doctor.especialidad = $("#speciality").val();
+    console.log($("#fee").val());
+    doctor.fee = $("#fee").val();
+    console.log($("#foto").val());
+    doctor.fotoPath = foto;
+}
+
+function resetDoc(){
+    doctor.id = "";
+    doctor.nombre = "";
+    doctor.password = "";
+    doctor.localidad = "";
+    doctor.clinica = "";
+    doctor.especialidad = "";
+    doctor.fee = "";
+    doctor.fotoPath = "";
+}
+
+function addDoctor() {
     let frecuencia = document.getElementById("frecuencia")[0].value;
-  
-    var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
-    
+    console.log("frec: "+frecuencia);
     (async () => {
       try {
-        const result = await search(id);
-        console.log(doctor);
-        console.log(result);
-        if (result === undefined){
-            //TODO: mandar horario y medicos
-            // window.location.href = "./../inicio/index.html";
-            mappedDays.forEach( element => {
-              element.codigo = '-1';
-              element.idMedico = id;
-              element.frecuencia = frecuencia;
-            })
-            console.log(mappedDays);
-            return;
-        }
-        errorMessage(405, $("#errorDiv"));
+         addMed(); //funciona
+         console.log("Se ha agredo el medico");
+            mappedDays.forEach(element => {
+                element.codigo = '-1';
+                element.idMedico = doctor.id;
+                element.frecuencia = frecuencia;
+            });
+         addSchedule(doctor.id);
+         console.log("Se pudo agregar el horario");
+        
+       resetDoc();
       } catch (err) {
         console.log(err);
         return;
       }
     })();
 }
+
+function addMed() {
+    loadDoctor();
+    load();
+//    for (const [key, value] of Object.entries(doctor)) {
+//        console.log(value);
+//    }
+    const request = new Request(backend + '/medicos',
+            {method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(doctor)});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                        console.log("No se pudo agregar medico ==>addMed()");
+                //errorMessage(response.status, $("#add-modal #errorDiv"));
+                return;
+            }
+            //$('#add-modal').modal('hide');
+        } catch (e) {
+            errorMessage(NET_ERR, $("#add-modal #errorDiv"));
+        }
+    })();
+} 
+
+function addSchedule(id) {
+    load();
+    const request = new Request(backend + '/horarios/'+id,
+            {method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(mappedDays)});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                console.log("No se pudo agregar el horario ==>addSchedule(");
+                //errorMessage(response.status, $("#add-modal #errorDiv"));
+                return;
+            }
+            //$('#add-modal').modal('hide');
+        } catch (e) {
+            errorMessage(NET_ERR, $("#add-modal #errorDiv"));
+        }
+    })();
+} 
 
 const loadUserData  = (user) => {
     document.getElementsByName("id")[0].value = user.id;
@@ -99,7 +163,7 @@ const loadUserData  = (user) => {
     document.getElementsByName("speciality")[0].value = user.speciality;
     document.getElementsByName("fee")[0].value = user.fee;
     document.getElementsByName("location")[0].value = user.location;
-}
+};
 
 const load = () => {
     $("form").submit(function (e) {
@@ -111,13 +175,10 @@ const load = () => {
 //buscar
 const search = async (id) => {
     try {
-      const req = new Request(backend + "/medicos/" + id, {
-        method: "GET",
-        headers: {},
-      });
+      const req = new Request(backend + "/medicos/" + id, {method: "GET", headers: {}});
       const res = await fetch(req);
       if (!res.ok) {
-        throw BreakException;
+        console.log("error al buscar medico");
       }
       var result = await res.json();
       return result;
@@ -153,7 +214,7 @@ const cargarComobox = async () => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 
 const load2 = async () => {
