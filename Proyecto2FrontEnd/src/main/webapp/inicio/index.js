@@ -1,9 +1,12 @@
 let backend = "http://localhost:8080/Proyecto2Backend/api";
 let medicoRegistrado = {};
+let paciente = {};
 let header = '';
 let semana = [];
 let enabled = [];
 let registered = [];
+let cancelado = [];
+let finalizado = [];
 let diaHoraSeleccionada = {};
 let frecuencia = '01:00';
 const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
@@ -23,6 +26,7 @@ const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 const modalBody = document.querySelector('#modal-body');
+const modalFooter = document.querySelector('#modal-footer');
 const calendarios = document.querySelector('.contenedor-calendarios');
 const actualDay = document.querySelector('#weekly-monthDisplay');
 
@@ -84,7 +88,7 @@ const GetHorario = async () =>{
         element.num = RetornaNumDia(element.dia);
       });
       LoadActualWeek();
-      console.log(agenda);
+      // console.log(agenda);
   } catch (error) {
       console.log(error);
   }
@@ -136,7 +140,7 @@ const GetCitas = async () =>{
           console.log("Error al leer las citas");
       }
       let cita = await res.json();
-      console.log(cita);
+      // console.log(cita);
         cita.forEach(element => {
           element.hora = RetornaHoraDeCita(element);
           element.fecha = RetornaFechaDeCita(element);
@@ -153,23 +157,50 @@ const GetCitas = async () =>{
 };
 
 function LoadCitas() {
+
   enabled.forEach(element => {
-    // console.log('Elemento: ' + element.getAttribute('data-read'));
+    // console.log(element);
     citas.forEach(cita => {
+      // console.log(cita);
       if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
-        element.classList.remove('enableHourAppointment');
-        element.textContent  = 'Atender Cita';
-        element.classList.add('citaRegistrada');
-        console.log(cita.estado);
+        // console.log(cita.estado);
+        // codigo, idmedico, idpaciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos
         element.setAttribute('data-estado', cita.estado);
-        registered.push(element);
-      }
-      else {
-        if(element.textContent !== 'Atender Cita'){
-          element.textContent  = 'Registrar Cita';
+        element.setAttribute('data-medico', cita.medico.id);
+        element.setAttribute('data-nombre-medico', cita.medico.nombre);
+        element.setAttribute('data-motivo', cita.motivo);
+        element.setAttribute('data-paciente', cita.paciente.id);
+        element.setAttribute('data-diag', cita.diagnostico);
+        element.setAttribute('data-signos', cita.signos);
+        element.setAttribute('data-pres', cita.prescripciones);
+        element.setAttribute('data-med', cita.medicamentos);
+        element.setAttribute('data-nombre-pac', cita.paciente.nombre);
+        if(element.getAttribute('data-estado') === 'Registrado') {
+          element.classList.remove('enableHourAppointment');
+          element.textContent  = 'Atender Cita';
+          element.classList.add('citaRegistrada');
+        }
+        else {
+          if(element.getAttribute('data-estado') === 'Finalizado') {
+            element.classList.remove('enableHourAppointment');
+            element.textContent  = 'Cita Finalizada';
+            element.classList.add('citaFinalizada');
+          }
+          else {
+            if(element.getAttribute('data-estado') === 'Cancelado') {
+              element.textContent  = 'Cita Cancelada';
+              element.classList.remove('enableHourAppointment');
+              element.classList.add('citaCancelada');
+            }
+          }
         }
       }
     });
+  });
+ 
+
+  Array.from(document.querySelectorAll('.enableHourAppointment')).forEach(element => {
+    element.textContent  = 'Registrar Cita';
   });
 }
 
@@ -193,6 +224,7 @@ function EnableHoursAppointments() {
   });
   //console.log(fechasCitas);
   GetCitas();
+
 }
 
 function CalculateRanges() {
@@ -547,81 +579,283 @@ function LoadWeek() {
   );
 }
 
-function LoadInforModal(event) {
+function LoadInforModal(event) { 
   if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado') {
     modalBody.innerHTML = `
     <div class="form-group">
       <form>
         <div>
+        <label>Identificación del médico</label>
+        <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+        <label>Nombre del médico</label>
+        <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
         <label>Fecha</label>
-        <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+        <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
         <label>Hora</label>
         <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+        <label>Paciente</label>
+        <input type="text" class="form-control" id='paciente-cita' value='${event.relatedTarget.getAttribute('data-nombre-pac') + ', ' + event.relatedTarget.getAttribute('data-paciente')}'  readonly>
         <label>Motivo</label>
-        <input type="text" class="form-control" id='motivo-cita' required>
+        <input type="text" class="form-control" id='motivo-cita' value='${event.relatedTarget.getAttribute('data-motivo')}' readonly>
+        <label>Signos</label>
+        <input type="text" class="form-control" id='signos-cita' value='${event.relatedTarget.getAttribute('data-signos')}' readonly>
+        <label>Diagnostico</label>
+        <input type="text" class="form-control" id='diagnostico-cita' value='${event.relatedTarget.getAttribute('data-diag')}' readonly>
+        <label>Prescripción</label>
+        <input type="text" class="form-control" id='pres-cita' value='${event.relatedTarget.getAttribute('data-pres')}' readonly>
+        <label>Medicamentos</label>
+        <input type="text" class="form-control" id='medicamentos-cita' value='${event.relatedTarget.getAttribute('data-med')}' readonly>
         </div>
       </form>
     </div>
     `;
+    modalFooter.innerHTML = `
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cerrar</button>
+    `;
   }
   else {
-      if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {
-        let line = '';
-    
-        const select = document.createElement('select');
-        select.classList.add('custom-select');
-        select.setAttribute('id', 'inputGroupSelect01');
-      
-        pacientes.forEach((element) => {
-          const option = document.createElement('option');
-          option.setAttribute('value', element.id);
-          option.textContent = element.nombre + ', ' + element.id;
-          line += option.outerHTML;
-        });
-      
+      if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {    
         modalBody.innerHTML = `
         <div class="form-group">
           <form>
             <div>
+            <label>Identificación del médico</label>
+            <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+            <label>Nombre del médico</label>
+            <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
             <label>Fecha</label>
-            <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+            <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
             <label>Hora</label>
             <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+            <label>Paciente</label>
+            <input type="text" class="form-control" id='paciente-cita' value='${event.relatedTarget.getAttribute('data-nombre-pac') + ', ' + event.relatedTarget.getAttribute('data-paciente')}'  readonly>
             <label>Motivo</label>
-            <input type="text" class="form-control" id='motivo-cita' required>
+            <input type="text" class="form-control" id='motivo-cita' value='${event.relatedTarget.getAttribute('data-motivo')}' readonly>
+            <label>Signos</label>
+            <input type="text" class="form-control" id='signos-cita' required>
+            <label>Diagnostico</label>
+            <input type="text" class="form-control" id='diagnostico-cita' required>
+            <label>Prescripción</label>
+            <input type="text" class="form-control" id='pres-cita' required>
+            <label>Medicamentos</label>
+            <input type="text" class="form-control" id='medicamentos-cita' required>
             </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
-              </div>
-              <select class="custom-select mt-3" id="inputGroupSelect01" required>
-                <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
-                ${line}
-              </select>
+            </div>
           </form>
         </div>
         `;
     
+        modalFooter.innerHTML = `
+        <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="send-button">Enviar</button>
+        `;
+
+        $('#cancel-button').on('click', CancelarCita);
+        $('#send-button').on('click', AtenderCita);
+
+      }
+      else {
+        if(event.relatedTarget.getAttribute('data-estado') === 'Cancelado') {  
+          modalBody.innerHTML = `
+          <div class="form-group">
+            <form>
+              <div>
+              <label>Identificación del médico</label>
+              <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+              <label>Nombre del médico</label>
+              <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
+              <label>Fecha</label>
+              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
+              <label>Hora</label>
+              <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+              <label>Paciente</label>
+              <input type="text" class="form-control" id='paciente-cita' value='${event.relatedTarget.getAttribute('data-nombre-pac') + ', ' + event.relatedTarget.getAttribute('data-paciente')}'  readonly>
+              <label>Motivo</label>
+              <input type="text" class="form-control" id='motivo-cita' value='${event.relatedTarget.getAttribute('data-motivo')}' readonly>
+              <label>Signos</label>
+              <input type="text" class="form-control" id='signos-cita' readonly>
+              <label>Diagnostico</label>
+              <input type="text" class="form-control" id='diagnostico-cita' readonly>
+              <label>Prescripción</label>
+              <input type="text" class="form-control" id='pres-cita' readonly>
+              <label>Medicamentos</label>
+              <input type="text" class="form-control" id='medicamentos-cita' readonly>
+              </div>
+              </div>
+            </form>
+          </div>
+          `;
+          modalFooter.innerHTML = `
+          <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
+          `;
+        }    
+        else {
+          let line = '';
+
+          const select = document.createElement('select');
+          select.classList.add('custom-select');
+          select.setAttribute('id', 'inputGroupSelect01');
+        
+          pacientes.forEach((element) => {
+            const option = document.createElement('option');
+            option.setAttribute('value', element.id);
+            option.textContent = element.nombre + ', ' + element.id;
+            line += option.outerHTML;
+          });
+          modalBody.innerHTML = `
+          <div class="form-group">
+            <form>
+              <div>
+              <label>Identificación del médico</label>
+              <input type="text" class="form-control" id='medico-id-cita' value=${medicoRegistrado.id} readonly>
+              <label>Nombre del médico</label>
+              <input type="text" class="form-control" id='medico-nombre-cita' value=${medicoRegistrado.nombre} readonly>
+              <label>Fecha</label>
+              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
+              <label>Hora</label>
+              <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+              <label>Motivo</label>
+              <input type="text" class="form-control" id='motivo-cita' required>
+              </div>
+              </div>
+            </form>
+          </div>
+          <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
+          </div>
+          <select class="custom-select mt-3" id="inputGroupSelect01" required>
+            <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
+            ${line}
+          </select>
+          `;
+          
+      
+          modalFooter.innerHTML = `
+          <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="accept-button">Enviar</button>
+          `;
+          $('#accept-button').on('click', RegistrarCita);
+        }
       }
     }
 }
-  //console.log(event.relatedTarget);
- 
-  
-  // Verificar campo de motivo esta completado antes de enviar
-  // Agregarle al div una clase de citas ya guardadas y que cambie de color
 
-function ResetData() {
-  document.querySelector('#motivo-cita').value = '';
-  document.querySelector('#seleccionar').selected = true;
+const AtenderCita = async () => {
+  let cita = {
+    paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
+    medico: medicoRegistrado,
+    fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
+    motivo: $('#motivo-cita').val(),
+    signos: $('#signos-cita').val(),
+    diagnostico: $('#diagnostico-cita').val(),
+    estado: "Registrado",
+    prescripciones: $('#pres-cita').val(),
+    Medicamentos: $('#medicamentos-cita').val(),
+  };
+  console.log(cita);
 }
+
+const CancelarCita = async () => {
+  let cita = {
+    paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
+    medico: medicoRegistrado,
+    fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
+    motivo: $('#motivo-cita').val(),
+    signos: "",
+    diagnostico: "",
+    estado: "Registrado",
+    prescripciones: "",
+    Medicamentos: "",
+  };
+  console.log(cita);
+}
+
+
+
+const CargarPacientePorId = async (id) => {
+  try {
+    const req = new Request(backend + "/pacientes/data/" + id, {
+      method: "GET",
+      headers: {},
+    });
+
+    console.log(req);
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al guardad user de session");
+      return;
+    }
+    paciente = await res.json();
+    return paciente;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const RegistrarCita = async () => {
+  // console.log('entra');
+  // // fecha-cita, hora-cita, paciente-cita, motivo-cita, signos-cita, diagnostico-cita, pres-cita, medicamentos-cita  
+  // let cita = {};
+  // cita.medico =  $('#medico-id-cita').val();
+  // cita.fechaCita =  $('#fecha-cita').val();
+  // cita.horaCita = $('#hora-cita').val(); 
+  // cita.pacienteCita =  $('#inputGroupSelect01').find(":selected").text().split(', ')[1];
+  // cita.motivoCita = $('#motivo-cita').val(); 
+  // cita.signosCita =  ''; 
+  // cita.diagnosticoCita = ''; 
+  // cita.presCita = ''; 
+  // cita.medicamentos = ''; 
+
+  // console.log($('#fecha-cita').val());
+  // console.log ($('#fecha-cita').val());
+  // console.log($('#hora-cita').val());
+  // console.log( $('#inputGroupSelect01').find(":selected").text().split(', ')[1]);
+  // console.log(cita);
+
+ 
+  let cita = {
+    paciente: await CargarPacientePorId($('#inputGroupSelect01').find(":selected").text().split(', ')[1]),
+    medico: medicoRegistrado,
+    fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
+    motivo: $('#motivo-cita').val(),
+    signos: "",
+    diagnostico: "",
+    estado: "Registrado",
+    prescripciones: "",
+    Medicamentos: "",
+  };
+  console.log(cita);
+
+  await CitasPOST(cita);
+}
+
+const CitasPOST = async (cita) => {
+  const req = new Request(backend + "/citas", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cita),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error agregar una cita");
+      return;
+    }
+    console.log("Se inserta la cita");
+    document.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 function AddEvents() {
   document.querySelectorAll('div .day-active').forEach(element => {
     element.addEventListener('click', LoadWeek);
   });
   $(document).on('show.bs.modal', modalBody, LoadInforModal);
-  // $('#cancel-button').on('click', ResetData);
+  $('#send-button').on('click', AtenderCita);
 };
 
 

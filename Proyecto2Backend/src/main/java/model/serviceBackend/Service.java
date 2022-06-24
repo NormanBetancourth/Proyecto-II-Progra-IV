@@ -133,6 +133,11 @@ public class Service {
         return genDB.listaCitasPorMedicoDia(idMed, fecha);
     }
     
+
+//    public List<Cita> retornarListaDeCitaPorPaciente(String idMed, String id){      
+//        return genDB.lis
+//    }
+
         //===========Metodos de servicio para los Usuarios========
     public Usuario retornarUsuarioID(String id){
         return genDB.retornaUserPorId(id);
@@ -158,7 +163,7 @@ public class Service {
     //===========Metodos de servicio para los contactos=======
     
     public void registrarContacto(Contacto c){
-        genDB.registrarContacto(c.getIdPaciente(), c.getNumero(), c.getNombre(), c.getNumero());
+        genDB.registrarContacto(c.getIdPaciente(), c.getId(), c.getNombre(), c.getTelefono());
     }
      
     public void borrarContacto(String numero){

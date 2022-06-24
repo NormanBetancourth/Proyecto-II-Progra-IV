@@ -32,7 +32,7 @@ table.onclick = async (e) => {
       $("#modal-container").modal("show");
     }
     if (e.target.dataset.event === "citas") {
-      await loadCitasView(objEvent.id); //TODO: contactos de x paciente
+      await loadCitasView(objEvent.id);
       $("#modal-container").modal("show");
     }
     if (e.target.dataset.event === "agendar") {
@@ -127,8 +127,7 @@ const loadContactModal = async (contactos) => {
             </tr>
         `;
     });
-    //TODO: agregar funcionalidad a los botones
-    //TODO: agregar el POST de contactos
+
 
     tableBodyContacts.innerHTML = contentExtra;
 

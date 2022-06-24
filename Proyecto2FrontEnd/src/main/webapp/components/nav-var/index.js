@@ -5,3 +5,7 @@
 //     console.log('AAAAAAAAAAAAAAAAAAAAAA sexo');
 //     window.location.href = "/Proyecto2FrontEnd/listar-pacientes/index.html";
 // };
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

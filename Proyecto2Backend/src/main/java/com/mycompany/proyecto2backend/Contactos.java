@@ -44,8 +44,8 @@ public class Contactos {
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(Contacto c) {
         try {
+            System.out.println(c);
             Service.instance().registrarContacto(c);
-            //TODO Agregar el contacto PD: se le debe crear la secuencia de la db
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();
@@ -56,6 +56,7 @@ public class Contactos {
     @Consumes(MediaType.APPLICATION_JSON)
     public void post(Contacto c) {
         try {
+            
             System.out.println(c);
             Service.instance().modificarContacto(c);
         } catch (Exception ex) {
