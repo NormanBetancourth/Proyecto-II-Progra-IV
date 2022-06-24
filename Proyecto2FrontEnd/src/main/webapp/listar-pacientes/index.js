@@ -44,11 +44,6 @@ table.onclick = async (e) => {
 
 
 const loadCitasView = async (id) => {
-    // String numero;
-    // String id;
-    // String idPaciente;
-    // String nombre;
-    // String telefono;
 
     var contEmgPorPaciente = await contactosGET(id);
     loadContactModal(contEmgPorPaciente);
@@ -120,22 +115,46 @@ const loadContactModal = (contactos) => {
                 <td>${element.id}</td>
                 <td>${element.nombre}</td>
                 <td>
-                    <input type="text" class="form-control" value='${element.telefono}' required>
+                    <input type="text" class="form-control" value='${element.telefono}' id='update-telefono' required>
                 </td>
                 
-                <td data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}' >
-                    <button type="button" class="btn btn-primary">✎</button>
+                <td  >
+                    <button type="button" class="btn btn-primary" id = 'btn-edit' data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}'>✎</button>
                 </td>
-                <td data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}' >
-                    <button type="button" class="btn btn-danger">✖</button>
+                <td  >
+                    <button type="button" class="btn btn-danger"  id = 'btn-delete' data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}'>✖</button>
                 </td>
             </tr>
-        `
+        `;
+
+
     });
     //TODO: agregar funcionalidad a los botones
     //TODO: agregar el POST de contactos
 
     tableBodyContacts.innerHTML = contentExtra;
+
+
+    const element = document.querySelector("form");
+    element.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+
+
+    const btnEdit = document.getElementById("btn-edit");
+    btnEdit.onclick = (e) => {
+      console.log(e.target.dataset.idContact);
+      console.log(e.target.dataset.idPaciente);
+      const telefonoUpdate = document.getElementById("update-telefono");
+      console.log(telefonoUpdate.value);
+    };
+
+    const btnDelete = document.getElementById("btn-delete");
+    btnDelete.onclick = (e) => {
+      console.log(e);
+    };
+
+
     
 };
 
@@ -258,9 +277,6 @@ const horarioBuild = async (dateFormat) => {
   let day = buildLitDay(dateFormat);
   let horario = await horarioGET();
   var citasPorDia = await CitasPorFechaGET(dateFormat);
-  console.log(day);
-  console.log(horario);
-  console.log(citasPorDia);
   if (horario[0].frecuencia == "00:30") {
     //Manejar con frecuencia 30 mins
     var mappedours = ['08:00', '08:30', '09:00', '09:30', '10:00','10:30', '11:00',
@@ -315,8 +331,6 @@ const horarioBuild = async (dateFormat) => {
       });
       var horaInicioMedico = diaAux.horaInicio;
       var horaFinalMedico = diaAux.horaFinal;
-      console.log(horaInicioMedico.substring(0,5));
-      console.log(horaFinalMedico.substring(0,5));
       
       mappedours.forEach(element => {
         optionSelected = document.getElementById(element);
