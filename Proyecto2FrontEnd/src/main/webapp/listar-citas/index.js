@@ -40,11 +40,11 @@ const loadCitasPorPaciente = async (id) => {
         console.log(element);
         if(element.estado != 'Cancelado'){
             contentDates += `
-            <tr data-id="${element.medicamentos}" >
-                <th scope="row" data-id="${element.medicamentos}" >${element.estado}</th>
-                <td  data-id="${element.medicamentos}" >${element.fecha}</td>
-                <td data-id="${element.medicamentos}" >${element.motivo}</td>
-                <td data-id="${element.medicamentos}" >${element.medicamentos}</td>
+            <tr data-id="${element.codigo}" >
+                <th scope="row" data-id="${element.codigo}" >${element.estado}</th>
+                <td  data-id="${element.codigo}" >${element.fecha}</td>
+                <td data-id="${element.codigo}" >${element.motivo}</td>
+                <td data-id="${element.codigo}" >${element.codigo}</td>
             </tr>
             `;
 
@@ -74,6 +74,7 @@ const citasGET = async (id) =>{
           return;
         }
         var result = await res.json();
+        console.log(result);
         return result;
       } catch (error) {
         console.log(error);
