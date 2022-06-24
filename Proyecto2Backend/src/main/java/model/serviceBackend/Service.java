@@ -149,7 +149,7 @@ public class Service {
     //===========Metodos de servicio para los contactos=======
     
     public void registrarContacto(Contacto c){
-        genDB.registrarContacto(c.getIdPaciente(), c.getNumero(), c.getNombre(), c.getNumero());
+        genDB.registrarContacto(c.getIdPaciente(), c.getId(), c.getNombre(), c.getTelefono());
     }
      
     public void borrarContacto(String numero){

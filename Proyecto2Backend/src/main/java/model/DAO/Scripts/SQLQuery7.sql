@@ -143,7 +143,7 @@ alter table horarios
 alter table usuarios add constraint usuarios_nombre_uk unique (nombre);
 alter table especialidades add constraint especialidades_nombre_uk unique (nombre);
 alter table ciudades add constraint ciudades_nombre_uk unique (nombre);
-alter table contactos add constraint contactos_telefono_uk unique (telefono);
+
 
 
 -- Ingresando datos de prueba
