@@ -601,7 +601,7 @@ function LoadInforModal(event) {
         <label>Signos</label>
         <input type="text" class="form-control" id='signos-cita' value='${event.relatedTarget.getAttribute('data-signos')}' readonly>
         <label>Diagnostico</label>
-        <input type="text" class="form-control" id='diagostico-cita' value='${event.relatedTarget.getAttribute('data-diagnostico')}' readonly>
+        <input type="text" class="form-control" id='diagostico-cita' value='${event.relatedTarget.getAttribute('data-diag')}' readonly>
         <label>Prescripción</label>
         <input type="text" class="form-control" id='pres-cita' value='${event.relatedTarget.getAttribute('data-pres')}' readonly>
         <label>Medicamentos</label>
