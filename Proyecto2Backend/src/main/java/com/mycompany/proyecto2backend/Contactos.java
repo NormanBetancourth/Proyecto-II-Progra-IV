@@ -8,10 +8,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotAcceptableException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -44,11 +46,39 @@ public class Contactos {
         try {
             System.out.println(c);
             //Service.instance().re(c);
+            //TODO
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();
         }
     }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void post(Contacto c) {
+        try {
+            System.out.println(c);
+            //Service.instance().re(c);
+            //TODO
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
+    
+    @DELETE
+    @Path("{id}")
+    public void delete(@PathParam("id") String idPaciente) {
+        try {
+            System.out.println(idPaciente);
+            //Service.instance().re(c);
+            //TODO
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
+
 
     @GET
     @Path("{idPaciente}")

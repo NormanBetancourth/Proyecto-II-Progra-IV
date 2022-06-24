@@ -53,10 +53,9 @@ const loadCitasView = async (id) => {
 };
 
 
-const loadContactModal = (contactos) => {
-    console.log(contactos);
+const loadContactModal = async (contactos) => {
     let infoAgenda = `    
-    <form onsubmit="">
+    <form onsubmit="contactosPOST()">
     <div class="row">
       <div class="col" ></div>
       <div class="col-10" >
@@ -110,29 +109,60 @@ const loadContactModal = (contactos) => {
     var contentExtra = ``;
 
     contactos.forEach(element => {
+        console.log(element);
         contentExtra += `
             <tr>
                 <td>${element.id}</td>
                 <td>${element.nombre}</td>
                 <td>
-                    <input type="text" class="form-control" value='${element.telefono}' id='update-telefono' required>
+                    <input type="text" class="form-control" value='${element.telefono}' id='update-telefono-${element.id}' required>
                 </td>
                 
                 <td  >
-                    <button type="button" class="btn btn-primary" id = 'btn-edit' data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}'>✎</button>
+                    <button type="button" class="btn btn-primary" id = 'btn-edit-${element.id}' data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}' data-nombre='${element.nombre}'  data-numero='${element.numero}'>✎</button>
                 </td>
                 <td  >
-                    <button type="button" class="btn btn-danger"  id = 'btn-delete' data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}'>✖</button>
+                    <button type="button" class="btn btn-danger"  id = 'btn-delete-${element.id}' data-id-contact='${element.id}' data-id-paciente='${element.idPaciente}' data-nombre='${element.nombre}'  data-numero='${element.numero}'>✖</button>
                 </td>
             </tr>
         `;
-
-
     });
     //TODO: agregar funcionalidad a los botones
     //TODO: agregar el POST de contactos
 
     tableBodyContacts.innerHTML = contentExtra;
+
+    contactos.forEach( element => {
+      const btnEdit = document.getElementById(`btn-edit-${element.id}`);
+      btnEdit.onclick = async (e) => {
+        const telefonoUpdate = document.getElementById(`update-telefono-${element.id}`);
+        if(telefonoUpdate.value == ''){
+          alert("Debes mandar un numero para modificar");
+          return;
+        }
+
+        contactoPUT = {
+          numero:e.target.dataset.numero,
+          id:e.target.dataset.idContact,
+          idPaciente: e.target.dataset.idPaciente,
+          nombre: e.target.dataset.nombre,
+          telefono:  telefonoUpdate.value
+        }
+        console.log(contactoPUT);
+
+        await contactosPUT(contactoPUT);
+
+        $("#modal-container").modal("hide");
+
+      };
+  
+      const btnDelete = document.getElementById(`btn-delete-${element.id}`);
+      btnDelete.onclick = async (e) => {
+        await contactosDELETE(e.target.dataset.numero);
+        $("#modal-container").modal("hide");
+      };
+      
+    });
 
 
     const element = document.querySelector("form");
@@ -141,18 +171,7 @@ const loadContactModal = (contactos) => {
     });
 
 
-    const btnEdit = document.getElementById("btn-edit");
-    btnEdit.onclick = (e) => {
-      console.log(e.target.dataset.idContact);
-      console.log(e.target.dataset.idPaciente);
-      const telefonoUpdate = document.getElementById("update-telefono");
-      console.log(telefonoUpdate.value);
-    };
-
-    const btnDelete = document.getElementById("btn-delete");
-    btnDelete.onclick = (e) => {
-      console.log(e);
-    };
+  
 
 
     
@@ -669,6 +688,70 @@ const citasPOST = async (cita) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+
+const contactosPUT = async (contacto) => {
+  const req = new Request(backend + "/contactos", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(contacto),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error agregar un contacto");
+      return;
+    }
+    console.log("Se inserta el contact");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const contactosPOST = async () => {
+
+  const numero = '-1';
+  const id = document.getElementById('contacto-id').value;
+  const idPaciente = objEvent.id;
+  const nombre = document.getElementById('contacto-nombre').value;
+  const telefono = document.getElementById('contacto-telefono').value;
+  contacto = {numero, id, idPaciente, nombre, telefono};
+  const req = new Request(backend + "/contactos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(contacto),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error agregar un contacto");
+      return;
+    }
+    console.log("Se inserta el contact");
+  } catch (error) {
+    console.log(error);
+  }
+
+  $("#modal-container").modal("hide");
+};
+
+const contactosDELETE = async (id) => {
+  const req = new Request(backend + "/contactos/"+id, {
+    method: "DELETE",
+    headers: {}
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error eliminar un contacto");
+      return;
+    }
+    console.log("se elimina el contacto");
+  } catch (error) {
+    console.log(error);
+  }
+
 };
 
 const cargarPacientePorId = async (id) => {
