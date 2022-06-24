@@ -86,7 +86,7 @@ const GetHorario = async () =>{
         element.num = RetornaNumDia(element.dia);
       });
       LoadActualWeek();
-      console.log(agenda);
+      // console.log(agenda);
   } catch (error) {
       console.log(error);
   }
@@ -138,7 +138,7 @@ const GetCitas = async () =>{
           console.log("Error al leer las citas");
       }
       let cita = await res.json();
-      console.log(cita);
+      // console.log(cita);
         cita.forEach(element => {
           element.hora = RetornaHoraDeCita(element);
           element.fecha = RetornaFechaDeCita(element);
@@ -155,40 +155,65 @@ const GetCitas = async () =>{
 };
 
 function LoadCitas() {
+
   enabled.forEach(element => {
-    // console.log('Elemento: ' + element.getAttribute('data-read'));
+    console.log(element);
     citas.forEach(cita => {
       element.setAttribute('data-estado', cita.estado);
-      console.log(cita.estado);
       if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
         if(element.getAttribute('data-estado') === 'Registrado') {
           element.textContent  = 'Atender Cita';
           element.classList.add('citaRegistrada');
-          registered.push(element);
         }
         else {
           if(element.getAttribute('data-estado') === 'Finalizado') {
             element.classList.remove('enableHourAppointment');
             element.textContent  = 'Cita Finalizada';
             element.classList.add('citaFinalizada');
-            finalizado.push(element);
           }
           else {
             if(element.getAttribute('data-estado') === 'Cancelado') {
               element.textContent  = 'Cita Cancelada';
               element.classList.remove('enableHourAppointment');
               element.classList.add('citaCancelada');
-              cancelado.push(element);
-            }
-            else{
-              element.textContent  = 'Registrar cita';
             }
           }
         }
       }
-
     });
   });
+ 
+
+  // enabled.forEach(element => {
+  //   // console.log('Elemento: ' + element.getAttribute('data-read'));
+  //   citas.forEach(cita => {
+  //     element.setAttribute('data-estado', cita.estado);
+  //     if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
+  //       if(element.getAttribute('data-estado') === 'Registrado') {
+  //         element.textContent  = 'Atender Cita';
+  //         element.classList.add('citaRegistrada');
+  //         registered.push(element);
+  //       }
+  //       else {
+  //         if(element.getAttribute('data-estado') === 'Finalizado') {
+  //           element.classList.remove('enableHourAppointment');
+  //           element.textContent  = 'Cita Finalizada';
+  //           element.classList.add('citaFinalizada');
+  //           finalizado.push(element);
+  //         }
+  //         else {
+  //           if(element.getAttribute('data-estado') === 'Cancelado') {
+  //             element.textContent  = 'Cita Cancelada';
+  //             element.classList.remove('enableHourAppointment');
+  //             element.classList.add('citaCancelada');
+  //             cancelado.push(element);
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //   });
+  // });
 }
 
 function EnableHoursAppointments() {

@@ -245,6 +245,9 @@ insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, mo
 values (next value for sec_citas,102, 103, '2022-23-06 10:00:00', 'Registrado', 'Presion normal, ...', 'Dolor de enc�as', 'Caries', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,102, 104, '2022-21-06 12:00:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
+insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
+values (next value for sec_citas,102, 104, '2022-21-06 13:00:00', 'Cancelado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
+
 
 select * from usuarios;
 select * from administradores;
