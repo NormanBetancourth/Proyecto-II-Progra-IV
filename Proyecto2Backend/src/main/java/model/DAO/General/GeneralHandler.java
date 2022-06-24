@@ -374,7 +374,7 @@ public class GeneralHandler {
                 cita.setMotivo(rs.getString("motivo"));
                 cita.setDiagnostico(rs.getString("diagnostico"));
                 cita.setPrescripciones(rs.getString("prescripcion"));
-                cita.setMedicamentos(rs.getString("medicamentos"));
+                cita.setMedicamentos(rs.getString("codigo"));
                 
                 lista.add(cita);
                 }
@@ -402,7 +402,7 @@ public class GeneralHandler {
                 cita.setMotivo(rs.getString("motivo"));
                 cita.setDiagnostico(rs.getString("diagnostico"));
                 cita.setPrescripciones(rs.getString("prescripcion"));
-                cita.setMedicamentos(rs.getString("medicamentos"));
+                cita.setMedicamentos(rs.getString("codigo"));
                 
                 lista.add(cita);
                 }
