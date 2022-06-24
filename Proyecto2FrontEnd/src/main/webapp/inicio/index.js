@@ -646,9 +646,13 @@ function LoadInforModal(event) {
         `;
     
         modalFooter.innerHTML = `
-        <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
+        <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cancelar</button>
         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="send-button">Enviar</button>
         `;
+
+        $('#cancel-button').on('click', CancelarCita);
+        $('#send-button').on('click', AtenderCita);
+
       }
       else {
         if(event.relatedTarget.getAttribute('data-estado') === 'Cancelado') {  
@@ -737,13 +741,41 @@ function LoadInforModal(event) {
     }
 }
 
-function AtenderCita() {
-
+const AtenderCita = async () => {
+  let cita = {
+    paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
+    medico: medicoRegistrado,
+    fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
+    motivo: $('#motivo-cita').val(),
+    signos: $('#signos-cita').val(),
+    diagnostico: $('#diagnostico-cita').val(),
+    estado: "Registrado",
+    prescripciones: $('#pres-cita').val(),
+    Medicamentos: $('#medicamentos-cita').val(),
+  };
+  console.log(cita);
 }
 
-const CargarPacientePorId = async () => {
+const CancelarCita = async () => {
+  let cita = {
+    paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
+    medico: medicoRegistrado,
+    fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
+    motivo: $('#motivo-cita').val(),
+    signos: "",
+    diagnostico: "",
+    estado: "Registrado",
+    prescripciones: "",
+    Medicamentos: "",
+  };
+  console.log(cita);
+}
+
+
+
+const CargarPacientePorId = async (id) => {
   try {
-    const req = new Request(backend + "/pacientes/data/" + $('#inputGroupSelect01').find(":selected").text().split(', ')[1], {
+    const req = new Request(backend + "/pacientes/data/" + id, {
       method: "GET",
       headers: {},
     });
@@ -783,7 +815,7 @@ const RegistrarCita = async () => {
 
  
   let cita = {
-    paciente: await CargarPacientePorId(),
+    paciente: await CargarPacientePorId($('#inputGroupSelect01').find(":selected").text().split(', ')[1]),
     medico: medicoRegistrado,
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
