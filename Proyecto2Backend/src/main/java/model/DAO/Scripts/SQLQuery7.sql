@@ -220,6 +220,8 @@ insert into pacientes(id, telefono, idMed) values (103, '84201936', 101);
 insert into pacientes(id, telefono, idMed) values (104, '89129210', 102);
 insert into pacientes(id, telefono, idMed) values (105, '71201936', 101);
 insert into pacientes(id, telefono, idMed) values (106, '69129870', 102);
+insert into pacientes(id, telefono, idMed) values (666, '909090', 105);
+insert into pacientes(id, telefono, idMed) values (666, '808080', 105);
 
 -- Antecedentes
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Alergia', 'El medicamento zulfa le causa fiebre y zarpullido');
