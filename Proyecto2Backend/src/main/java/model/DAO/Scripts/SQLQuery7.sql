@@ -1,3 +1,7 @@
+SET DATEFORMAT ydm
+DECLARE @dt DATETIME2 = '2016-01-02 12:03:28'
+SELECT @dt AS 'date from YDM Format'
+
 -- Se borran las secuencias
 drop sequence sec_usuarios;
 drop sequence sec_especialidades;
@@ -239,7 +243,7 @@ values (next value for sec_citas,101, 104, '2022-23-06 14:00:00', 'Finalizado', 
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,102, 103, '2022-23-06 10:00:00', 'Registrado', 'Presion normal, ...', 'Dolor de enc�as', 'Caries', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,102, 104, '2021-21-06 12:00:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
+values (next value for sec_citas,102, 104, '2022-21-06 12:00:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
 
 select * from usuarios;
 select * from administradores;
