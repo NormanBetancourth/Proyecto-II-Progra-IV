@@ -497,6 +497,26 @@ public class GeneralHandler {
         return false;
     }
     
+    //METODO PARA REGISTRAR UN CONTACTO A UN PACIENTE
+    public boolean registrarContacto(String idPac, String idPersonal, String nombre, String telefono) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[5];
+            
+            valores1[0] = "insert contactos(numero, id_personal, id_paciente, nombre, telefono) values (next value for sec_contactos, ?, ?, ?, ?);";
+            valores1[1] = idPersonal;
+            valores1[2] = idPac;
+            valores1[3] = nombre;
+            valores1[4] = telefono;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
     //ESTE METODO SE INVOCARA CUANDO SE CREA UN MEDICO (por defecto estaran desactivados)
     public void RegistrarHorariosDefaultMedico(String idMed){
         this.registrarHorario(idMed, "inactivo", "Lunes", "13:00:00", "15:00:00", "01:00");
@@ -604,7 +624,20 @@ public class GeneralHandler {
         }
         return false;
     } 
-    
+    //Borrar contacto de paciente
+       public boolean borrarContactoPaciente(String numero) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[2];
+            valores1[0] = "delete from contactos where numero = ?;";
+            valores1[1] = numero;
+            executor.prepareStatement(valores1);
+            return true;
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
      //========================================METODOS DE ACTUALIZACION EN LA BASE DE DATOS ======================================
     public boolean modificarDatosUsuario(String id,String nombre) {
         boolean respuesta = false;
@@ -692,13 +725,29 @@ public class GeneralHandler {
      public void modificarHorariosMedico(List<Horario> h, String idMed) {
         if (this.verificaUsuarioExiste(idMed)) {
             //verifica que la lista que se le mande no este vacia, para setear todos los horarios a valores default u inactivos
-            if(h.size() != 0)
+            if(h.size() != 0){
                 putHorariosDeafult(idMed);
+            }
             for(Horario ho : h){
                 //por cada horario que se le haya mandando cambia su estado a activo y les coloca sus valores
-                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraInicio(), ho.getFrecuencia());
+                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraFinal(), ho.getFrecuencia());
             }
         }
+    }
+     //
+     public void modificarContacto(String name, String telefono, String numero) {
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[4];
+                valores[0] = "update contactos set nombre = ?, telefono = ? where numero = ?;";
+                valores[1] = name;
+                valores[2] = telefono;
+                valores[3] = numero;
+       
+                executor.prepareStatement(valores);
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
     }
      
      public void putHorariosDeafult(String idMed){
