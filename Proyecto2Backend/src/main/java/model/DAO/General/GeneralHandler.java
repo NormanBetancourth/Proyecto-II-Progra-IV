@@ -30,7 +30,7 @@ import model.Paciente;
 public class GeneralHandler {
 
 //   final String usernameBD = "sa";
-    final String usernameBD = "sa";
+    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -89,7 +89,41 @@ public class GeneralHandler {
         }
         return usuario;
     }
+    
+    
+    
+    
+    public List<Cita> listaCitasPorMedicoPaciente(String idMed, String id) {
+        List<Cita> lista = new ArrayList<>();
+        String sql = "select * from citas where id_medico = " + idMed + ";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+
+                if (rs.getString("id_paciente").equals(id)) {
+                    Cita cita = new Cita();
+                    cita.setMedico(this.retornaMedicoPorId(idMed));
+                    cita.setPaciente(this.retornaPacientePorId(rs.getString("id_paciente")));
+                    cita.setFecha2(rs.getString("fecha_hora"));
+                    cita.setEstado(rs.getString("estado"));
+                    cita.setSignos(rs.getString("signos"));
+                    cita.setMotivo(rs.getString("motivo"));
+                    cita.setDiagnostico(rs.getString("diagnostico"));
+                    cita.setPrescripciones(rs.getString("prescripcion"));
+                    cita.setMedicamentos(rs.getString("medicamentos"));
+                    cita.setCodigo(rs.getString("codigo"));
+
+                    lista.add(cita);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
     //METODO QUE ME RETORNA A UN MEDICO DE LA BD SEGUN SU ID Y LO RETORNA
+    
 
     public Paciente retornaPacientePorId(String id) {
         Usuario user = this.retornaUserPorId(id);
