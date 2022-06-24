@@ -280,12 +280,34 @@ input[type='checkbox']:after {
 }
 
 .citaRegistrada {
-    background-color: #61aaaa;
+    background-color: #8ac58a;
     cursor: pointer;
     height: 50px;
     text-align: center;
 }
 
 .citaRegistrada:hover {
-    background: #a3cccc;
+    background: #70bd70;
+}
+
+.citaFinalizada {
+    background-color: #77cece;
+    cursor: pointer;
+    height: 50px;
+    text-align: center;
+}
+
+.citaFinalizada:hover {
+    background-color: #4ba8a8;
+}
+
+.citaCancelada {
+    background-color: #bb7676;
+    cursor: pointer;
+    height: 50px;
+    text-align: center;
+}
+
+.citaCancelada:hover {
+    background-color: #b45b5b;
 }
