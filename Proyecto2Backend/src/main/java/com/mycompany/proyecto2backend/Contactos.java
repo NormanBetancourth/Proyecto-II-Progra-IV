@@ -46,7 +46,7 @@ public class Contactos {
         try {
             System.out.println(c);
             //Service.instance().re(c);
-            //TODO
+            //TODO Agregar el contacto PD: se le debe crear la secuencia de la db
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();
@@ -59,7 +59,7 @@ public class Contactos {
         try {
             System.out.println(c);
             //Service.instance().re(c);
-            //TODO
+            //TODO: actualizar contacto PD: le cae encima a los datos, no se cambia la secuencia(atributo numero)
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();
@@ -72,7 +72,8 @@ public class Contactos {
         try {
             System.out.println(idPaciente);
             //Service.instance().re(c);
-            //TODO
+            //TODO: borrar con el param IDPaciente PD: es la secuencia de la tabla(numero), entonces 
+            //solo se hace un delete where numero = x
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();
