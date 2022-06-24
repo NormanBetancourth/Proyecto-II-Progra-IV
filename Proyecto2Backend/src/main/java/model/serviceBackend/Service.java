@@ -118,7 +118,7 @@ public class Service {
     }
     //===========Metodos de servicio para CITAS========
     public void registrarCitaMedicoPaciente(Cita cit){
-        genDB.registrarCita(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getSignos(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos(), cit.getCodigo());
+        genDB.registrarCita(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getMotivo(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos(), cit.getCodigo());
     }
     
     public void modificarCitaMedico(Cita cit){
@@ -172,5 +172,9 @@ public class Service {
     
     public void modificarContacto(Contacto c){
         genDB.modificarContacto(c.getNombre(), c.getTelefono(), c.getNumero());
+    }
+
+    public void registrarCitaMedicoPaciente2(Cita cit) {
+        genDB.registrarCita2(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getMotivo(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos(), cit.getCodigo());
     }
 }

@@ -533,6 +533,29 @@ public class GeneralHandler {
         return false;
     }
     
+    public boolean registrarCita2(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos, String codigo) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[10];
+            valores1[0] = "insert into citas(id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos, codigo) values (?,?, ?, ?, ?, ?, ?, ?, ?, next value for sec_citas);";
+            valores1[1] = idMed;
+            valores1[2] = idPac;
+            valores1[3] = fec_hora; //'2022-04-11 14:00:00'
+            valores1[4] = "Registrado"; //'Finalizado','Registrado', 'Cancelado'
+            valores1[5] = signos; 
+            valores1[6] = motivo; 
+            valores1[7] = diagnostico; 
+            valores1[8] = prescripcion; 
+            valores1[9] = medicamentos;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
     //METODO PARA REGISTRAR UN CONTACTO A UN PACIENTE
     public boolean registrarContacto(String idPac, String idPersonal, String nombre, String telefono) {
         try {
