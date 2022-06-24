@@ -702,9 +702,9 @@ function LoadInforModal(event) {
             <form>
               <div>
               <label>Identificación del médico</label>
-              <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+              <input type="text" class="form-control" id='medico-id-cita' value=${medicoRegistrado.id} readonly>
               <label>Nombre del médico</label>
-              <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
+              <input type="text" class="form-control" id='medico-nombre-cita' value=${medicoRegistrado.nombre} readonly>
               <label>Fecha</label>
               <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
               <label>Hora</label>
