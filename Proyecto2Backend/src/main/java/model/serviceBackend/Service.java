@@ -134,9 +134,9 @@ public class Service {
     }
     
 
-//    public List<Cita> retornarListaDeCitaPorPaciente(String idMed, String id){      
-//        return genDB.lis
-//    }
+    public List<Cita> retornarListaDeCitaPorPaciente(String idMed, String id){      
+        return genDB.listaCitasPorMedicoPaciente(idMed, id);
+    }
 
         //===========Metodos de servicio para los Usuarios========
     public Usuario retornarUsuarioID(String id){
