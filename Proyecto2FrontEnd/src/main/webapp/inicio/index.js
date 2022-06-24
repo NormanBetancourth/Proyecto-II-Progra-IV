@@ -160,11 +160,13 @@ function LoadCitas() {
   enabled.forEach(element => {
     // console.log(element);
     citas.forEach(cita => {
-      console.log(cita);
+      // console.log(cita);
       if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
-        console.log(cita.estado);
+        // console.log(cita.estado);
         // codigo, idmedico, idpaciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos
         element.setAttribute('data-estado', cita.estado);
+        element.setAttribute('data-medico', cita.medico.id);
+        element.setAttribute('data-nombre-medico', cita.medico.nombre);
         element.setAttribute('data-motivo', cita.motivo);
         element.setAttribute('data-paciente', cita.paciente.id);
         element.setAttribute('data-diag', cita.diagnostico);
@@ -576,12 +578,16 @@ function LoadWeek() {
   );
 }
 
-function LoadInforModal(event) {
+function LoadInforModal(event) { 
   if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado') {
     modalBody.innerHTML = `
     <div class="form-group">
       <form>
         <div>
+        <label>Identificación del médico</label>
+        <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+        <label>Nombre del médico</label>
+        <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
         <label>Fecha</label>
         <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
         <label>Hora</label>
@@ -593,7 +599,7 @@ function LoadInforModal(event) {
         <label>Signos</label>
         <input type="text" class="form-control" id='signos-cita' value='${event.relatedTarget.getAttribute('data-signos')}' readonly>
         <label>Diagnostico</label>
-        <input type="text" class="form-control" id='diagostico-cita' value='${event.relatedTarget.getAttribute('data-diag')}' readonly>
+        <input type="text" class="form-control" id='diagnostico-cita' value='${event.relatedTarget.getAttribute('data-diag')}' readonly>
         <label>Prescripción</label>
         <input type="text" class="form-control" id='pres-cita' value='${event.relatedTarget.getAttribute('data-pres')}' readonly>
         <label>Medicamentos</label>
@@ -607,11 +613,15 @@ function LoadInforModal(event) {
     `;
   }
   else {
-      if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {      
+      if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {    
         modalBody.innerHTML = `
         <div class="form-group">
           <form>
             <div>
+            <label>Identificación del médico</label>
+            <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+            <label>Nombre del médico</label>
+            <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
             <label>Fecha</label>
             <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
             <label>Hora</label>
@@ -623,7 +633,7 @@ function LoadInforModal(event) {
             <label>Signos</label>
             <input type="text" class="form-control" id='signos-cita' required>
             <label>Diagnostico</label>
-            <input type="text" class="form-control" id='diagostico-cita' required>
+            <input type="text" class="form-control" id='diagnostico-cita' required>
             <label>Prescripción</label>
             <input type="text" class="form-control" id='pres-cita' required>
             <label>Medicamentos</label>
@@ -645,6 +655,10 @@ function LoadInforModal(event) {
           <div class="form-group">
             <form>
               <div>
+              <label>Identificación del médico</label>
+              <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
+              <label>Nombre del médico</label>
+              <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
               <label>Fecha</label>
               <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
               <label>Hora</label>
@@ -656,7 +670,7 @@ function LoadInforModal(event) {
               <label>Signos</label>
               <input type="text" class="form-control" id='signos-cita' readonly>
               <label>Diagnostico</label>
-              <input type="text" class="form-control" id='diagostico-cita' readonly>
+              <input type="text" class="form-control" id='diagnostico-cita' readonly>
               <label>Prescripción</label>
               <input type="text" class="form-control" id='pres-cita' readonly>
               <label>Medicamentos</label>
@@ -687,6 +701,10 @@ function LoadInforModal(event) {
           <div class="form-group">
             <form>
               <div>
+              <label>Identificación del médico</label>
+              <input type="text" class="form-control" id='medico-id-cita' value=${medicoRegistrado.id} readonly>
+              <label>Nombre del médico</label>
+              <input type="text" class="form-control" id='medico-nombre-cita' value=${medicoRegistrado.nombre} readonly>
               <label>Fecha</label>
               <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
               <label>Hora</label>
@@ -710,8 +728,9 @@ function LoadInforModal(event) {
       
           modalFooter.innerHTML = `
           <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="send-button">Enviar</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="accept-button">Enviar</button>
           `;
+          $('#accept-button').on('click', RegistrarCita);
         }
       }
     }
@@ -722,13 +741,41 @@ function AtenderCita() {
 }
 
 function RegistrarCita() {
+  console.log('entra');
+  // fecha-cita, hora-cita, paciente-cita, motivo-cita, signos-cita, diagnostico-cita, pres-cita, medicamentos-cita  
+  let cita = {};
+  cita.medico =  $('#medico-id-cita').val();
+  cita.fechaCita =  $('#fecha-cita').val();
+  cita.horaCita = $('#hora-cita').val(); 
+  cita.pacienteCita =  $('#inputGroupSelect01').find(":selected").text();
+  cita.motivoCita = ''; 
+  cita.signosCita =  ''; 
+  cita.diagnosticoCita = ''; 
+  cita.presCita = ''; 
+  cita.medicamentos = ''; 
 
+  console.log($('#fecha-cita').val());
+  console.log ($('#fecha-cita').val());
+  console.log($('#hora-cita').val());
+  console.log( $('#inputGroupSelect01').find(":selected").text());
+ 
+  // const request = new Request(backend + '/citas',
+  //           {method: 'POST',
+  //               headers: {'Content-Type': 'application/json'},
+  //               body: JSON.stringify(cita)});
+  //   (async () => {
+  //       try {
+  //           const response = await fetch(request);
+  //           if (!response.ok) {
+  //             console.log("No se pudo agregar cita");
+  //           }
+  //       } catch (e) {
+  //           console.log(e);
+  //       }
+  //   })();
 }
 
-function ResetData() {
-  document.querySelector('#motivo-cita').value = '';
-  document.querySelector('#seleccionar').selected = true;
-}
+
 
 function AddEvents() {
   document.querySelectorAll('div .day-active').forEach(element => {
@@ -736,7 +783,6 @@ function AddEvents() {
   });
   $(document).on('show.bs.modal', modalBody, LoadInforModal);
   $('#send-button').on('click', AtenderCita);
-  $('#accept-button').on('click', RegistrarCita);
 };
 
 
