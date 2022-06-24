@@ -7,6 +7,7 @@ package com.mycompany.proyecto2backend;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import static java.lang.System.in;
@@ -27,12 +28,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import model.DAO.General.GeneralHandler;
 import model.Medico;
 import model.Usuario;
 import model.Horario;
 import model.ModelMedicosRest;
 import model.serviceBackend.Service;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
 //import org.glassfish.jersey.media.multipart.FormDataParam;
 
 
@@ -93,9 +96,18 @@ public class Medicos {
 //                in.transferTo(out);
 //                out.close();
 //            } catch (Exception ex) {
-//                throw new NotAcceptableException(); 
+//               throw new NotAcceptableException(); 
 //            }
 //    }
+//    
+    @GET
+    @Path("{cedula}/imagen")
+    @Produces("image/png")
+    public Response getImge(@PathParam("cedula") String cedula) throws IOException {
+        File file = new File(location + cedula);
+        Response.ResponseBuilder response = Response.ok((Object) file);
+        return response.build();
+    }
     
     
     //Actualizar el estado de un medico (solo el admin puede acceder a este metodo)

@@ -30,7 +30,7 @@ import model.Paciente;
 public class GeneralHandler {
 
 //   final String usernameBD = "sa";
-    final String usernameBD = "sass";
+    final String usernameBD = "sa";
     final String passwordBD = "password";
     SQLExecutor executor;
 
