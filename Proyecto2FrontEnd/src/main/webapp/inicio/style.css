@@ -287,14 +287,18 @@ input[type='checkbox']:after {
 }
 
 .citaRegistrada:hover {
-    background: #a3cccc;
+    background: #70bd70;
 }
 
 .citaFinalizada {
-    background-color: #61aaaa;
+    background-color: #77cece;
     cursor: pointer;
     height: 50px;
     text-align: center;
+}
+
+.citaFinalizada:hover {
+    background-color: #4ba8a8;
 }
 
 .citaCancelada {
@@ -302,4 +306,8 @@ input[type='checkbox']:after {
     cursor: pointer;
     height: 50px;
     text-align: center;
+}
+
+.citaCancelada:hover {
+    background-color: #b45b5b;
 }

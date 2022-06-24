@@ -25,6 +25,7 @@ const deleteEventModal = document.getElementById('deleteEventModal');
 const backDrop = document.getElementById('modalBackDrop');
 const eventTitleInput = document.getElementById('eventTitleInput');
 const modalBody = document.querySelector('#modal-body');
+const modalFooter = document.querySelector('#modal-footer');
 const calendarios = document.querySelector('.contenedor-calendarios');
 const actualDay = document.querySelector('#weekly-monthDisplay');
 
@@ -576,16 +577,7 @@ function LoadWeek() {
 }
 
 function LoadInforModal(event) {
-  if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado' || event.relatedTarget.getAttribute('data-estado') === 'Cancelado') {
-    // codigo, idmedico, idpaciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos
-    
-        // element.setAttribute('data-estado', cita.estado);
-        // element.setAttribute('data-motivo', cita.motivo);
-        // element.setAttribute('data-paciente', cita.paciente.id);
-        // element.setAttribute('data-diag', cita.diagnostico);
-        // element.setAttribute('data-signos', cita.signos);
-        // element.setAttribute('data-pres', cita.prescripciones);
-        // element.setAttribute('data-med', cita.medicamentos);
+  if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado') {
     modalBody.innerHTML = `
     <div class="form-group">
       <form>
@@ -610,11 +602,12 @@ function LoadInforModal(event) {
       </form>
     </div>
     `;
+    modalFooter.innerHTML = `
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cerrar</button>
+    `;
   }
   else {
-      if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {
-        let line = '';
-      
+      if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {      
         modalBody.innerHTML = `
         <div class="form-group">
           <form>
@@ -623,66 +616,114 @@ function LoadInforModal(event) {
             <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
             <label>Hora</label>
             <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+            <label>Paciente</label>
+            <input type="text" class="form-control" id='paciente-cita' value='${event.relatedTarget.getAttribute('data-nombre-pac') + ', ' + event.relatedTarget.getAttribute('data-paciente')}'  readonly>
             <label>Motivo</label>
-            <input type="text" class="form-control" id='motivo-cita' required>
+            <input type="text" class="form-control" id='motivo-cita' value='${event.relatedTarget.getAttribute('data-motivo')}' readonly>
+            <label>Signos</label>
+            <input type="text" class="form-control" id='signos-cita' required>
+            <label>Diagnostico</label>
+            <input type="text" class="form-control" id='diagostico-cita' required>
+            <label>Prescripción</label>
+            <input type="text" class="form-control" id='pres-cita' required>
+            <label>Medicamentos</label>
+            <input type="text" class="form-control" id='medicamentos-cita' required>
             </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
-              </div>
-              <select class="custom-select mt-3" id="inputGroupSelect01" required>
-                <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
-                ${line}
-              </select>
+            </div>
           </form>
         </div>
         `;
     
+        modalFooter.innerHTML = `
+        <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="send-button">Enviar</button>
+        `;
       }
       else {
-        let line = '';
-    
-        const select = document.createElement('select');
-        select.classList.add('custom-select');
-        select.setAttribute('id', 'inputGroupSelect01');
-      
-        pacientes.forEach((element) => {
-          const option = document.createElement('option');
-          option.setAttribute('value', element.id);
-          option.textContent = element.nombre + ', ' + element.id;
-          line += option.outerHTML;
-        });
-      
-        modalBody.innerHTML = `
-        <div class="form-group">
-          <form>
-            <div>
-            <label>Fecha</label>
-            <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
-            <label>Hora</label>
-            <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
-            <label>Motivo</label>
-            <input type="text" class="form-control" id='motivo-cita' required>
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
+        if(event.relatedTarget.getAttribute('data-estado') === 'Cancelado') {  
+          modalBody.innerHTML = `
+          <div class="form-group">
+            <form>
+              <div>
+              <label>Fecha</label>
+              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+              <label>Hora</label>
+              <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+              <label>Paciente</label>
+              <input type="text" class="form-control" id='paciente-cita' value='${event.relatedTarget.getAttribute('data-nombre-pac') + ', ' + event.relatedTarget.getAttribute('data-paciente')}'  readonly>
+              <label>Motivo</label>
+              <input type="text" class="form-control" id='motivo-cita' value='${event.relatedTarget.getAttribute('data-motivo')}' readonly>
+              <label>Signos</label>
+              <input type="text" class="form-control" id='signos-cita' readonly>
+              <label>Diagnostico</label>
+              <input type="text" class="form-control" id='diagostico-cita' readonly>
+              <label>Prescripción</label>
+              <input type="text" class="form-control" id='pres-cita' readonly>
+              <label>Medicamentos</label>
+              <input type="text" class="form-control" id='medicamentos-cita' readonly>
               </div>
-              <select class="custom-select mt-3" id="inputGroupSelect01" required>
-                <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
-                ${line}
-              </select>
-          </form>
-        </div>
-        `;
+              </div>
+            </form>
+          </div>
+          `;
+          modalFooter.innerHTML = `
+          <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
+          `;
+        }    
+        else {
+          let line = '';
+
+          const select = document.createElement('select');
+          select.classList.add('custom-select');
+          select.setAttribute('id', 'inputGroupSelect01');
+        
+          pacientes.forEach((element) => {
+            const option = document.createElement('option');
+            option.setAttribute('value', element.id);
+            option.textContent = element.nombre + ', ' + element.id;
+            line += option.outerHTML;
+          });
+          modalBody.innerHTML = `
+          <div class="form-group">
+            <form>
+              <div>
+              <label>Fecha</label>
+              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+              <label>Hora</label>
+              <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+              <label>Motivo</label>
+              <input type="text" class="form-control" id='motivo-cita' required>
+              </div>
+              </div>
+            </form>
+          </div>
+          <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
+          </div>
+          <select class="custom-select mt-3" id="inputGroupSelect01" required>
+            <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
+            ${line}
+          </select>
+          `;
+          
+      
+          modalFooter.innerHTML = `
+          <button type="button" class="btn btn-secondary" id="cancel-button" data-bs-dismiss="modal" >Cerrar</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="send-button">Enviar</button>
+          `;
+        }
       }
     }
 }
-  //console.log(event.relatedTarget);
- 
-  
-  // Verificar campo de motivo esta completado antes de enviar
-  // Agregarle al div una clase de citas ya guardadas y que cambie de color
+
+function AtenderCita() {
+
+}
+
+function RegistrarCita() {
+
+}
 
 function ResetData() {
   document.querySelector('#motivo-cita').value = '';
@@ -694,7 +735,8 @@ function AddEvents() {
     element.addEventListener('click', LoadWeek);
   });
   $(document).on('show.bs.modal', modalBody, LoadInforModal);
-  // $('#cancel-button').on('click', ResetData);
+  $('#send-button').on('click', AtenderCita);
+  $('#accept-button').on('click', RegistrarCita);
 };
 
 
