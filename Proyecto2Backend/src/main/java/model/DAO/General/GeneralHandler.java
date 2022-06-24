@@ -384,6 +384,34 @@ public class GeneralHandler {
         }
         return lista;
     }
+    public List<Cita> listaCitasPorMedicoPaciente(String idMed, String id) {
+        List<Cita> lista = new ArrayList<>();
+        String sql = "select * from citas where id_medico = " + idMed + ";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                
+                if(rs.getString("id_paciente").equals(id)){
+                Cita cita = new Cita();
+                cita.setMedico(this.retornaMedicoPorId(idMed));
+                cita.setPaciente(this.retornaPacientePorId(rs.getString("id_paciente")));
+                cita.setFecha2(rs.getString("fecha_hora"));
+                cita.setEstado(rs.getString("estado"));
+                cita.setSignos(rs.getString("signos"));
+                cita.setMotivo(rs.getString("motivo"));
+                cita.setDiagnostico(rs.getString("diagnostico"));
+                cita.setPrescripciones(rs.getString("prescripcion"));
+                cita.setMedicamentos(rs.getString("medicamentos"));
+                
+                lista.add(cita);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
 
      //========================================METODOS DE REGISTRO DATABASE ======================================
     

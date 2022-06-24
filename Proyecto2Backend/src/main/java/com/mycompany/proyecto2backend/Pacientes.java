@@ -13,6 +13,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.NotAcceptableException;
 import javax.ws.rs.NotFoundException;
@@ -21,6 +23,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Medico;
 import model.Paciente;
+import model.Usuario;
 import model.serviceBackend.Service;
 
 /**
@@ -31,6 +34,14 @@ import model.serviceBackend.Service;
 @Path("pacientes")
 @RequestScoped
 public class Pacientes {
+    @Context
+    HttpServletRequest request;
+
+    Usuario getCurrentMed() {
+        HttpSession session = request.getSession(true);
+        Usuario m = (Usuario) session.getAttribute("user");
+        return m;
+    }
 
     //Registrar un paciente en la BD
     @POST
@@ -51,6 +62,16 @@ public class Pacientes {
         System.out.println(idMed);
         try {
            return Service.instance().retornarListaPacientesIdMed(idMed);
+        } catch (Exception ex) {
+            throw new NotFoundException();
+        }
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Paciente> readListPatients2(){
+        try {
+           return Service.instance().retornarListaPacientesIdMed(this.getCurrentMed().getId());
         } catch (Exception ex) {
             throw new NotFoundException();
         }
