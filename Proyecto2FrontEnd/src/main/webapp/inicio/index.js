@@ -157,11 +157,22 @@ const GetCitas = async () =>{
 function LoadCitas() {
 
   enabled.forEach(element => {
-    console.log(element);
+    // console.log(element);
     citas.forEach(cita => {
-      element.setAttribute('data-estado', cita.estado);
+      console.log(cita);
       if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
+        console.log(cita.estado);
+        // codigo, idmedico, idpaciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos
+        element.setAttribute('data-estado', cita.estado);
+        element.setAttribute('data-motivo', cita.motivo);
+        element.setAttribute('data-paciente', cita.paciente.id);
+        element.setAttribute('data-diag', cita.diagnostico);
+        element.setAttribute('data-signos', cita.signos);
+        element.setAttribute('data-pres', cita.prescripciones);
+        element.setAttribute('data-med', cita.medicamentos);
+        element.setAttribute('data-nombre-pac', cita.paciente.nombre);
         if(element.getAttribute('data-estado') === 'Registrado') {
+          element.classList.remove('enableHourAppointment');
           element.textContent  = 'Atender Cita';
           element.classList.add('citaRegistrada');
         }
@@ -184,36 +195,9 @@ function LoadCitas() {
   });
  
 
-  // enabled.forEach(element => {
-  //   // console.log('Elemento: ' + element.getAttribute('data-read'));
-  //   citas.forEach(cita => {
-  //     element.setAttribute('data-estado', cita.estado);
-  //     if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
-  //       if(element.getAttribute('data-estado') === 'Registrado') {
-  //         element.textContent  = 'Atender Cita';
-  //         element.classList.add('citaRegistrada');
-  //         registered.push(element);
-  //       }
-  //       else {
-  //         if(element.getAttribute('data-estado') === 'Finalizado') {
-  //           element.classList.remove('enableHourAppointment');
-  //           element.textContent  = 'Cita Finalizada';
-  //           element.classList.add('citaFinalizada');
-  //           finalizado.push(element);
-  //         }
-  //         else {
-  //           if(element.getAttribute('data-estado') === 'Cancelado') {
-  //             element.textContent  = 'Cita Cancelada';
-  //             element.classList.remove('enableHourAppointment');
-  //             element.classList.add('citaCancelada');
-  //             cancelado.push(element);
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //   });
-  // });
+  Array.from(document.querySelectorAll('.enableHourAppointment')).forEach(element => {
+    element.textContent  = 'Registrar Cita';
+  });
 }
 
 function EnableHoursAppointments() {
@@ -236,6 +220,7 @@ function EnableHoursAppointments() {
   });
   //console.log(fechasCitas);
   GetCitas();
+
 }
 
 function CalculateRanges() {
@@ -592,6 +577,15 @@ function LoadWeek() {
 
 function LoadInforModal(event) {
   if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado' || event.relatedTarget.getAttribute('data-estado') === 'Cancelado') {
+    // codigo, idmedico, idpaciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos
+    
+        // element.setAttribute('data-estado', cita.estado);
+        // element.setAttribute('data-motivo', cita.motivo);
+        // element.setAttribute('data-paciente', cita.paciente.id);
+        // element.setAttribute('data-diag', cita.diagnostico);
+        // element.setAttribute('data-signos', cita.signos);
+        // element.setAttribute('data-pres', cita.prescripciones);
+        // element.setAttribute('data-med', cita.medicamentos);
     modalBody.innerHTML = `
     <div class="form-group">
       <form>
@@ -600,8 +594,18 @@ function LoadInforModal(event) {
         <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
         <label>Hora</label>
         <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+        <label>Paciente</label>
+        <input type="text" class="form-control" id='paciente-cita' value='${event.relatedTarget.getAttribute('data-nombre-pac') + ', ' + event.relatedTarget.getAttribute('data-paciente')}'  readonly>
         <label>Motivo</label>
-        <input type="text" class="form-control" id='motivo-cita' required>
+        <input type="text" class="form-control" id='motivo-cita' value='${event.relatedTarget.getAttribute('data-motivo')}' readonly>
+        <label>Signos</label>
+        <input type="text" class="form-control" id='signos-cita' value='${event.relatedTarget.getAttribute('data-signos')}' readonly>
+        <label>Diagnostico</label>
+        <input type="text" class="form-control" id='diagostico-cita' value='${event.relatedTarget.getAttribute('data-diagnostico')}' readonly>
+        <label>Prescripción</label>
+        <input type="text" class="form-control" id='pres-cita' value='${event.relatedTarget.getAttribute('data-pres')}' readonly>
+        <label>Medicamentos</label>
+        <input type="text" class="form-control" id='medicamentos-cita' value='${event.relatedTarget.getAttribute('data-med')}' readonly>
         </div>
       </form>
     </div>
