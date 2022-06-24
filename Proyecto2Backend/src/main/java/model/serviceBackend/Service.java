@@ -118,7 +118,7 @@ public class Service {
     }
     //===========Metodos de servicio para el Paciente========
     public void registrarCitaMedicoPaciente(Cita cit){
-        genDB.registrarCita(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getSignos(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos());
+        genDB.registrarCita(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getMotivo(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos());
     }
     
     public List<Cita> retornarListaDeCitaPorDia(String idMed, String fecha){      

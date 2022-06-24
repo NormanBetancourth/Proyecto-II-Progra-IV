@@ -1,5 +1,6 @@
 let backend = "http://localhost:8080/Proyecto2Backend/api";
 let medicoRegistrado = {};
+let paciente = {};
 let header = '';
 let semana = [];
 let enabled = [];
@@ -589,7 +590,7 @@ function LoadInforModal(event) {
         <label>Nombre del médico</label>
         <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
         <label>Fecha</label>
-        <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+        <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
         <label>Hora</label>
         <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
         <label>Paciente</label>
@@ -623,7 +624,7 @@ function LoadInforModal(event) {
             <label>Nombre del médico</label>
             <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
             <label>Fecha</label>
-            <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+            <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
             <label>Hora</label>
             <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
             <label>Paciente</label>
@@ -660,7 +661,7 @@ function LoadInforModal(event) {
               <label>Nombre del médico</label>
               <input type="text" class="form-control" id='medico-nombre-cita' value='${event.relatedTarget.getAttribute('data-nombre-medico')}' readonly>
               <label>Fecha</label>
-              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
               <label>Hora</label>
               <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
               <label>Paciente</label>
@@ -706,7 +707,7 @@ function LoadInforModal(event) {
               <label>Nombre del médico</label>
               <input type="text" class="form-control" id='medico-nombre-cita' value=${medicoRegistrado.nombre} readonly>
               <label>Fecha</label>
-              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+              <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-read')}' readonly>
               <label>Hora</label>
               <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
               <label>Motivo</label>
@@ -740,41 +741,81 @@ function AtenderCita() {
 
 }
 
-function RegistrarCita() {
-  console.log('entra');
-  // fecha-cita, hora-cita, paciente-cita, motivo-cita, signos-cita, diagnostico-cita, pres-cita, medicamentos-cita  
-  let cita = {};
-  cita.medico =  $('#medico-id-cita').val();
-  cita.fechaCita =  $('#fecha-cita').val();
-  cita.horaCita = $('#hora-cita').val(); 
-  cita.pacienteCita =  $('#inputGroupSelect01').find(":selected").text();
-  cita.motivoCita = ''; 
-  cita.signosCita =  ''; 
-  cita.diagnosticoCita = ''; 
-  cita.presCita = ''; 
-  cita.medicamentos = ''; 
+const CargarPacientePorId = async () => {
+  try {
+    const req = new Request(backend + "/pacientes/data/" + $('#inputGroupSelect01').find(":selected").text().split(', ')[1], {
+      method: "GET",
+      headers: {},
+    });
 
-  console.log($('#fecha-cita').val());
-  console.log ($('#fecha-cita').val());
-  console.log($('#hora-cita').val());
-  console.log( $('#inputGroupSelect01').find(":selected").text());
+    console.log(req);
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al guardad user de session");
+      return;
+    }
+    paciente = await res.json();
+    return paciente;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const RegistrarCita = async () => {
+  // console.log('entra');
+  // // fecha-cita, hora-cita, paciente-cita, motivo-cita, signos-cita, diagnostico-cita, pres-cita, medicamentos-cita  
+  // let cita = {};
+  // cita.medico =  $('#medico-id-cita').val();
+  // cita.fechaCita =  $('#fecha-cita').val();
+  // cita.horaCita = $('#hora-cita').val(); 
+  // cita.pacienteCita =  $('#inputGroupSelect01').find(":selected").text().split(', ')[1];
+  // cita.motivoCita = $('#motivo-cita').val(); 
+  // cita.signosCita =  ''; 
+  // cita.diagnosticoCita = ''; 
+  // cita.presCita = ''; 
+  // cita.medicamentos = ''; 
+
+  // console.log($('#fecha-cita').val());
+  // console.log ($('#fecha-cita').val());
+  // console.log($('#hora-cita').val());
+  // console.log( $('#inputGroupSelect01').find(":selected").text().split(', ')[1]);
+  // console.log(cita);
+
  
-  // const request = new Request(backend + '/citas',
-  //           {method: 'POST',
-  //               headers: {'Content-Type': 'application/json'},
-  //               body: JSON.stringify(cita)});
-  //   (async () => {
-  //       try {
-  //           const response = await fetch(request);
-  //           if (!response.ok) {
-  //             console.log("No se pudo agregar cita");
-  //           }
-  //       } catch (e) {
-  //           console.log(e);
-  //       }
-  //   })();
+  let cita = {
+    paciente: await CargarPacientePorId(),
+    medico: medicoRegistrado,
+    fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
+    motivo: $('#motivo-cita').val(),
+    signos: "",
+    diagnostico: "",
+    estado: "Registrado",
+    prescripciones: "",
+    Medicamentos: "",
+  };
+  console.log(cita);
+
+  await CitasPOST(cita);
 }
 
+const CitasPOST = async (cita) => {
+  const req = new Request(backend + "/citas", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cita),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error agregar una cita");
+      return;
+    }
+    console.log("Se inserta la cita");
+    document.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 function AddEvents() {
