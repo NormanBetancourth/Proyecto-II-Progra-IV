@@ -84,7 +84,6 @@ public class Medicos {
         }
     }
     
-    
 //    @POST
 //    @Consumes(MediaType.MULTIPART_FORM_DATA) 
 //    @Path("{cedula}/imagen")
