@@ -146,5 +146,17 @@ public class Service {
     public List<Ciudad> retornarListaCiudades() {
         return genDB.listarCiudades();
     }
-
+    //===========Metodos de servicio para los contactos=======
+    
+    public void registrarContacto(Contacto c){
+        genDB.registrarContacto(c.getIdPaciente(), c.getNumero(), c.getNombre(), c.getNumero());
+    }
+     
+    public void borrarContacto(String numero){
+        genDB.borrarContactoPaciente(numero);
+    }
+    
+    public void modificarContacto(Contacto c){
+        genDB.modificarContacto(c.getNombre(), c.getTelefono(), c.getNumero());
+    }
 }
