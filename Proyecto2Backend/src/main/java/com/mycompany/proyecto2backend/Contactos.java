@@ -44,8 +44,7 @@ public class Contactos {
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(Contacto c) {
         try {
-            System.out.println(c);
-            //Service.instance().re(c);
+            Service.instance().registrarContacto(c);
             //TODO Agregar el contacto PD: se le debe crear la secuencia de la db
         } catch (Exception ex) {
             System.out.println(ex);
@@ -58,8 +57,7 @@ public class Contactos {
     public void post(Contacto c) {
         try {
             System.out.println(c);
-            //Service.instance().re(c);
-            //TODO: actualizar contacto PD: le cae encima a los datos, no se cambia la secuencia(atributo numero)
+            Service.instance().modificarContacto(c);
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();
@@ -68,12 +66,9 @@ public class Contactos {
     
     @DELETE
     @Path("{id}")
-    public void delete(@PathParam("id") String idPaciente) {
+    public void delete(@PathParam("id") String numero) {
         try {
-            System.out.println(idPaciente);
-            //Service.instance().re(c);
-            //TODO: borrar con el param IDPaciente PD: es la secuencia de la tabla(numero), entonces 
-            //solo se hace un delete where numero = x
+            Service.instance().borrarContacto(numero);
         } catch (Exception ex) {
             System.out.println(ex);
             throw new NotAcceptableException();

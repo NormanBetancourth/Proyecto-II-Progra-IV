@@ -4,6 +4,8 @@ let header = '';
 let semana = [];
 let enabled = [];
 let registered = [];
+let cancelado = [];
+let finalizado = [];
 let diaHoraSeleccionada = {};
 let frecuencia = '01:00';
 const horas = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
@@ -156,19 +158,35 @@ function LoadCitas() {
   enabled.forEach(element => {
     // console.log('Elemento: ' + element.getAttribute('data-read'));
     citas.forEach(cita => {
+      element.setAttribute('data-estado', cita.estado);
+      console.log(cita.estado);
       if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
-        element.classList.remove('enableHourAppointment');
-        element.textContent  = 'Atender Cita';
-        element.classList.add('citaRegistrada');
-        console.log(cita.estado);
-        element.setAttribute('data-estado', cita.estado);
-        registered.push(element);
-      }
-      else {
-        if(element.textContent !== 'Atender Cita'){
-          element.textContent  = 'Registrar Cita';
+        if(element.getAttribute('data-estado') === 'Registrado') {
+          element.textContent  = 'Atender Cita';
+          element.classList.add('citaRegistrada');
+          registered.push(element);
+        }
+        else {
+          if(element.getAttribute('data-estado') === 'Finalizado') {
+            element.classList.remove('enableHourAppointment');
+            element.textContent  = 'Cita Finalizada';
+            element.classList.add('citaFinalizada');
+            finalizado.push(element);
+          }
+          else {
+            if(element.getAttribute('data-estado') === 'Cancelado') {
+              element.textContent  = 'Cita Cancelada';
+              element.classList.remove('enableHourAppointment');
+              element.classList.add('citaCancelada');
+              cancelado.push(element);
+            }
+            else{
+              element.textContent  = 'Registrar cita';
+            }
+          }
         }
       }
+
     });
   });
 }
@@ -548,7 +566,7 @@ function LoadWeek() {
 }
 
 function LoadInforModal(event) {
-  if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado') {
+  if(event.relatedTarget.getAttribute('data-estado') === 'Finalizado' || event.relatedTarget.getAttribute('data-estado') === 'Cancelado') {
     modalBody.innerHTML = `
     <div class="form-group">
       <form>
@@ -566,6 +584,33 @@ function LoadInforModal(event) {
   }
   else {
       if(event.relatedTarget.getAttribute('data-estado') === 'Registrado') {
+        let line = '';
+      
+        modalBody.innerHTML = `
+        <div class="form-group">
+          <form>
+            <div>
+            <label>Fecha</label>
+            <input type="text" class="form-control" id='fecha-cita' value='${event.relatedTarget.getAttribute('data-date')}' readonly>
+            <label>Hora</label>
+            <input type="text" class="form-control" id='hora-cita' value='${event.relatedTarget.getAttribute('data-time')}' readonly>
+            <label>Motivo</label>
+            <input type="text" class="form-control" id='motivo-cita' required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text mt-3" for="inputGroupSelect01">Paciente</label>
+              </div>
+              <select class="custom-select mt-3" id="inputGroupSelect01" required>
+                <option value='' id='seleccionar' selected disabled>Seleccionar...</option>
+                ${line}
+              </select>
+          </form>
+        </div>
+        `;
+    
+      }
+      else {
         let line = '';
     
         const select = document.createElement('select');
@@ -601,7 +646,6 @@ function LoadInforModal(event) {
           </form>
         </div>
         `;
-    
       }
     }
 }
