@@ -36,8 +36,9 @@ public class principalPruebaDAO {
         //gen.registrarHorario("101", "inactivo", "Lunes", "13:00:00",  "16:00:00", "00:30");
         
         //=====prueba de registrar una cita[exitosa]===
-        gen.registrarCita("101", "106", "2022-05-10 16:00:00", "Presion alta", "presion", "ebola", "codeina ultra", "cada 3 horas");
+        gen.registrarCita("101", "106", "2022-05-10 16:00:00", "Presion alta", "presion", "ebola", "codeina ultra", "cada 3 horas", "1200");
         
+        gen.modificarEstadoCita("1200", "Finalizado");
         //=====prueba de registrar un contacto[exitosa]===
         gen.registrarContacto("104", "123", "Pablo", "84201987");
         

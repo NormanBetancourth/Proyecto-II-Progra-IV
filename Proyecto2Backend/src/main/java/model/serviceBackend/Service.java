@@ -116,14 +116,23 @@ public class Service {
     public List<Horario> retornarHorariosActivos(String idMed){
         return genDB.retornaHorariosActivosMed(idMed);
     }
-    //===========Metodos de servicio para el Paciente========
+    //===========Metodos de servicio para CITAS========
     public void registrarCitaMedicoPaciente(Cita cit){
-        genDB.registrarCita(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getSignos(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos());
+        genDB.registrarCita(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getSignos(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos(), cit.getCodigo());
+    }
+    
+    public void modificarCitaMedico(Cita cit){
+        genDB.modificarDatosCita(cit.getCodigo(), cit.getSignos(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos());
+    }
+    
+    public void modificarEstadoCita(String codigo, String estado){
+        genDB.modificarEstadoCita(codigo, estado);
     }
     
     public List<Cita> retornarListaDeCitaPorDia(String idMed, String fecha){      
         return genDB.listaCitasPorMedicoDia(idMed, fecha);
     }
+    
         //===========Metodos de servicio para los Usuarios========
     public Usuario retornarUsuarioID(String id){
         return genDB.retornaUserPorId(id);

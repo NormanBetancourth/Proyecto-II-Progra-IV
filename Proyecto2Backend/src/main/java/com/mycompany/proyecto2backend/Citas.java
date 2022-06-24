@@ -79,4 +79,15 @@ public class Citas {
         }
     }
 
+    //Actualizar el estado de una cita (solo el admin puede acceder a este metodo)
+    @PUT
+    @Path("{codigo}/{estado}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateEstadoMedico(@PathParam("codigo") String codigo, @PathParam("estado") String estado) {  
+        try {
+        Service.instance().modificarEstadoCita(codigo, estado);
+        } catch (Exception ex) {
+            throw new NotFoundException(); 
+        }
+    }
 }

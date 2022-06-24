@@ -375,6 +375,7 @@ public class GeneralHandler {
                 cita.setDiagnostico(rs.getString("diagnostico"));
                 cita.setPrescripciones(rs.getString("prescripcion"));
                 cita.setMedicamentos(rs.getString("medicamentos"));
+                cita.setCodigo(rs.getString("codigo"));
                 
                 lista.add(cita);
                 }
@@ -474,11 +475,11 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR CITA 
-    public boolean registrarCita(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos) {
+    public boolean registrarCita(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos, String codigo) {
         try {
             executor = new SQLExecutor(usernameBD, passwordBD);
-            String valores1[] = new String[10];
-            valores1[0] = "insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) values (next value for sec_citas,?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String valores1[] = new String[11];
+            valores1[0] = "insert into citas(id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos, codigo) values (?,?, ?, ?, ?, ?, ?, ?, ?, ?);";
             valores1[1] = idMed;
             valores1[2] = idPac;
             valores1[3] = fec_hora; //'2022-04-11 14:00:00'
@@ -488,6 +489,7 @@ public class GeneralHandler {
             valores1[7] = diagnostico; 
             valores1[8] = prescripcion; 
             valores1[9] = medicamentos;
+            valores1[10] = codigo;
             executor.prepareStatement(valores1);
             return true;
 
@@ -721,6 +723,47 @@ public class GeneralHandler {
         }
     }
     
+    //MODIFICAR INFORMACION DE MEDICO
+    public boolean modificarDatosCita(String codigo, String signos, String diagnostico, String prescripciones, String medicamentos) {
+        boolean respuesta = false;
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[6];
+                valores[0] = "update citas set signos = ?, diagnostico = ?, prescripciones = ?, medicamentos = ? where codigo = ?;";
+                valores[1] = signos;
+                valores[2] = diagnostico;
+                valores[3] = prescripciones;
+                valores[4] = medicamentos;
+                valores[5] = codigo;
+                executor.prepareStatement(valores);
+                respuesta = true;
+
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        
+        return respuesta;
+    }
+    
+    
+    //MODIFICAR ESTADO DE UNA CITA
+    public boolean modificarEstadoCita(String codigo, String estado) {
+        boolean respuesta = false;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores[] = new String[3];
+            valores[0] = "update citas set estado= ? where codigo = ?;";
+            valores[1] = estado;
+            valores[2] = codigo;
+            executor.prepareStatement(valores);
+            respuesta = true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+
+        return respuesta;
+    }
     //
      public void modificarHorariosMedico(List<Horario> h, String idMed) {
         if (this.verificaUsuarioExiste(idMed)) {

@@ -119,9 +119,6 @@ function addDoctor() {
 function addMed() {
     loadDoctor();
     load();
-//    for (const [key, value] of Object.entries(doctor)) {
-//        console.log(value);
-//    }
     const request = new Request(backend + '/medicos',
             {method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -134,12 +131,26 @@ function addMed() {
                 //errorMessage(response.status, $("#add-modal #errorDiv"));
                 return;
             }
+             await addImagen();
             //$('#add-modal').modal('hide');
         } catch (e) {
             errorMessage(NET_ERR, $("#add-modal #errorDiv"));
         }
     })();
 } 
+
+async function addImagen() {
+    var imagenData = new FormData();
+    imagenData.append("cedula", doctor.cedula);
+    imagenData.append("imagen", $("#imagen").get(0).files[0]);
+    let request = new Request(backend + '/medicos/' + doctor.cedula + '/imagen', {method: 'POST', body: imagenData});
+    const response = await fetch(request);
+    if (!response.ok) {
+        console.log("error en addImagen()");
+//        errorMessage(response.status, $("#add-modal #errorDiv"));
+        return;
+    }
+}
 
 function addSchedule() {
     load();
