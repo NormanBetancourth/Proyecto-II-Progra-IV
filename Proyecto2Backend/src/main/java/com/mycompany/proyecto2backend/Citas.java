@@ -60,6 +60,33 @@ public class Citas {
             throw new NotAcceptableException();
         }
     }
+    
+    @POST
+    @Path("/atender")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void atender(Cita c) {
+        try {
+            System.out.println(c);
+            System.out.println("TODO");
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
+    
+    @POST
+    @Path("/cancelar/{numero}")
+    public void cancelar(@PathParam("numero") String numero) {
+        try {
+            System.out.println(numero);
+            Service.instance().modificarEstadoCita(numero, "Cancelado"); 
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
+    
     @POST
     @Path("/fix")
     @Consumes(MediaType.APPLICATION_JSON)
