@@ -12,16 +12,19 @@ public class Usuario {
     String nombre;
     String id;
     String tipo;
+    String fotoPath;
 
-    public Usuario(String nombre, String id, String tipo) {
+    public Usuario(String nombre, String id, String tipo, String fotoPath) {
         this.nombre = nombre;
         this.id = id;
         this.tipo = tipo;
+        this.fotoPath=fotoPath;
     }
     public Usuario() {
         this.nombre = "";
         this.id = "";
         this.tipo = "";
+        this.fotoPath="";
     }
 
     public String getNombre() {
@@ -32,6 +35,14 @@ public class Usuario {
     }
     public String getTipo() {
         return tipo;
+    }
+
+    public String getFotoPath() {
+        return fotoPath;
+    }
+
+    public void setFotoPath(String fotoPath) {
+        this.fotoPath = fotoPath;
     }
 
     public void setNombre(String nombre) {
@@ -46,7 +57,8 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "nombre=" + nombre + ", id=" + id + ", tipo=" + tipo + '}';
+        return "Usuario{" + "nombre=" + nombre + ", id=" + id + ", tipo=" + tipo + ", fotoPath=" + fotoPath + '}';
     }
-    
+
+ 
 }

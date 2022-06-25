@@ -13,7 +13,7 @@ public class Administrador extends Usuario{
     String password;
 
     public Administrador(String nombre, String id, String tipo, String password) {
-        super(nombre, id, tipo);
+        super(nombre, id, tipo,"");
         this.password = password;
     }
 

@@ -52,6 +52,7 @@ public class GeneralHandler {
                 usuario.setId(id);
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setTipo(rs.getString("tipo"));
+                usuario.setFotoPath(rs.getString("fotoPath"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -82,7 +83,7 @@ public class GeneralHandler {
                 usuario.setPresentacion(rs.getString("presentacion"));
                 usuario.setPassword(rs.getString("clave"));
                 //NECESITA ESTAR EN LA BASE NO?
-                usuario.setFotoPath("");
+                usuario.setFotoPath(this.retornaUserPorId(id).getFotoPath());
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -139,7 +140,7 @@ public class GeneralHandler {
 //                usuario.setIdMed(rs.getString("idMed"));
 //                que loco, no carga con el metodo de arriba
                 usuario.setIdMedico(rs.getString("idMed"));
-                usuario.setFotoPath("");
+                usuario.setFotoPath(this.retornaUserPorId(id).getFotoPath());
                 
             }
         } catch (SQLException throwables) {
@@ -423,15 +424,16 @@ public class GeneralHandler {
      //========================================METODOS DE REGISTRO DATABASE ======================================
     
 //METODO PARA REGISTRAR UN USUARIO EN LA BASE DE DATOS
-    public boolean registrarUsuario(String username, String id, String tipo) {
+    public boolean registrarUsuario(String username, String id, String tipo, String fotoPath) {
         if (!verificaUsuarioExiste(id)) {
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
-                String valores1[] = new String[4];
-                valores1[0] = "insert into usuarios(id, nombre,tipo) values (?, ?, ?)";
+                String valores1[] = new String[5];
+                valores1[0] = "insert into usuarios(id, nombre,tipo, fotoPath) values (?, ?, ?, ?)";
                 valores1[1] = id;
                 valores1[2] = username;
                 valores1[3] = tipo;
+                valores1[4] = fotoPath;
                 executor.prepareStatement(valores1);
                 return true;
             } catch (Exception throwables) {
@@ -442,10 +444,10 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR UN MEDICO
-    public boolean registrarMedico(String username, String id, String clave, String especialidad, String costo, String ciudad, String clinica, String presentacion) {
+    public boolean registrarMedico(String username, String id, String clave, String especialidad, String costo, String ciudad, String clinica, String presentacion, String fotoPath) {
         try {
             //registra a un usuario en la base de datos
-            this.registrarUsuario(username, id, "Medico");
+            this.registrarUsuario(username, id, "Medico", fotoPath);
             executor = new SQLExecutor(usernameBD, passwordBD);
             String valores1[] = new String[9];
             valores1[0] = "insert into medicos(id, especialidad, costo, ciudad, clinica, estado, presentacion, clave) values (?, ?, ?, ?, ?, ?, ?,?);";
@@ -468,9 +470,9 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR UN PACIENTE
-    public boolean registrarPaciente(String id, String username, String tel, String idMed) {
+    public boolean registrarPaciente(String id, String username, String tel, String idMed, String fotoPath) {
         try {
-            this.registrarUsuario(username, id, "Paciente");
+            this.registrarUsuario(username, id, "Paciente", fotoPath);
             executor = new SQLExecutor(usernameBD, passwordBD);
             String valores1[] = new String[4];
             valores1[0] = "insert into pacientes(id, telefono, idMed) values (?, ?, ?);";
