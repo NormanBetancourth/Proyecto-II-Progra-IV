@@ -26,41 +26,117 @@
   </head>
   <body>
 
-    <div class="row align-items-center text-center mt-2">
-      <div class="col"></div>
-      <div class="col-10 " >
-        
-        <div class="row">
-          <h4>Citas Por Paciente</h4>
-        </div>
-        <img src="./img/citas-paciente.png" style="max-width: 300px;">
+    <form onsubmit="">
+      <div class="row">
+              <div class="col"></div>
+              <div class="col-10   text-center">
+                  <div class="row align-items-center text-center">
+            
+                    <div class="col-1">
+                      <div class="form-group py-3">
+                        <label for="exampleInputEmail1">Codigo Cita</label>
+                    </div>                  
+                    <div class="form-group py-1 text-center align-items-center">
+                      <h6>155</h6>
+                    </div>
+                    </div>
+
+                    <div class="col-2"></div>
+                    <div class="col-1 ">
+                      <div class="form-group py-3">
+                        <label for="exampleInputEmail1">Nombre Paciente</label>
+                    </div>                  
+                    <div class="form-group py-1 text-center align-items-center">
+                      <h6>Norman</h6>
+                    </div>
+                    </div>
+                    <div class="col-2"></div>
+
+                    <div class="col-1 ">
+                      <div class="form-group py-3">
+                        <label for="exampleInputEmail1">Fecha</label>
+                    </div>                  
+                    <div class="form-group py-1 text-center align-items-center">
+                      <h6>2022-15-03</h6>
+                    </div>
+                    </div>
+                    
+                    <div class="col-2"></div>
+                    
+                    <div class="col-1 ">
+                      <div class="form-group py-3">
+                        <label for="exampleInputEmail1">Estado</label>
+                    </div>                  
+                    <div class="form-group py-1 text-center align-items-center">
+                      <h6>Finalizado</h6>
+                    </div>
+                    </div>
+                    
+                    
+
+                    
+                  </div>
+                  <div class="row my-5 align-items-center text-center">
+                    <h4>Ingresar Datos de la Cita</h4>
+                    <div class="col"></div>
+                    
+                    <div class="col-5 align-items-center text-center">
+                      
+                      <div class="form-group my-5 ">
+                        <label for="exampleInputPassword1">Motivo</label>
+                        <div class="row align-items-center text-center my-3">
+                            <textarea type="text"  id="cita-motivo" style="min-height: 80px; resize: none;"   required></textarea>
+                        </div>
+
+
+                      </div>
+                      <div class="form-group my-5 ">
+                        <label for="exampleInputPassword1">Diagnostico</label>
+                        <div class="row align-items-center text-center my-3">
+                            <textarea type="text"  id="cita-diagnostico" style="min-height: 80px; resize: none;"    required></textarea>
+                        </div>
+                      </div>
+
+                      <div class="form-group my-5 ">
+                        <label for="exampleInputPassword1">Medicamentos</label>
+                        <div class="row align-items-center text-center my-3">
+                            <textarea type="text"  id="cita-medicamentos" style="min-height: 80px; resize: none;"    required></textarea>
+                        </div>
+                      </div>
+
+                      
+                      
+                      <div class="form-group my-5 ">
+                        <label for="exampleInputPassword1">Pescripciones</label>
+                        <div class="row align-items-center text-center my-3">
+                            <textarea type="text"  id="cita-pescripciones" style="min-height: 80px; resize: none;"    required></textarea>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group my-5 ">
+                        <label for="exampleInputPassword1">Signos</label>
+                        <div class="row align-items-center text-center my-3">
+                            <textarea type="text"  id="cita-signos" style="min-height: 80px; resize: none;"     required></textarea>
+                        </div>
+                      </div>
+
+
+
+                    </div>
+                  
+                  <div class="col"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col mt-4">
+                      <button type="submit" class="btn btn-primary">Aceptar</button>
+                      <button type="button" id="btn-cancel" class="btn btn-danger">Cancelar</button>
+                    </div>
+                  </div>
+                 
+              </div>
+              <div class="col"></div>
       </div>
-      <div class="col"></div>
-    </div>
-    <div class="row" >
-      <div class="col"></div>
-      <div class="col-8">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Nombre Paciente</th>
-              <th scope="col">Cantidad de Citas</th>
-              
-              
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>0</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="col"></div>
-    </div>
+      </form>  
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script

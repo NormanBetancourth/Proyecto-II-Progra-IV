@@ -10,7 +10,8 @@ modalCloseBtn.onclick = () => {
 
 tableBody.onclick = (e) => {
 
-    loadCitasPorPaciente(e.target.dataset.id);
+  loadCitasPorPaciente(e.target.dataset.id);
+
 };
 
 const loadCitasPorPaciente = async (id) => {
@@ -53,11 +54,250 @@ const loadCitasPorPaciente = async (id) => {
 
     modalTableBody.innerHTML = contentDates;
 
-    modalTableBody.onclick = (e) => {
-        console.log(e.target.dataset.id);
+    modalTableBody.onclick = async (e) => {
+      var citaView;
+      citasPorPaciente.forEach(element=>{
+        if (element.codigo == e.target.dataset.id){
+          citaView = element;
+        }
+      });
+      loadCitaView(citaView);
+        
     };
 
     $("#modal-container").modal("show");
+};
+
+const loadCitaView = (cita) => {
+  
+  if (cita.estado == "Registrado"){
+    console.log(cita);
+
+    atenderCita(cita);
+  }else{
+    verCita(cita)
+
+  }
+
+  
+};
+
+const atenderCita = (cita) => {
+  modalBody.innerHTML = `
+  <form onsubmit="citasPOST">
+  <div class="row">
+          <div class="col"></div>
+          <div class="col-10   text-center">
+              <div class="row align-items-center text-center">
+        
+                <div class="col-1">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Codigo Cita</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6>${cita.codigo}</h6>
+                </div>
+                </div>
+
+                <div class="col-2"></div>
+                <div class="col-1 ">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Nombre Paciente</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6 id='cita-nombre' data-id-paciente = '${cita.paciente.id}'  >${cita.paciente.nombre}</h6>
+                </div>
+                </div>
+                <div class="col-2"></div>
+
+                <div class="col-1 ">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Fecha</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6 id='cita-fecha' >${cita.fecha}</h6>
+                </div>
+                </div>
+                
+                <div class="col-2"></div>
+                
+                <div class="col-1 ">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Estado</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6 id = 'cita-estado' >${cita.estado}</h6>
+                </div>
+                </div>
+              </div>
+              <div class="row my-5 align-items-center text-center">
+                <h4>Ingresar Datos de la Cita</h4>
+                <div class="col"></div>
+                
+                <div class="col-5 align-items-center text-center">
+                  
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Motivo</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-motivo" style="min-height: 80px; resize: none;"   required>${cita.motivo}</textarea>
+                    </div>
+
+
+                  </div>
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Diagnostico</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-diagnostico" style="min-height: 80px; resize: none;"    required>${cita.diagnostico}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Medicamentos</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-medicamentos" style="min-height: 80px; resize: none;"    required>${cita.medicamentos}</textarea>
+                    </div>
+                  </div>
+
+                  
+                  
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Pescripciones</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-pescripciones" style="min-height: 80px; resize: none;"    required>${cita.prescripciones}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Signos</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-signos" style="min-height: 80px; resize: none;"     required>${cita.signos}</textarea>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              
+              <div class="col"></div>
+              </div>
+              <div class="row">
+                <div class="col mt-4">
+                  <button type="submit" class="btn btn-primary">Aceptar</button>
+                  <button type="button" id="btn-cancel" data-id-cita${cita.codigo} class="btn btn-danger">Cancelar</button>
+                </div>
+              </div>
+             
+          </div>
+          <div class="col"></div>
+  </div>
+  </form>`;
+
+};
+const verCita = (cita) => {
+
+  modalBody.innerHTML = `
+
+  <div class="row">
+          <div class="col"></div>
+          <div class="col-10   text-center">
+              <div class="row align-items-center text-center">
+        
+                <div class="col-1">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Codigo Cita</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6>${cita.codigo}</h6>
+                </div>
+                </div>
+
+                <div class="col-2"></div>
+                <div class="col-1 ">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Nombre Paciente</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6 id='cita-nombre' data-id-paciente = '${cita.paciente.id}'  >${cita.paciente.nombre}</h6>
+                </div>
+                </div>
+                <div class="col-2"></div>
+
+                <div class="col-1 ">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Fecha</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6 id='cita-fecha' >${cita.fecha}</h6>
+                </div>
+                </div>
+                
+                <div class="col-2"></div>
+                
+                <div class="col-1 ">
+                  <div class="form-group py-3">
+                    <label for="exampleInputEmail1">Estado</label>
+                </div>                  
+                <div class="form-group py-1 text-center align-items-center">
+                  <h6 id = 'cita-estado' >${cita.estado}</h6>
+                </div>
+                </div>
+              </div>
+              <div class="row my-5 align-items-center text-center">
+                <h4>Ingresar Datos de la Cita</h4>
+                <div class="col"></div>
+                
+                <div class="col-5 align-items-center text-center">
+                  
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Motivo</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-motivo" style="min-height: 80px; resize: none;"   readonly>${cita.motivo}</textarea>
+                    </div>
+
+
+                  </div>
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Diagnostico</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-diagnostico" style="min-height: 80px; resize: none;"    readonly>${cita.diagnostico}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Medicamentos</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-medicamentos" style="min-height: 80px; resize: none;"    readonly>${cita.medicamentos}</textarea>
+                    </div>
+                  </div>
+
+                  
+                  
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Pescripciones</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-pescripciones" style="min-height: 80px; resize: none;"    readonly>${cita.prescripciones}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group my-5 ">
+                    <label for="exampleInputPassword1">Signos</label>
+                    <div class="row align-items-center text-center my-3">
+                        <textarea type="text"  id="cita-signos" style="min-height: 80px; resize: none;"     readonly>${cita.signos}</textarea>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              
+              <div class="col"></div>
+              </div>
+              
+             
+          </div>
+          <div class="col"></div>
+  </div>
+  `;
 };
 
 //REST API
@@ -79,6 +319,11 @@ const citasGET = async (id) =>{
       } catch (error) {
         console.log(error);
       }
+
+};
+
+const citasPOST= async () => {
+  console.log('entra');
 
 };
 
