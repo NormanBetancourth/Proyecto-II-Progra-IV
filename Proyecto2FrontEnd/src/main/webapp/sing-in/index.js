@@ -82,40 +82,27 @@ function resetDoc(){
 
 function addDoctor() {
     let frecuencia = document.getElementById("frecuencia")[0].value;
-    console.log("frec: "+frecuencia);
-    frecuencia = frecuencia+'';
-    if(frecuencia === '60'){
+    console.log("frec: " + frecuencia);
+    frecuencia = frecuencia + '';
+    if (frecuencia === '60') {
         frecuencia = '01:00';
-    }else{
+    } else {
         frecuencia = '00:30';
     }
-    (async () => {
-      try {
-         await addMed(); //funciona
-            setTimeout(function () {
-                console.log("I am the third log after 5 seconds");
-            }, 5000);
-         console.log("Se ha agredo el medicoOOOOOOOOO");
-            mappedDays.forEach(element => {
-                console.log("MAPPED");
-                element.codigo = '-1';
-                element.idMedico = doctor.id;
-                element.frecuencia = frecuencia;
-            });
-         await addSchedule();
-         console.log("Se pudo agregar el horario");
-        
-       resetDoc();
-      } catch (err) {
-        console.log(err);
-        return;
-      }
-    })();
-}
+
+    mappedDays.forEach(element => {
+        console.log("MAPPED");
+        element.codigo = '-1';
+        element.idMedico = doctor.id;
+        element.frecuencia = frecuencia;
+       });
+   }
+
 
 function addMed() {
     loadDoctor();
     load();
+    addDoctor();
     const request = new Request(backend + '/medicos',
             {method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -128,13 +115,33 @@ function addMed() {
                 //errorMessage(response.status, $("#add-modal #errorDiv"));
                 return;
             }
-            //$('#add-modal').modal('hide');
+            await addSchedule();
         } catch (e) {
             errorMessage(NET_ERR, $("#add-modal #errorDiv"));
         }
     })();
 } 
 
+
+function add(){
+    load();
+    if(!validar()) return;
+    const request = new Request(backend+'/personas', {method: 'POST', headers: { 'Content-Type': 'application/json'}, body: JSON.stringify(persona)});
+    (async ()=>{
+        try{
+            const response = await fetch(request);
+            if (!response.ok) {errorMessage(response.status,$("#add-modal #errorDiv"));return;}
+            await addImagen();
+            fetchAndList();
+            reset();
+            $('#add-modal').modal('hide'); 
+        }
+        catch(e){
+            errorMessage(NET_ERR,$("#add-modal #errorDiv"));
+        }        
+    })();    
+  } 
+  
 async function addImagen() {
     var imagenData = new FormData();
     imagenData.append("cedula", doctor.cedula);
@@ -148,7 +155,7 @@ async function addImagen() {
     }
 }
 
-function addSchedule() {
+async function addSchedule() {
     load();
     const request = new Request(backend + '/horarios/'+doctor.id,
             {method: 'PUT',
