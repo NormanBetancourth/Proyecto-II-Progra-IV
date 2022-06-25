@@ -110,6 +110,7 @@ public class Service {
     
 
     public void modificarHorariosMedico(List<Horario> lh, String idMed){
+         System.out.println("======ENTRO EN SERVICE=========");
         genDB.modificarHorariosMedico(lh, idMed);
     }
     

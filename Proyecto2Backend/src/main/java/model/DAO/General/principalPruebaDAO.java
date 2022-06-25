@@ -140,8 +140,8 @@ public class principalPruebaDAO {
             gen.modificarContacto("Hector", "123455065", "6000");
            
            //===PRUEBA DE ACTUALIZAR HORARIOS DE UN MEDICO CON LISTA DE HORARIOS ===
-           Horario h1 = new Horario("","102","Martes","10:00","13:00","01:00");
-           Horario h2 = new Horario("", "102", "Viernes", "10:00", "12:00", "00:30");
+           Horario h1 = new Horario("","101","Martes","10:00","13:00","01:00");
+           Horario h2 = new Horario("", "101", "Viernes", "10:00", "12:00", "01:00");
            
            List<Horario> lh = new ArrayList();
            lh.add(h1);

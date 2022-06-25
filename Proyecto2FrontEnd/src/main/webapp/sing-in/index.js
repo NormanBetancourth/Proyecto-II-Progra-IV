@@ -28,7 +28,6 @@ var mappedDays = [];
 
 schedule.onclick = () => {
     $("#modal-container").modal("show");
-
 };
 
 modalCloseBtn.onclick = () => {
@@ -55,24 +54,21 @@ modalSaveBtn.onclick = () => {
     console.log(mappedDays);
 };
 
+function fotoPathDoctor(){
+    let foto = document.getElementsByName("foto")[0].value+'';
+    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
+    let fotoPath = foto.substring(12, 50);
+}
 
 function loadDoctor(){
-    let foto = document.getElementsByName("foto")[0].value;
-    console.log($("#id").val());
+    console.log("IMG: "+ fotoPath);
     doctor.id = $("#id").val();
-    console.log($("#name").val());
     doctor.nombre = $("#name").val();
-    console.log($("#password").val());
     doctor.password = $("#password").val();
-    console.log($("#location").val());
     doctor.localidad = $("#location").val();
-    console.log($("#clinica").val());
     doctor.clinica = $("#clinica").val();
-    console.log($("#speciality").val());
     doctor.especialidad = $("#speciality").val();
-    console.log($("#fee").val());
     doctor.fee = $("#fee").val();
-    console.log($("#foto").val());
     doctor.fotoPath = foto;
 }
 
@@ -89,36 +85,27 @@ function resetDoc(){
 
 function addDoctor() {
     let frecuencia = document.getElementById("frecuencia")[0].value;
-    console.log("frec: "+frecuencia);
-    frecuencia = frecuencia+'';
-    if(frecuencia === '60'){
+    console.log("frec: " + frecuencia);
+    frecuencia = frecuencia + '';
+    if (frecuencia === '60') {
         frecuencia = '01:00';
-    }else{
+    } else {
         frecuencia = '00:30';
     }
-    (async () => {
-      try {
-         await addMed(); //funciona
-         console.log("Se ha agredo el medico");
-            mappedDays.forEach(element => {
-                element.codigo = '-1';
-                element.idMedico = doctor.id;
-                element.frecuencia = frecuencia;
-            });
-         await addSchedule();
-         console.log("Se pudo agregar el horario");
-        
-       resetDoc();
-      } catch (err) {
-        console.log(err);
-        return;
-      }
-    })();
-}
+
+    mappedDays.forEach(element => {
+        console.log("MAPPED");
+        element.codigo = '-1';
+        element.idMedico = doctor.id;
+        element.frecuencia = frecuencia;
+       });
+   }
+
 
 function addMed() {
     loadDoctor();
     load();
+    addDoctor();
     const request = new Request(backend + '/medicos',
             {method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -131,14 +118,34 @@ function addMed() {
                 //errorMessage(response.status, $("#add-modal #errorDiv"));
                 return;
             }
-             await addImagen();
-            //$('#add-modal').modal('hide');
+            await addSchedule();
+            resetDoc();
         } catch (e) {
             errorMessage(NET_ERR, $("#add-modal #errorDiv"));
         }
     })();
 } 
 
+
+function add(){
+    load();
+    if(!validar()) return;
+    const request = new Request(backend+'/personas', {method: 'POST', headers: { 'Content-Type': 'application/json'}, body: JSON.stringify(persona)});
+    (async ()=>{
+        try{
+            const response = await fetch(request);
+            if (!response.ok) {errorMessage(response.status,$("#add-modal #errorDiv"));return;}
+            await addImagen();
+            fetchAndList();
+            reset();
+            $('#add-modal').modal('hide'); 
+        }
+        catch(e){
+            errorMessage(NET_ERR,$("#add-modal #errorDiv"));
+        }        
+    })();    
+  } 
+  
 async function addImagen() {
     var imagenData = new FormData();
     imagenData.append("cedula", doctor.cedula);
@@ -152,7 +159,7 @@ async function addImagen() {
     }
 }
 
-function addSchedule() {
+async function addSchedule() {
     load();
     const request = new Request(backend + '/horarios/'+doctor.id,
             {method: 'PUT',
@@ -335,12 +342,12 @@ function LoadSchedule() {
         error = "Error de comunicación";
         break;
     }
-    place[0].innerHTML =
-      '<div class="alert alert-danger fade show">' +
-      '<h4 class="alert-heading">Error!</h4>' +
-      error +
-      "</div>";
-    return;
+//    place[0].innerHTML =
+//      '<div class="alert alert-danger fade show">' +
+//      '<h4 class="alert-heading">Error!</h4>' +
+//      error +
+//      "</div>";
+//    return;
   };
   
   document.addEventListener("DOMContentLoaded", load2);
