@@ -145,7 +145,7 @@ const GetCitas = async () =>{
           element.hora = RetornaHoraDeCita(element);
           element.fecha = RetornaFechaDeCita(element);
           
-          // console.log(element);
+          console.log(element);
           citas.push(element);
         });
     } catch (error) {
@@ -165,6 +165,7 @@ function LoadCitas() {
       if(cita.fecha === element.getAttribute('data-read') && cita.hora === element.getAttribute('data-time')) {
         // console.log(cita.estado);
         // codigo, idmedico, idpaciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos
+        element.setAttribute('data-numero', cita.codigo);
         element.setAttribute('data-estado', cita.estado);
         element.setAttribute('data-medico', cita.medico.id);
         element.setAttribute('data-nombre-medico', cita.medico.nombre);
@@ -585,6 +586,8 @@ function LoadInforModal(event) {
     <div class="form-group">
       <form>
         <div>
+        <label>Numero de cita</label>
+        <input type="text" class="form-control" id='numero-cita' value='${event.relatedTarget.getAttribute('data-numero')}' readonly>
         <label>Identificación del médico</label>
         <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
         <label>Nombre del médico</label>
@@ -619,6 +622,8 @@ function LoadInforModal(event) {
         <div class="form-group">
           <form>
             <div>
+            <label>Numero de cita</label>
+            <input type="text" class="form-control" id='numero-cita' value='${event.relatedTarget.getAttribute('data-numero')}' readonly>
             <label>Identificación del médico</label>
             <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
             <label>Nombre del médico</label>
@@ -660,6 +665,8 @@ function LoadInforModal(event) {
           <div class="form-group">
             <form>
               <div>
+              <label>Numero de cita</label>
+              <input type="text" class="form-control" id='numero-cita' value='${event.relatedTarget.getAttribute('data-numero')}' readonly>
               <label>Identificación del médico</label>
               <input type="text" class="form-control" id='medico-id-cita' value='${event.relatedTarget.getAttribute('data-medico')}' readonly>
               <label>Nombre del médico</label>
@@ -744,6 +751,7 @@ function LoadInforModal(event) {
 const AtenderCita = async () => {
   let cita = {
     paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
+    numero: $('#numero-cita').val(),
     medico: medicoRegistrado,
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
@@ -756,10 +764,12 @@ const AtenderCita = async () => {
   console.log(cita);
 }
 
+
 const CancelarCita = async () => {
   let cita = {
     paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
     medico: medicoRegistrado,
+    codigo:  $('#numero-cita').val(),
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
     signos: "",
@@ -769,7 +779,27 @@ const CancelarCita = async () => {
     Medicamentos: "",
   };
   console.log(cita);
+
+  await CancelarEstado(cita);
 }
+
+const CancelarEstado = async (cita) => {
+  const req = new Request(backend + "/citas/cancelar/"+ cita.numero , {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cita),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error cancelar una cita");
+    }
+    console.log("Se modifica estado");
+    // document.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 
@@ -794,29 +824,11 @@ const CargarPacientePorId = async (id) => {
 };
 
 const RegistrarCita = async () => {
-  // console.log('entra');
-  // // fecha-cita, hora-cita, paciente-cita, motivo-cita, signos-cita, diagnostico-cita, pres-cita, medicamentos-cita  
-  // let cita = {};
-  // cita.medico =  $('#medico-id-cita').val();
-  // cita.fechaCita =  $('#fecha-cita').val();
-  // cita.horaCita = $('#hora-cita').val(); 
-  // cita.pacienteCita =  $('#inputGroupSelect01').find(":selected").text().split(', ')[1];
-  // cita.motivoCita = $('#motivo-cita').val(); 
-  // cita.signosCita =  ''; 
-  // cita.diagnosticoCita = ''; 
-  // cita.presCita = ''; 
-  // cita.medicamentos = ''; 
 
-  // console.log($('#fecha-cita').val());
-  // console.log ($('#fecha-cita').val());
-  // console.log($('#hora-cita').val());
-  // console.log( $('#inputGroupSelect01').find(":selected").text().split(', ')[1]);
-  // console.log(cita);
-
- 
   let cita = {
     paciente: await CargarPacientePorId($('#inputGroupSelect01').find(":selected").text().split(', ')[1]),
     medico: medicoRegistrado,
+    numero:  $('#numero-cita').val(),
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
     signos: "",

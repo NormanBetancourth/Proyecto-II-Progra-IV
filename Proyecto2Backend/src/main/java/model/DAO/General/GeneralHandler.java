@@ -30,7 +30,7 @@ import model.Paciente;
 public class GeneralHandler {
 
 //   final String usernameBD = "sa";
-    final String usernameBD = "sa";
+    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -509,6 +509,7 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR CITA 
+    //TODO: que hace esto  aqui
     public boolean registrarCita(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos, String codigo) {
         try {
             executor = new SQLExecutor(usernameBD, passwordBD);
