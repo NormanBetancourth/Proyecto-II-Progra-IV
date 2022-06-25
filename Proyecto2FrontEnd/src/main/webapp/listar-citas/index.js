@@ -380,13 +380,27 @@ const citasPOST= async () => {
     signos: citaSignos
   }
 
+
+  const req = new Request(backend + "/citas/atender/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(citaAux),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al atender cita");
+      return;
+    }
+    console.log("Se da por atendida la cita");
+  } catch (error) {
+    console.log(error);
+  }
+
+
   console.log(citaAux);
+  $("#modal-container").modal("hide");
   
-  
-  
-
-
-
 };
 
 

@@ -67,7 +67,8 @@ public class Citas {
     public void atender(Cita c) {
         try {
             System.out.println(c);
-            System.out.println("TODO");
+            Service.instance().atenderCita(c);
+            
             
         } catch (Exception ex) {
             System.out.println(ex);
