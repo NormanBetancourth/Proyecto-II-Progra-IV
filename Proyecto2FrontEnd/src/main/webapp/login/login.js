@@ -36,6 +36,9 @@ function login() {
           }
           return;
         }else{
+          if(user.id === '100'){
+            window.location.href = "./Vistas/Admin/listar-med/admin-listar.html";
+          }
           errorMessage(404, $("#errorDiv"));
           return;
         }

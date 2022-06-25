@@ -52,6 +52,7 @@ public class Horarios {
     @Consumes(MediaType.APPLICATION_JSON)
     public void create(@PathParam("id") String id, List<Horario> h) {
         try {
+            System.out.println(h);
             Service.instance().modificarHorariosMedico(h,id);
         } catch (Exception ex) {
             throw new NotAcceptableException();
