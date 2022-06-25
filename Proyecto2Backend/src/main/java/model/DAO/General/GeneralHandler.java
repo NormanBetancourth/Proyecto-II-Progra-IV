@@ -30,7 +30,7 @@ import model.Paciente;
 public class GeneralHandler {
 
 //   final String usernameBD = "sa";
-    final String usernameBD = "sa";
+    final String usernameBD = "sass";
     final String passwordBD = "password";
     SQLExecutor executor;
 
@@ -911,6 +911,31 @@ public class GeneralHandler {
         }
         return lista;
     }
+    
+    
+    public boolean modificarDatosCita2(String codigo, String signos, String diagnostico, String prescripciones, String medicamentos, String motivo) {
+        boolean respuesta = false;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores[] = new String[7];
+            valores[0] = "update citas set signos = ?, diagnostico = ?, prescripcion = ?, medicamentos = ?, motivo = ?, estado = 'Finalizado'  where codigo = ?;";
+            valores[1] = signos;
+            valores[2] = diagnostico;
+            valores[3] = prescripciones;
+            valores[4] = medicamentos;
+            valores[5] = motivo;
+            valores[6] = codigo;
+            executor.prepareStatement(valores);
+            
+            respuesta = true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+
+        return respuesta;
+    }
+
 
     
 }

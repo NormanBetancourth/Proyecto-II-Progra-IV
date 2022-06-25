@@ -177,4 +177,8 @@ public class Service {
     public void registrarCitaMedicoPaciente2(Cita cit) {
         genDB.registrarCita2(cit.getMedico().getId(), cit.getPaciente().getId(), cit.getFecha(), cit.getSignos(), cit.getMotivo(), cit.getDiagnostico(), cit.getPrescripciones(), cit.getMedicamentos(), cit.getCodigo());
     }
+
+    public void atenderCita(Cita c) {
+        genDB.modificarDatosCita2(c.getCodigo(), c.getSignos() , c.getDiagnostico(), c.getPrescripciones(), c.getMedicamentos(), c.getMotivo());
+    }
 }

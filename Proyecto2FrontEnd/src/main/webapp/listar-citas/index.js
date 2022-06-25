@@ -38,7 +38,6 @@ const loadCitasPorPaciente = async (id) => {
     var contentDates = ``;
 
     citasPorPaciente.forEach(element =>{
-        console.log(element);
         contentDates += `
         <tr data-id="${element.codigo}" >
             <th scope="row" data-id="${element.codigo}" >${element.estado}</th>
@@ -80,11 +79,20 @@ const loadCitaView = (cita) => {
   }
 
   
+  const element = document.querySelector("form");
+  element.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+
+  
 };
 
+var citaAtendida;
+
 const atenderCita = (cita) => {
+  citaAtendida = cita;
   modalBody.innerHTML = `
-  <form onsubmit="citasPOST">
+  <form onsubmit="citasPOST()">
   <div class="row">
           <div class="col"></div>
           <div class="col-10   text-center">
@@ -95,7 +103,7 @@ const atenderCita = (cita) => {
                     <label for="exampleInputEmail1">Codigo Cita</label>
                 </div>                  
                 <div class="form-group py-1 text-center align-items-center">
-                  <h6>${cita.codigo}</h6>
+                  <h6 id='cita-id' data-id-cita = '${cita.codigo}' >${cita.codigo}</h6>
                 </div>
                 </div>
 
@@ -161,9 +169,9 @@ const atenderCita = (cita) => {
                   
                   
                   <div class="form-group my-5 ">
-                    <label for="exampleInputPassword1">Pescripciones</label>
+                    <label for="exampleInputPassword1">Prescripciones</label>
                     <div class="row align-items-center text-center my-3">
-                        <textarea type="text"  id="cita-pescripciones" style="min-height: 80px; resize: none;"    required>${cita.prescripciones}</textarea>
+                        <textarea type="text"  id="cita-prescripciones" style="min-height: 80px; resize: none;"    required>${cita.prescripciones}</textarea>
                     </div>
                   </div>
                   
@@ -350,8 +358,49 @@ const citasGET = async (id) =>{
 };
 
 const citasPOST= async () => {
-  console.log('entra');
 
+  const citaID = document.getElementById('cita-id').dataset.idCita;
+  const citaMotivo = document.getElementById('cita-motivo').value;
+  const citaDiagnostico = document.getElementById('cita-diagnostico').value;
+  const citaMedicamentos = document.getElementById('cita-medicamentos').value;
+  const citaPrescipciones = document.getElementById('cita-prescripciones').value;
+  const citaSignos = document.getElementById('cita-signos').value;
+
+
+  citaAux = {
+    codigo: citaID,
+    diagnostico: citaDiagnostico,
+    estado: "Finalizado",
+    fecha: citaAtendida.fecha,
+    medicamentos: citaMedicamentos,
+    medico: citaAtendida.medico,
+    motivo: citaMotivo,
+    paciente: citaAtendida.paciente,
+    prescripciones: citaPrescipciones,
+    signos: citaSignos
+  }
+
+
+  const req = new Request(backend + "/citas/atender/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(citaAux),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al atender cita");
+      return;
+    }
+    console.log("Se da por atendida la cita");
+  } catch (error) {
+    console.log(error);
+  }
+
+
+  console.log(citaAux);
+  $("#modal-container").modal("hide");
+  
 };
 
 

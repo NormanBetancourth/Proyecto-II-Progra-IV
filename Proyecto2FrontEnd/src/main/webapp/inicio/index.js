@@ -83,7 +83,7 @@ const GetHorario = async () =>{
       }
       agenda = await res.json();
       frecuencia = agenda[0].frecuencia;
-      //console.log(frecuencia);
+      // console.log(frecuencia);
       agenda.forEach(element => {
         element.num = RetornaNumDia(element.dia);
       });
@@ -145,7 +145,7 @@ const GetCitas = async () =>{
           element.hora = RetornaHoraDeCita(element);
           element.fecha = RetornaFechaDeCita(element);
           
-          console.log(element);
+          // console.log(element);
           citas.push(element);
         });
     } catch (error) {
@@ -210,22 +210,32 @@ function EnableHoursAppointments() {
   let rango = CalculateRanges();
 
   horasCitas.forEach(element => {
+    // console.log(rango);
     if(rango.has(element.getAttribute('data-day'))){
-      //console.log(rango.get(element.getAttribute('data-day')));
+      // console.log(rango.get(element.getAttribute('data-day')));
+      // console.log(element.getAttribute('data-time'));
       if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
-        // console.log(element.getAttribute('data-read'));
+        // console.log(element.getAttribute('data-time'));
         fechasCitas.set(weekdays.indexOf(element.getAttribute('data-day')),element.getAttribute('data-read'));
         element.setAttribute('data-bs-toggle', 'modal');
         element.setAttribute('data-bs-target', "#reg-modal");
         element.classList.add('enableHourAppointment');
         element.classList.remove('grid-item');
         enabled.push(element);
+        // console.log(element);
       }
     }
   });
   //console.log(fechasCitas);
   GetCitas();
 
+}
+
+function numMenor(num) {
+  if(num <= 9) {
+    return true;
+  } 
+  return false;
 }
 
 function CalculateRanges() {
@@ -238,26 +248,29 @@ function CalculateRanges() {
   agenda.forEach(horario => {
     rangoMayor = horario.horaFinal.substring(0,2);
     rangoMenor = horario.horaInicio.substring(0,2);
-    frec = frecuencia.substring(2,4);
+    frec = frecuencia.substring(2,5);
+    // console.log(frec);
     dia = weekdays[horario.num];
     let lista = [];
-    if(frec === '00'){
+    if(frec === ':00'){
       while(rangoMayor >= rangoMenor){
-        lista.push(rangoMayor + ':' + frec);
+        lista.push(numMenor(rangoMayor) ?  '0' + rangoMayor + frec : rangoMayor + frec);
         rangoMayor -= 1;
       }
+      // console.log(lista);
       horasPorDia.set(dia, lista);
     }
     else{
       while(rangoMayor >= rangoMenor){
-        lista.push(rangoMayor + ':' + '00');
-        lista.push(rangoMayor + ':' + frec);
+        lista.push(rangoMayor + numMenor(rangoMayor) ?  '0' + rangoMayor + ':00' : rangoMayor + ':00');
+        lista.push(numMenor(rangoMayor) ?  '0' + rangoMayor + frec : rangoMayor + frec);
         rangoMayor -= 1;
       }
+      // console.log(lista);
       horasPorDia.set(dia, lista);
     }
   });
-  //console.log(horasPorDia);
+  // console.log(horasPorDia);
   return horasPorDia;
 }
 
@@ -376,76 +389,76 @@ function LoadDays() {
     }
     else {
       for(let i = 0; i < 25; i++){
-        const hora = document.createElement('div');
-        hora.textContent = horas[i];
-        hora.classList.add('grid-item');
-        hora.classList.add('hora');
-        const appointment1 = document.createElement('div');
-        appointment1.classList.add('grid-item');
-        appointment1.classList.add('horaCita');
-        //appointment1.classList.add(weekdays[1]);
-        //appointment1.classList.add(horas[i]);
-        //appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
-        appointment1.setAttribute('data-day', weekdays[1]);
-        appointment1.setAttribute('data-time', horas[i]);
-        appointment1.setAttribute('data-date', semana[0].toDateString());
-        appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
-        appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth() + 1) + '-' + semana[0].getDate());
-        const appointment2 = document.createElement('div');
-        appointment2.classList.add('grid-item');
-        appointment2.classList.add('horaCita');
-        //appointment2.classList.add(weekdays[2]);
-        //appointment2.classList.add(horas[i]);
-        //appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
-        appointment2.setAttribute('data-day', weekdays[2]);
-        appointment2.setAttribute('data-time', horas[i]);
-        appointment2.setAttribute('data-date', semana[1].toDateString());
-        appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
-        appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth() + 1) + '-' + semana[1].getDate());
-        const appointment3 = document.createElement('div');
-        appointment3.classList.add('grid-item');
-        appointment3.classList.add('horaCita');
-        //appointment3.classList.add(weekdays[3]);
-        //appointment3.classList.add(horas[i]);
-        //appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
-        appointment3.setAttribute('data-day', weekdays[3]);
-        appointment3.setAttribute('data-time', horas[i]);
-        appointment3.setAttribute('data-date', semana[2].toDateString());
-        appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
-        appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth() + 1) + '-' + semana[2].getDate());
-        const appointment4 = document.createElement('div');
-        appointment4.classList.add('grid-item');
-        appointment4.classList.add('horaCita');
-        //appointment4.classList.add(weekdays[4]);
-        //appointment4.classList.add(horas[i]);
-        //appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
-        appointment4.setAttribute('data-day', weekdays[4]);
-        appointment4.setAttribute('data-time', horas[i]);
-        appointment4.setAttribute('data-date', semana[3].toDateString());
-        appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
-        appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth() + 1) + '-' + semana[3].getDate());
-        const appointment5 = document.createElement('div');
-        appointment5.classList.add('grid-item');
-        appointment5.classList.add('horaCita');
-        //appointment5.classList.add(weekdays[5]);
-        //appointment5.classList.add(horas[i]);
-        //appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
-        appointment5.setAttribute('data-day', weekdays[5]);
-        appointment5.setAttribute('data-time', horas[i]);
-        appointment5.setAttribute('data-date', semana[4].toDateString());
-        appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
-        appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth() + 1) + '-' + semana[4].getDate());
-
-    
-        line += hora.outerHTML;
-        line += appointment1.outerHTML;
-        line += appointment2.outerHTML;
-        line += appointment3.outerHTML;
-        line += appointment4.outerHTML;
-        line += appointment5.outerHTML;
+          const hora = document.createElement('div');
+          hora.textContent = horas[i];
+          hora.classList.add('grid-item');
+          hora.classList.add('hora');
+          const appointment1 = document.createElement('div');
+          appointment1.classList.add('grid-item');
+          appointment1.classList.add('horaCita');
+          //appointment1.classList.add(weekdays[1]);
+          //appointment1.classList.add(horas[i]);
+          //appointment1.textContent = horas[i] + '-' + semana[0].toDateString();
+          appointment1.setAttribute('data-day', weekdays[1]);
+          appointment1.setAttribute('data-time', horas[i]);
+          appointment1.setAttribute('data-date', semana[0].toDateString());
+          appointment1.setAttribute('data-infor', horas[i] + '-' + semana[0].toDateString());
+          appointment1.setAttribute('data-read',semana[0].getFullYear() + '-' + ReturnNumber(semana[0].getMonth() + 1) + '-' + semana[0].getDate());
+          const appointment2 = document.createElement('div');
+          appointment2.classList.add('grid-item');
+          appointment2.classList.add('horaCita');
+          //appointment2.classList.add(weekdays[2]);
+          //appointment2.classList.add(horas[i]);
+          //appointment2.textContent = horas[i] + '-' + semana[1].toDateString();
+          appointment2.setAttribute('data-day', weekdays[2]);
+          appointment2.setAttribute('data-time', horas[i]);
+          appointment2.setAttribute('data-date', semana[1].toDateString());
+          appointment2.setAttribute('data-infor', horas[i] + '-' + semana[1].toDateString());
+          appointment2.setAttribute('data-read',semana[1].getFullYear() + '-' + ReturnNumber(semana[1].getMonth() + 1) + '-' + semana[1].getDate());
+          const appointment3 = document.createElement('div');
+          appointment3.classList.add('grid-item');
+          appointment3.classList.add('horaCita');
+          //appointment3.classList.add(weekdays[3]);
+          //appointment3.classList.add(horas[i]);
+          //appointment3.textContent = horas[i] + '-' + semana[2].toDateString();
+          appointment3.setAttribute('data-day', weekdays[3]);
+          appointment3.setAttribute('data-time', horas[i]);
+          appointment3.setAttribute('data-date', semana[2].toDateString());
+          appointment3.setAttribute('data-infor', horas[i] + '-' + semana[2].toDateString());
+          appointment3.setAttribute('data-read',semana[2].getFullYear() + '-' + ReturnNumber(semana[2].getMonth() + 1) + '-' + semana[2].getDate());
+          const appointment4 = document.createElement('div');
+          appointment4.classList.add('grid-item');
+          appointment4.classList.add('horaCita');
+          //appointment4.classList.add(weekdays[4]);
+          //appointment4.classList.add(horas[i]);
+          //appointment4.textContent = horas[i] + '-' + semana[3].toDateString();
+          appointment4.setAttribute('data-day', weekdays[4]);
+          appointment4.setAttribute('data-time', horas[i]);
+          appointment4.setAttribute('data-date', semana[3].toDateString());
+          appointment4.setAttribute('data-infor', horas[i] + '-' + semana[3].toDateString());
+          appointment4.setAttribute('data-read',semana[3].getFullYear() + '-' + ReturnNumber(semana[3].getMonth() + 1) + '-' + semana[3].getDate());
+          const appointment5 = document.createElement('div');
+          appointment5.classList.add('grid-item');
+          appointment5.classList.add('horaCita');
+          //appointment5.classList.add(weekdays[5]);
+          //appointment5.classList.add(horas[i]);
+          //appointment5.textContent = horas[i] + '-' + semana[4].toDateString();
+          appointment5.setAttribute('data-day', weekdays[5]);
+          appointment5.setAttribute('data-time', horas[i]);
+          appointment5.setAttribute('data-date', semana[4].toDateString());
+          appointment5.setAttribute('data-infor', horas[i] + '-' + semana[4].toDateString());
+          appointment5.setAttribute('data-read',semana[4].getFullYear() + '-' + ReturnNumber(semana[4].getMonth() + 1) + '-' + semana[4].getDate());
+      
+          line += hora.outerHTML;
+          line += appointment1.outerHTML;
+          line += appointment2.outerHTML;
+          line += appointment3.outerHTML;
+          line += appointment4.outerHTML;
+          line += appointment5.outerHTML;
+        }
+        //console.log(semana);
+        schedule.innerHTML = line;
       }
-      schedule.innerHTML = line;
-    }
   }
 }
 
@@ -751,18 +764,40 @@ function LoadInforModal(event) {
 const AtenderCita = async () => {
   let cita = {
     paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
-    numero: $('#numero-cita').val(),
+    codigo: $('#numero-cita').val(),
     medico: medicoRegistrado,
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
     signos: $('#signos-cita').val(),
     diagnostico: $('#diagnostico-cita').val(),
-    estado: "Registrado",
+    estado: "Finalizado",
     prescripciones: $('#pres-cita').val(),
-    Medicamentos: $('#medicamentos-cita').val(),
+    medicamentos: $('#medicamentos-cita').val(),
   };
   console.log(cita);
+
+  await citasAcept(cita);
 }
+
+const citasAcept = async (cita) => {
+  const req = new Request(backend + "/citas/atender/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cita),
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al atender cita");
+      return;
+    }
+    document.location.reload();
+    console.log("Se da por atendida la cita");
+  } catch (error) {
+    console.log(error);
+  }
+
+};
 
 
 const CancelarCita = async () => {
@@ -774,31 +809,32 @@ const CancelarCita = async () => {
     motivo: $('#motivo-cita').val(),
     signos: "",
     diagnostico: "",
-    estado: "Registrado",
+    estado: "R",
     prescripciones: "",
     Medicamentos: "",
   };
   console.log(cita);
 
-  await CancelarEstado(cita);
+  await citasDELETE(cita.codigo);
 }
 
-const CancelarEstado = async (cita) => {
-  const req = new Request(backend + "/citas/cancelar/"+ cita.numero , {
+const citasDELETE = async (id) => {
+  const req = new Request(backend + "/citas/cancelar/"+id, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(cita),
+    headers: {}
   });
   try {
     const res = await fetch(req);
     if (!res.ok) {
-      console.log("error cancelar una cita");
+      console.log("error al cancelar cita");
+      return;
     }
-    console.log("Se modifica estado");
-    // document.location.reload();
+    document.location.reload();
+    console.log("Se cancela la cita");
   } catch (error) {
     console.log(error);
   }
+
 };
 
 
