@@ -28,7 +28,6 @@ var mappedDays = [];
 
 schedule.onclick = () => {
     $("#modal-container").modal("show");
-
 };
 
 modalCloseBtn.onclick = () => {
@@ -55,10 +54,14 @@ modalSaveBtn.onclick = () => {
     console.log(mappedDays);
 };
 
+function fotoPathDoctor(){
+    let foto = document.getElementsByName("foto")[0].value+'';
+    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
+    let fotoPath = foto.substring(12, 50);
+}
 
 function loadDoctor(){
-    let foto = document.getElementsByName("foto")[0].value;
-    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
+    console.log("IMG: "+ fotoPath);
     doctor.id = $("#id").val();
     doctor.nombre = $("#name").val();
     doctor.password = $("#password").val();
