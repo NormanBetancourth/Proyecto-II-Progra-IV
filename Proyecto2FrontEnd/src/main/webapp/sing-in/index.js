@@ -116,6 +116,7 @@ function addMed() {
                 return;
             }
             await addSchedule();
+            resetDoc();
         } catch (e) {
             errorMessage(NET_ERR, $("#add-modal #errorDiv"));
         }
