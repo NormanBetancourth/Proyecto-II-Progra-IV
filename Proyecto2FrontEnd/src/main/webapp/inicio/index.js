@@ -145,7 +145,7 @@ const GetCitas = async () =>{
           element.hora = RetornaHoraDeCita(element);
           element.fecha = RetornaFechaDeCita(element);
           
-          console.log(element);
+          // console.log(element);
           citas.push(element);
         });
     } catch (error) {
@@ -215,14 +215,14 @@ function EnableHoursAppointments() {
       // console.log(rango.get(element.getAttribute('data-day')));
       // console.log(element.getAttribute('data-time'));
       if(rango.get(element.getAttribute('data-day')).includes(element.getAttribute('data-time'))){
-        console.log(element.getAttribute('data-time'));
+        // console.log(element.getAttribute('data-time'));
         fechasCitas.set(weekdays.indexOf(element.getAttribute('data-day')),element.getAttribute('data-read'));
         element.setAttribute('data-bs-toggle', 'modal');
         element.setAttribute('data-bs-target', "#reg-modal");
         element.classList.add('enableHourAppointment');
         element.classList.remove('grid-item');
         enabled.push(element);
-        console.log(element);
+        // console.log(element);
       }
     }
   });
@@ -249,7 +249,7 @@ function CalculateRanges() {
     rangoMayor = horario.horaFinal.substring(0,2);
     rangoMenor = horario.horaInicio.substring(0,2);
     frec = frecuencia.substring(2,5);
-    console.log(frec);
+    // console.log(frec);
     dia = weekdays[horario.num];
     let lista = [];
     if(frec === ':00'){
@@ -257,7 +257,7 @@ function CalculateRanges() {
         lista.push(numMenor(rangoMayor) ?  '0' + rangoMayor + frec : rangoMayor + frec);
         rangoMayor -= 1;
       }
-      console.log(lista);
+      // console.log(lista);
       horasPorDia.set(dia, lista);
     }
     else{
@@ -764,17 +764,19 @@ function LoadInforModal(event) {
 const AtenderCita = async () => {
   let cita = {
     paciente: await CargarPacientePorId($('#paciente-cita').val().split(', ')[1]),
-    numero: $('#numero-cita').val(),
+    codigo: $('#numero-cita').val(),
     medico: medicoRegistrado,
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
     signos: $('#signos-cita').val(),
     diagnostico: $('#diagnostico-cita').val(),
-    estado: "Registrado",
+    estado: "Finalizado",
     prescripciones: $('#pres-cita').val(),
-    Medicamentos: $('#medicamentos-cita').val(),
+    medicamentos: $('#medicamentos-cita').val(),
   };
   console.log(cita);
+
+  await citasAcept(cita);
 }
 
 const citasAcept = async (cita) => {
@@ -789,6 +791,7 @@ const citasAcept = async (cita) => {
       console.log("error al atender cita");
       return;
     }
+    document.location.reload();
     console.log("Se da por atendida la cita");
   } catch (error) {
     console.log(error);
@@ -826,6 +829,7 @@ const citasDELETE = async (id) => {
       console.log("error al cancelar cita");
       return;
     }
+    document.location.reload();
     console.log("Se cancela la cita");
   } catch (error) {
     console.log(error);
