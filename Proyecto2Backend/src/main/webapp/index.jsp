@@ -22,5 +22,8 @@
     </head>
     <body>
         <h1>Backend Page</h1>
+        <div>
+        <img src="C:/Users/images/a.png" alt="texto descriptivo">
+        </div>
     </body>
 </html>
