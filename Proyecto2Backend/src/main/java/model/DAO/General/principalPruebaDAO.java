@@ -27,16 +27,20 @@ public class principalPruebaDAO {
         //=============METODOS DE REGISTRAR EN LA BD====================//
 
         //===prueba de registrar un medico [exitosa]===
-        gen.registrarMedico("Mauriciooo", "120", "password", "4", "100000", "1000", "clinica", "presentacion");
+        gen.registrarMedico("Mauriciooo", "120", "password", "4", "100000", "1000", "clinica", "presentacion", "foto3.jpg");
 
         //===prueba de registrar un paciente [exitosa]===
-        gen.registrarPaciente("130", "nombre paciente", "60901876", "101");
+        gen.registrarPaciente("130", "nombre paciente", "60901876", "101", "foto2.jpg");
 
         //===prueba de registrar un horario [exitosa]===
         //gen.registrarHorario("101", "inactivo", "Lunes", "13:00:00",  "16:00:00", "00:30");
         
         //=====prueba de registrar una cita[exitosa]===
-        gen.registrarCita("101", "106", "2022-05-10 16:00:00", "Presion alta", "presion", "ebola", "codeina ultra", "cada 3 horas");
+        gen.registrarCita("101", "106", "2022-05-10 16:00:00", "Presion alta", "presion", "ebola", "codeina ultra", "cada 3 horas", "1200");
+        
+        gen.modificarEstadoCita("1200", "Finalizado");
+        //=====prueba de registrar un contacto[exitosa]===
+        gen.registrarContacto("104", "123", "Pablo", "84201987");
         
         
         //=============METODOS DE RETORNOS EN LA BD====================//
@@ -116,6 +120,10 @@ public class principalPruebaDAO {
           borrado = gen.borrarPaciente("130")? "Se borro el paciente": "No se borro el paciente";
           System.out.println( borrado);
           
+          //===prueba de borrar contacto de paciente DB [exitosa] ===
+          borrado = gen.borrarContactoPaciente("123") ? "Se borro el paciente" : "No se borro el paciente";
+          System.out.println(borrado);
+          
           //=============METODOS DE ACTUALIZACION EN LA BD====================//
           
            //===prueba de modificar estado de medico DB [exitosa] ===
@@ -128,15 +136,18 @@ public class principalPruebaDAO {
            borrado = gen.modificarDatosMedico("101", "2", "10000","1001", "Athenas", "","presentacion101", "clave101")? "Se actualizo el medico": "No se actualizo el medico";
            System.out.println( borrado);
            
+            //===prueba de modificarmedico DB [exitosa] ===
+            gen.modificarContacto("Hector", "123455065", "6000");
+           
            //===PRUEBA DE ACTUALIZAR HORARIOS DE UN MEDICO CON LISTA DE HORARIOS ===
-           Horario h1 = new Horario("","110","Martes","10:00:00","10:00:00","00:30");
-           Horario h2 = new Horario("", "110", "Viernes", "10:00:00", "10:00:00", "00:30");
+           Horario h1 = new Horario("","101","Martes","10:00","13:00","01:00");
+           Horario h2 = new Horario("", "101", "Viernes", "10:00", "12:00", "01:00");
            
            List<Horario> lh = new ArrayList();
            lh.add(h1);
            lh.add(h2);
-           
-           gen.modificarHorariosMedico(lh, "110");
+           System.out.println(lh.toString());
+           gen.modificarHorariosMedico(lh, "102");
          
     }
 }

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Cita;
 import model.Ciudad;
+import model.Contacto;
 import model.Especialidad;
 import model.Horario;
 import model.Paciente;
@@ -51,6 +52,7 @@ public class GeneralHandler {
                 usuario.setId(id);
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setTipo(rs.getString("tipo"));
+                usuario.setFotoPath(rs.getString("fotoPath"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -81,14 +83,48 @@ public class GeneralHandler {
                 usuario.setPresentacion(rs.getString("presentacion"));
                 usuario.setPassword(rs.getString("clave"));
                 //NECESITA ESTAR EN LA BASE NO?
-                usuario.setFotoPath("");
+                usuario.setFotoPath(this.retornaUserPorId(id).getFotoPath());
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return usuario;
     }
+    
+    
+    
+    
+    public List<Cita> listaCitasPorMedicoPaciente(String idMed, String id) {
+        List<Cita> lista = new ArrayList<>();
+        String sql = "select * from citas where id_medico = " + idMed + ";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+
+                if (rs.getString("id_paciente").equals(id)) {
+                    Cita cita = new Cita();
+                    cita.setMedico(this.retornaMedicoPorId(idMed));
+                    cita.setPaciente(this.retornaPacientePorId(rs.getString("id_paciente")));
+                    cita.setFecha2(rs.getString("fecha_hora"));
+                    cita.setEstado(rs.getString("estado"));
+                    cita.setSignos(rs.getString("signos"));
+                    cita.setMotivo(rs.getString("motivo"));
+                    cita.setDiagnostico(rs.getString("diagnostico"));
+                    cita.setPrescripciones(rs.getString("prescripcion"));
+                    cita.setMedicamentos(rs.getString("medicamentos"));
+                    cita.setCodigo(rs.getString("codigo"));
+
+                    lista.add(cita);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
     //METODO QUE ME RETORNA A UN MEDICO DE LA BD SEGUN SU ID Y LO RETORNA
+    
 
     public Paciente retornaPacientePorId(String id) {
         Usuario user = this.retornaUserPorId(id);
@@ -104,7 +140,7 @@ public class GeneralHandler {
 //                usuario.setIdMed(rs.getString("idMed"));
 //                que loco, no carga con el metodo de arriba
                 usuario.setIdMedico(rs.getString("idMed"));
-                usuario.setFotoPath("");
+                usuario.setFotoPath(this.retornaUserPorId(id).getFotoPath());
                 
             }
         } catch (SQLException throwables) {
@@ -374,6 +410,7 @@ public class GeneralHandler {
                 cita.setDiagnostico(rs.getString("diagnostico"));
                 cita.setPrescripciones(rs.getString("prescripcion"));
                 cita.setMedicamentos(rs.getString("medicamentos"));
+                cita.setCodigo(rs.getString("codigo"));
                 
                 lista.add(cita);
                 }
@@ -387,15 +424,16 @@ public class GeneralHandler {
      //========================================METODOS DE REGISTRO DATABASE ======================================
     
 //METODO PARA REGISTRAR UN USUARIO EN LA BASE DE DATOS
-    public boolean registrarUsuario(String username, String id, String tipo) {
+    public boolean registrarUsuario(String username, String id, String tipo, String fotoPath) {
         if (!verificaUsuarioExiste(id)) {
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
-                String valores1[] = new String[4];
-                valores1[0] = "insert into usuarios(id, nombre,tipo) values (?, ?, ?)";
+                String valores1[] = new String[5];
+                valores1[0] = "insert into usuarios(id, nombre,tipo, fotoPath) values (?, ?, ?, ?)";
                 valores1[1] = id;
                 valores1[2] = username;
                 valores1[3] = tipo;
+                valores1[4] = fotoPath;
                 executor.prepareStatement(valores1);
                 return true;
             } catch (Exception throwables) {
@@ -406,10 +444,10 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR UN MEDICO
-    public boolean registrarMedico(String username, String id, String clave, String especialidad, String costo, String ciudad, String clinica, String presentacion) {
+    public boolean registrarMedico(String username, String id, String clave, String especialidad, String costo, String ciudad, String clinica, String presentacion, String fotoPath) {
         try {
             //registra a un usuario en la base de datos
-            this.registrarUsuario(username, id, "Medico");
+            this.registrarUsuario(username, id, "Medico", fotoPath);
             executor = new SQLExecutor(usernameBD, passwordBD);
             String valores1[] = new String[9];
             valores1[0] = "insert into medicos(id, especialidad, costo, ciudad, clinica, estado, presentacion, clave) values (?, ?, ?, ?, ?, ?, ?,?);";
@@ -432,9 +470,9 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR UN PACIENTE
-    public boolean registrarPaciente(String id, String username, String tel, String idMed) {
+    public boolean registrarPaciente(String id, String username, String tel, String idMed, String fotoPath) {
         try {
-            this.registrarUsuario(username, id, "Paciente");
+            this.registrarUsuario(username, id, "Paciente", fotoPath);
             executor = new SQLExecutor(usernameBD, passwordBD);
             String valores1[] = new String[4];
             valores1[0] = "insert into pacientes(id, telefono, idMed) values (?, ?, ?);";
@@ -473,11 +511,12 @@ public class GeneralHandler {
     }
     
     //METODO PARA REGISTRAR CITA 
-    public boolean registrarCita(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos) {
+    //TODO: que hace esto  aqui
+    public boolean registrarCita(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos, String codigo) {
         try {
             executor = new SQLExecutor(usernameBD, passwordBD);
-            String valores1[] = new String[10];
-            valores1[0] = "insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) values (next value for sec_citas,?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String valores1[] = new String[11];
+            valores1[0] = "insert into citas(id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos, codigo) values (?,?, ?, ?, ?, ?, ?, ?, ?, ?);";
             valores1[1] = idMed;
             valores1[2] = idPac;
             valores1[3] = fec_hora; //'2022-04-11 14:00:00'
@@ -487,6 +526,50 @@ public class GeneralHandler {
             valores1[7] = diagnostico; 
             valores1[8] = prescripcion; 
             valores1[9] = medicamentos;
+            valores1[10] = codigo;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean registrarCita2(String idMed, String idPac,String fec_hora,String signos, String motivo, String diagnostico, String prescripcion, String medicamentos, String codigo) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[10];
+            valores1[0] = "insert into citas(id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos, codigo) values (?,?, ?, ?, ?, ?, ?, ?, ?, next value for sec_citas);";
+            valores1[1] = idMed;
+            valores1[2] = idPac;
+            valores1[3] = fec_hora; //'2022-04-11 14:00:00'
+            valores1[4] = "Registrado"; //'Finalizado','Registrado', 'Cancelado'
+            valores1[5] = signos; 
+            valores1[6] = motivo; 
+            valores1[7] = diagnostico; 
+            valores1[8] = prescripcion; 
+            valores1[9] = medicamentos;
+            executor.prepareStatement(valores1);
+            return true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+    
+    //METODO PARA REGISTRAR UN CONTACTO A UN PACIENTE
+    public boolean registrarContacto(String idPac, String idPersonal, String nombre, String telefono) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[5];
+            
+            valores1[0] = "insert contactos(numero, id_personal, id_paciente, nombre, telefono) values (next value for sec_contactos, ?, ?, ?, ?);";
+            valores1[1] = idPersonal;
+            valores1[2] = idPac;
+            valores1[3] = nombre;
+            valores1[4] = telefono;
             executor.prepareStatement(valores1);
             return true;
 
@@ -603,7 +686,20 @@ public class GeneralHandler {
         }
         return false;
     } 
-    
+    //Borrar contacto de paciente
+       public boolean borrarContactoPaciente(String numero) {
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores1[] = new String[2];
+            valores1[0] = "delete from contactos where numero = ?;";
+            valores1[1] = numero;
+            executor.prepareStatement(valores1);
+            return true;
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
      //========================================METODOS DE ACTUALIZACION EN LA BASE DE DATOS ======================================
     public boolean modificarDatosUsuario(String id,String nombre) {
         boolean respuesta = false;
@@ -669,7 +765,9 @@ public class GeneralHandler {
      
      //MODIFICAR ESTADO DE UN HORARIO DE UN MEDICO
     public void modificarHorario(String idMed, String dia, String estado, String horaI, String horaF, String frec) {
+         System.out.println("a3");
         if (this.verificaUsuarioExiste(idMed)) {
+             System.out.println("a4");
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
                 String valores[] = new String[7];
@@ -681,23 +779,83 @@ public class GeneralHandler {
                 valores[5] = idMed;
                 valores[6] = dia;
                 executor.prepareStatement(valores);
+                  System.out.println("a5");
             } catch (Exception throwables) {
                 throwables.printStackTrace();
             }
         }
     }
     
+    //MODIFICAR INFORMACION DE MEDICO
+    public boolean modificarDatosCita(String codigo, String signos, String diagnostico, String prescripciones, String medicamentos) {
+        boolean respuesta = false;
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[6];
+                valores[0] = "update citas set signos = ?, diagnostico = ?, prescripciones = ?, medicamentos = ? where codigo = ?;";
+                valores[1] = signos;
+                valores[2] = diagnostico;
+                valores[3] = prescripciones;
+                valores[4] = medicamentos;
+                valores[5] = codigo;
+                executor.prepareStatement(valores);
+                respuesta = true;
+
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        
+        return respuesta;
+    }
+    
+    
+    //MODIFICAR ESTADO DE UNA CITA
+    public boolean modificarEstadoCita(String codigo, String estado) {
+        boolean respuesta = false;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores[] = new String[3];
+            valores[0] = "update citas set estado= ? where codigo = ?;";
+            valores[1] = estado;
+            valores[2] = codigo;
+            executor.prepareStatement(valores);
+            respuesta = true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+
+        return respuesta;
+    }
     //
      public void modificarHorariosMedico(List<Horario> h, String idMed) {
         if (this.verificaUsuarioExiste(idMed)) {
             //verifica que la lista que se le mande no este vacia, para setear todos los horarios a valores default u inactivos
-            if(h.size() != 0)
+            System.out.println("a");
+            if(h.size() != 0){
                 putHorariosDeafult(idMed);
+            }
             for(Horario ho : h){
+                System.out.println("a"+ho.toString());
                 //por cada horario que se le haya mandando cambia su estado a activo y les coloca sus valores
-                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraInicio(), ho.getFrecuencia());
+                    modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraFinal(), ho.getFrecuencia());
             }
         }
+    }
+     //
+     public void modificarContacto(String name, String telefono, String numero) {
+            try {
+                executor = new SQLExecutor(usernameBD, passwordBD);
+                String valores[] = new String[4];
+                valores[0] = "update contactos set nombre = ?, telefono = ? where numero = ?;";
+                valores[1] = name;
+                valores[2] = telefono;
+                valores[3] = numero;
+       
+                executor.prepareStatement(valores);
+            } catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
     }
      
      public void putHorariosDeafult(String idMed){
@@ -731,6 +889,53 @@ public class GeneralHandler {
         }
         return respuesta;
     }
+
+    public List<Contacto> listaContactosPorId(String id) {
+        List<Contacto> lista = new ArrayList<>();
+        String sql = "select * from contactos where id_paciente = " + id + ";";
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            ResultSet rs = executor.ejecutaQuery(sql);
+            while (rs.next()) {
+                Contacto contacto = new Contacto();
+                contacto.setNumero(rs.getString("numero"));
+                contacto.setIdPaciente(rs.getString("id_paciente"));
+                contacto.setId(rs.getString("id_personal"));
+                contacto.setNombre(rs.getString("nombre"));
+                contacto.setTelefono(rs.getString("telefono"));
+                
+                lista.add(contacto);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return lista;
+    }
+    
+    
+    public boolean modificarDatosCita2(String codigo, String signos, String diagnostico, String prescripciones, String medicamentos, String motivo) {
+        boolean respuesta = false;
+        try {
+            executor = new SQLExecutor(usernameBD, passwordBD);
+            String valores[] = new String[7];
+            valores[0] = "update citas set signos = ?, diagnostico = ?, prescripcion = ?, medicamentos = ?, motivo = ?, estado = 'Finalizado'  where codigo = ?;";
+            valores[1] = signos;
+            valores[2] = diagnostico;
+            valores[3] = prescripciones;
+            valores[4] = medicamentos;
+            valores[5] = motivo;
+            valores[6] = codigo;
+            executor.prepareStatement(valores);
+            
+            respuesta = true;
+
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+
+        return respuesta;
+    }
+
 
     
 }

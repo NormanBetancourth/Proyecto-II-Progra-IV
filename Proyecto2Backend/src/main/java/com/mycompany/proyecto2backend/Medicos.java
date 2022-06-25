@@ -4,6 +4,12 @@
  */
 package com.mycompany.proyecto2backend;
 
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +28,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import model.DAO.General.GeneralHandler;
 import model.Medico;
 import model.Usuario;
 import model.Horario;
 import model.ModelMedicosRest;
 import model.serviceBackend.Service;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
+//import org.glassfish.jersey.media.multipart.FormDataParam;
+
 
 //password,especialidad, fee, localidad, clinica, fotoPath, presentacion, estado, nombre,id
 
@@ -35,6 +45,7 @@ import model.serviceBackend.Service;
 @Path("/medicos")
 public class Medicos {
      
+     String location="C:/images/";
     @Context
     HttpServletRequest request;
     
@@ -74,6 +85,28 @@ public class Medicos {
         } catch (Exception ex) {
             throw new NotFoundException();
         }
+    }
+    
+//    @POST
+//    @Consumes(MediaType.MULTIPART_FORM_DATA) 
+//    @Path("{cedula}/imagen")
+//    public void addImage(@PathParam("cedula") String cedula, @FormDataParam("imagen") InputStream in) {  
+//        try{
+//                OutputStream out = new FileOutputStream(new File(location + cedula));
+//                in.transferTo(out);
+//                out.close();
+//            } catch (Exception ex) {
+//               throw new NotAcceptableException(); 
+//            }
+//    }
+//    
+    @GET
+    @Path("{cedula}/imagen")
+    @Produces("image/png")
+    public Response getImge(@PathParam("cedula") String cedula) throws IOException {
+        File file = new File(location + cedula);
+        Response.ResponseBuilder response = Response.ok((Object) file);
+        return response.build();
     }
     
     

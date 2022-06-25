@@ -1,3 +1,7 @@
+SET DATEFORMAT ydm
+DECLARE @dt DATETIME2 = '2016-01-02 12:03:28'
+SELECT @dt AS 'date from YDM Format'
+
 -- Se borran las secuencias
 drop sequence sec_usuarios;
 drop sequence sec_especialidades;
@@ -60,7 +64,7 @@ create sequence sec_contactos
 	increment by 1;
 
 --Se crean las tablas
-create table usuarios(id int not null, nombre varchar(20) not null, tipo varchar(10) not null);
+create table usuarios(id int not null, nombre varchar(20) not null, tipo varchar(10) not null, fotoPath varchar(30) null);
 create table administradores(id int not null, clave varchar(20) not null);
 create table medicos(id int not null, clave varchar(20) not null, especialidad int null, costo decimal(11,4) null, ciudad int  null, clinica varchar(20) null, estado varchar(20) not null, presentacion text null);
 create table pacientes(id int not null, telefono varchar(10), idMed int not null);
@@ -139,7 +143,7 @@ alter table horarios
 alter table usuarios add constraint usuarios_nombre_uk unique (nombre);
 alter table especialidades add constraint especialidades_nombre_uk unique (nombre);
 alter table ciudades add constraint ciudades_nombre_uk unique (nombre);
-alter table contactos add constraint contactos_telefono_uk unique (telefono);
+
 
 
 -- Ingresando datos de prueba
@@ -159,16 +163,16 @@ insert into ciudades(codigo, nombre, provincia) values (next value for sec_ciuda
 insert into ciudades(codigo, nombre, provincia) values (next value for sec_ciudades, 'Barva', 'Heredia');
 
 -- Usuarios
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Lucia Hernandez', 'Admin');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Juan Leon', 'Medico');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Nicolas Suarez', 'Medico');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Joseph Romero', 'Paciente');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Maria Vargas', 'Paciente');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Jose Rojas', 'Paciente');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Marta Mendez', 'Paciente');
-insert into usuarios(id, nombre, tipo) values (next value for sec_usuarios, 'Felicia Ramirez', 'Medico');
-insert into usuarios(id, nombre, tipo) values (110, 'Maria Carmona', 'Medico');
-insert into usuarios(id, nombre, tipo) values (111, 'Carlos Felicio', 'Medico');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Lucia Hernandez', 'Admin', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Juan Leon', 'Medico', 'foto2.jpg');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Nicolas Suarez', 'Medico', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Joseph Romero', 'Paciente', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Maria Vargas', 'Paciente', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Jose Rojas', 'Paciente', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Marta Mendez', 'Paciente', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (next value for sec_usuarios, 'Felicia Ramirez', 'Medico', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (110, 'Maria Carmona', 'Medico', '');
+insert into usuarios(id, nombre, tipo, fotoPath) values (111, 'Carlos Felicio', 'Medico', '');
 
 -- Medicos
 insert into medicos(id, clave, especialidad, costo, ciudad, clinica, estado, presentacion) values (101, 'password101', 1, 70000, 1000, 'Athena', 'Espera', null);
@@ -217,6 +221,7 @@ insert into pacientes(id, telefono, idMed) values (104, '89129210', 102);
 insert into pacientes(id, telefono, idMed) values (105, '71201936', 101);
 insert into pacientes(id, telefono, idMed) values (106, '69129870', 102);
 
+
 -- Antecedentes
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Alergia', 'El medicamento zulfa le causa fiebre y zarpullido');
 insert into antecedentes(codigo, id_paciente, tipo, anotacion) values(next value for sec_antecedentes, 103, 'Padecimiento', 'Migrana');
@@ -237,9 +242,12 @@ values (next value for sec_citas, 101, 104, '2022-22-06 12:00:00', 'Finalizado',
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
 values (next value for sec_citas,101, 104, '2022-23-06 14:00:00', 'Finalizado', 'Presion normal, ...', 'Chequeo general', 'Deficiencia vitaminas', 'Vitaminas C y B12', 'Diario, una vez al d�a');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,102, 103, '2022-22-06 09:00:00', 'Registrado', 'Presion normal, ...', 'Dolor de enc�as', 'Caries', 'Acetaminofen', 'Cada 8 horas');
+values (next value for sec_citas,102, 103, '2022-23-06 10:00:00', 'Registrado', 'Presion normal, ...', 'Dolor de enc�as', 'Caries', 'Acetaminofen', 'Cada 8 horas');
 insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
-values (next value for sec_citas,102, 104, '2022-23-06 19:00:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
+values (next value for sec_citas,102, 104, '2022-21-06 12:00:00', 'Finalizado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
+insert into citas(codigo, id_medico, id_paciente, fecha_hora, estado, signos, motivo, diagnostico, prescripcion, medicamentos) 
+values (next value for sec_citas,102, 104, '2022-21-06 13:00:00', 'Cancelado', 'Presion levemente alta, ...', 'Problemas de mandibula', 'Operacion', 'Acetaminofen', 'Cada 8 horas');
+
 
 select * from usuarios;
 select * from administradores;

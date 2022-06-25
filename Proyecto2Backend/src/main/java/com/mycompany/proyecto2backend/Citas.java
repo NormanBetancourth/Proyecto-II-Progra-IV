@@ -60,6 +60,46 @@ public class Citas {
             throw new NotAcceptableException();
         }
     }
+    
+    @POST
+    @Path("/atender")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void atender(Cita c) {
+        try {
+            System.out.println(c);
+            Service.instance().atenderCita(c);
+            
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
+    
+    @POST
+    @Path("/cancelar/{numero}")
+    public void cancelar(@PathParam("numero") String numero) {
+        try {
+            System.out.println(numero);
+            Service.instance().modificarEstadoCita(numero, "Cancelado"); 
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
+    
+    @POST
+    @Path("/fix")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void create2(Cita c) {
+        try {
+            System.out.println(c);
+            Service.instance().registrarCitaMedicoPaciente2(c); //la clase de servicio invoca al metodo que creara una persona
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotAcceptableException();
+        }
+    }
 
     //Obtener la lista de citas por dia
     // REQUEST QUE SE ENVIA EN LA PETICION:                                                                                              
@@ -78,5 +118,31 @@ public class Citas {
             
         }
     }
+    
+    @GET
+    @Path("paciente/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Cita> readPorPacientes(@PathParam("id") String id) {
+        System.out.println(id);
+        try {
+            List<Cita> lista = Service.instance().retornarListaDeCitaPorPaciente(this.getCurrentMed().getId(), id);
+            return lista;
+        } catch (Exception ex) {
+            System.out.println(ex);
+            throw new NotFoundException();
 
+        }
+    }
+
+    //Actualizar el estado de una cita (solo el admin puede acceder a este metodo)
+    @PUT
+    @Path("{codigo}/{estado}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateEstadoMedico(@PathParam("codigo") String codigo, @PathParam("estado") String estado) {  
+        try {
+        Service.instance().modificarEstadoCita(codigo, estado);
+        } catch (Exception ex) {
+            throw new NotFoundException(); 
+        }
+    }
 }

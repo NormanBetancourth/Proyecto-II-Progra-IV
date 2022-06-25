@@ -44,13 +44,16 @@ public class Horarios {
         Usuario m = (Usuario) session.getAttribute("user");
         return m;
     }
+    
 
     //Registrar el horario de el medico
     @PUT
+    @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(List<Horario> h) {
+    public void create(@PathParam("id") String id, List<Horario> h) {
         try {
-            Service.instance().modificarHorariosMedico(h,getCurrentMed().getId());
+            System.out.println("======HORARIP DEL FRONTEND DEL MED: "+id+"---"+h.toString());
+            Service.instance().modificarHorariosMedico(h,id);
         } catch (Exception ex) {
             throw new NotAcceptableException();
         }

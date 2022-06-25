@@ -19,9 +19,10 @@ public class Cita {
     String diagnostico;
     String estado;
     String prescripciones;
-    String Medicamentos;    
+    String Medicamentos; 
+    String codigo;
 
-    public Cita(Medico medico, Paciente paciente, String fecha, String motivo, String signos, String diagnostico, String estado, String prescripciones, String Medicamentos) {
+    public Cita(Medico medico, Paciente paciente, String fecha, String motivo, String signos, String diagnostico, String estado, String prescripciones, String Medicamentos, String codigo) {
         this.medico = medico;
         this.paciente = paciente;
         this.fecha = fecha;
@@ -31,10 +32,19 @@ public class Cita {
         this.estado = estado;
         this.prescripciones = prescripciones;
         this.Medicamentos = Medicamentos;
+        this.codigo = codigo;
     }
 
     public String getEstado() {
         return estado;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getPrescripciones() {
@@ -68,6 +78,7 @@ public class Cita {
         this.estado = "";
         this.prescripciones = "";
         this.Medicamentos = "";
+        this.codigo = "";
     }
     
     
@@ -128,8 +139,10 @@ public class Cita {
 
     @Override
     public String toString() {
-        return "Cita{" + "medico=" + medico + ", paciente=" + paciente + ", fecha=" + fecha + ", motivo=" + motivo + ", signos=" + signos + ", diagnostico=" + diagnostico + ", estado=" + estado + ", prescripciones=" + prescripciones + ", Medicamentos=" + Medicamentos + '}';
+        return "Cita{" + "medico=" + medico + ", paciente=" + paciente + ", fecha=" + fecha + ", motivo=" + motivo + ", signos=" + signos + ", diagnostico=" + diagnostico + ", estado=" + estado + ", prescripciones=" + prescripciones + ", Medicamentos=" + Medicamentos + ", codigo=" + codigo + '}';
     }
+
+    
 
  
   

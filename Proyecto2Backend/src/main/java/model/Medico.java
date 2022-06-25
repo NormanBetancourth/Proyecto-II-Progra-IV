@@ -14,7 +14,6 @@ public class Medico extends Usuario {
     float fee;           //editable
     String localidad;    //editable
     String clinica;      //editable
-    String fotoPath;     //editable
     String presentacion; //editable
     String estado;
     
@@ -25,19 +24,18 @@ public class Medico extends Usuario {
     }
     
     public Medico(String password, String especialidad, float fee, String localidad, String clinica, String fotoPath, String presentacion, String estado, String nombre, String id, String tipo) {
-        super(nombre, id, tipo);
+        super(nombre, id, tipo,fotoPath);
         this.password = password;
         this.especialidad = especialidad;
         this.fee = fee;
         this.localidad = localidad;
         this.clinica = clinica;
-        this.fotoPath = fotoPath;
         this.presentacion = presentacion;
         this.estado = estado;
     }
     
     public Medico() {
-        super("", "", "");
+        super("", "", "","");
         this.password = "";
         this.especialidad = "";
         this.fee = 0;
@@ -64,27 +62,27 @@ public class Medico extends Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
+    @Override
     public String getNombre() {
         return nombre;
     }
-
+    @Override
     public String getId() {
         return id;
     }
-
+    @Override
     public String getTipo() {
         return tipo;
     }
-
+    @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    @Override
     public void setId(String id) {
         this.id = id;
     }
-
+    @Override
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -107,6 +105,7 @@ public class Medico extends Usuario {
         return localidad;
     }
 
+    @Override
     public String getFotoPath() {
         return fotoPath;
     }

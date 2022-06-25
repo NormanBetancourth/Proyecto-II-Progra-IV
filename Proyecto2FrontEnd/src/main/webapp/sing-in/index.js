@@ -1,7 +1,7 @@
 var metaData = {id:'', pwd:''};
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 const NET_ERR = 999;
-
+var doctor = {clinica: "", especialidad: "", estado: "Espera", fee: "", id: "", localidad: "", nombre: "", password: "", presentacion: "presentacion...", tipo: "Medico", fotoPath:""};
 const dias = [
     { dia: "Lunes", num: 0 },
     { dia: "Martes", num: 1 },
@@ -28,7 +28,6 @@ var mappedDays = [];
 
 schedule.onclick = () => {
     $("#modal-container").modal("show");
-
 };
 
 modalCloseBtn.onclick = () => {
@@ -47,7 +46,7 @@ modalSaveBtn.onclick = () => {
         horaFinal: element.parentNode.childNodes[4].childNodes[7].value,
         codigo:'',
         idMedico:'',
-        frecuencia:'',
+        frecuencia:''
       });
     });
     $("#modal-container").modal("hide");
@@ -55,42 +54,134 @@ modalSaveBtn.onclick = () => {
     console.log(mappedDays);
 };
 
+//function fotoPathDoctor(){
+//    let foto = document.getElementsByName("foto")[0].value+'';
+//    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
+//    let fotoPath = foto.substring(12, 50);
+//    console.log("IMG: "+ fotoPath);
+//}
+
+function loadDoctor(){
+    let foto = document.getElementsByName("foto")[0].value+'';
+    let fotoPath1 = foto.substring(12, 50);
+    
+    doctor.fotoPath = fotoPath1;
+    doctor.id = $("#id").val();
+    doctor.nombre = $("#name").val();
+    doctor.password = $("#password").val();
+    doctor.localidad = $("#location").val();
+    doctor.clinica = $("#clinica").val();
+    doctor.especialidad = $("#speciality").val();
+    doctor.fee = $("#fee").val();
+}
+
+function resetDoc(){
+    doctor.id = "";
+    doctor.nombre = "";
+    doctor.password = "";
+    doctor.localidad = "";
+    doctor.clinica = "";
+    doctor.especialidad = "";
+    doctor.fee = "";
+    doctor.fotoPath = "";
+}
 
 function addDoctor() {
-    let id = document.getElementsByName("id")[0].value;
-    let password = document.getElementsByName("password")[0].value;
-    let name = document.getElementsByName("name")[0].value;
-    let speciality = document.getElementById("speciality")[0].value;
-    let fee = document.getElementsByName("fee")[0].value;
-    let location = document.getElementById("location")[0].value; 
-    let foto = document.getElementsByName("foto")[0].value;
     let frecuencia = document.getElementById("frecuencia")[0].value;
-  
-    var doctor = { id, password, nombre:name, especialidad:speciality, fee, localidad:location, fotoPath:foto, presentacion:'', tipo:'Medico' };
-    
+    console.log("frec: " + frecuencia);
+    frecuencia = frecuencia + '';
+    if (frecuencia === '60') {
+        frecuencia = '01:00';
+    } else {
+        frecuencia = '00:30';
+    }
+
+    mappedDays.forEach(element => {
+        console.log("MAPPED");
+        element.codigo = '-1';
+        element.idMedico = doctor.id;
+        element.frecuencia = frecuencia;
+       });
+   }
+
+
+function addMed() {
+    loadDoctor();
+    load();
+    addDoctor();
+    const request = new Request(backend + '/medicos',
+            {method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(doctor)});
     (async () => {
-      try {
-        const result = await search(id);
-        console.log(doctor);
-        console.log(result);
-        if (result === undefined){
-            //TODO: mandar horario y medicos
-            // window.location.href = "./../inicio/index.html";
-            mappedDays.forEach( element => {
-              element.codigo = '-1';
-              element.idMedico = id;
-              element.frecuencia = frecuencia;
-            })
-            console.log(mappedDays);
-            return;
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                        console.log("No se pudo agregar medico ==>addMed()");
+                //errorMessage(response.status, $("#add-modal #errorDiv"));
+                return;
+            }
+            await addSchedule();
+            resetDoc();
+        } catch (e) {
+            errorMessage(NET_ERR, $("#add-modal #errorDiv"));
         }
-        errorMessage(405, $("#errorDiv"));
-      } catch (err) {
-        console.log(err);
-        return;
-      }
     })();
+} 
+
+
+function add(){
+    load();
+    if(!validar()) return;
+    const request = new Request(backend+'/personas', {method: 'POST', headers: { 'Content-Type': 'application/json'}, body: JSON.stringify(persona)});
+    (async ()=>{
+        try{
+            const response = await fetch(request);
+            if (!response.ok) {errorMessage(response.status,$("#add-modal #errorDiv"));return;}
+            await addImagen();
+            fetchAndList();
+            reset();
+            $('#add-modal').modal('hide'); 
+        }
+        catch(e){
+            errorMessage(NET_ERR,$("#add-modal #errorDiv"));
+        }        
+    })();    
+  } 
+  
+async function addImagen() {
+    var imagenData = new FormData();
+    imagenData.append("cedula", doctor.cedula);
+    imagenData.append("imagen", $("#imagen").get(0).files[0]);
+    let request = new Request(backend + '/medicos/' + doctor.cedula + '/imagen', {method: 'POST', body: imagenData});
+    const response = await fetch(request);
+    if (!response.ok) {
+        console.log("error en addImagen()");
+//        errorMessage(response.status, $("#add-modal #errorDiv"));
+        return;
+    }
 }
+
+async function addSchedule() {
+    load();
+    const request = new Request(backend + '/horarios/'+doctor.id,
+            {method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(mappedDays)});
+    (async () => {
+        try {
+            const response = await fetch(request);
+            if (!response.ok) {
+                console.log("No se pudo agregar el horario ==>addSchedule(");
+                //errorMessage(response.status, $("#add-modal #errorDiv"));
+                return;
+            }
+            //$('#add-modal').modal('hide');
+        } catch (e) {
+            errorMessage(NET_ERR, $("#add-modal #errorDiv"));
+        }
+    })();
+} 
 
 const loadUserData  = (user) => {
     document.getElementsByName("id")[0].value = user.id;
@@ -99,7 +190,7 @@ const loadUserData  = (user) => {
     document.getElementsByName("speciality")[0].value = user.speciality;
     document.getElementsByName("fee")[0].value = user.fee;
     document.getElementsByName("location")[0].value = user.location;
-}
+};
 
 const load = () => {
     $("form").submit(function (e) {
@@ -111,13 +202,10 @@ const load = () => {
 //buscar
 const search = async (id) => {
     try {
-      const req = new Request(backend + "/medicos/" + id, {
-        method: "GET",
-        headers: {},
-      });
+      const req = new Request(backend + "/medicos/" + id, {method: "GET", headers: {}});
       const res = await fetch(req);
       if (!res.ok) {
-        throw BreakException;
+        console.log("error al buscar medico");
       }
       var result = await res.json();
       return result;
@@ -153,7 +241,7 @@ const cargarComobox = async () => {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 
 const load2 = async () => {
@@ -257,12 +345,12 @@ function LoadSchedule() {
         error = "Error de comunicación";
         break;
     }
-    place[0].innerHTML =
-      '<div class="alert alert-danger fade show">' +
-      '<h4 class="alert-heading">Error!</h4>' +
-      error +
-      "</div>";
-    return;
+//    place[0].innerHTML =
+//      '<div class="alert alert-danger fade show">' +
+//      '<h4 class="alert-heading">Error!</h4>' +
+//      error +
+//      "</div>";
+//    return;
   };
   
   document.addEventListener("DOMContentLoaded", load2);

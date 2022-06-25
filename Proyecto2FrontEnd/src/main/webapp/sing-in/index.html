@@ -44,7 +44,7 @@
                 
                 <div class="m-sm-3 col">
                     
-                    <form id="form" onsubmit="addDoctor()">
+                    <form id="form" onsubmit="addMed()">
                         <div class="form-group m-sm-3">
                             <input class="form-control form-control-lg" id="id" type="text" name="id" placeholder="Id" required >
                         </div>
@@ -72,7 +72,10 @@
                             <select class="form-select" aria-label="Default select example" id="location" name="location" required>
                             </select>
                         </div>
-
+                        
+                        <div class="form-group m-sm-3">
+                            <input class="form-control form-control-lg" id="clinica" type="text" name="clinica" placeholder="Clinica" required >
+                        </div>
 
 
                         <!-- <input type="week" name="week" id="camp-week"min="2018-W18" max="2018-W26" required> -->
@@ -85,7 +88,7 @@
                             </select>
                         </div>
                         <div class="form-group m-sm-3">
-                            <input class="form-control form-control-lg" id="foto" type="file" name="foto" placeholder="foto">
+                            <input class="form-control form-control-lg" id="foto" type="file" name="foto" accept="image/*" placeholder="foto">
                         </div>
                         <div class="text-center mt-3">
                             <!-- Button trigger modal -->
@@ -111,7 +114,7 @@
                                 </div>
                                 </div>
                             </div>
-
+<!--                            <img src="http://localhost:8080/PersonasImagenBackEnd/api/personas/103/imagen" class="icon_large">-->
                         </div>
                     </form>
                 </div>
