@@ -39,17 +39,17 @@ const loadCitasPorPaciente = async (id) => {
 
     citasPorPaciente.forEach(element =>{
         console.log(element);
-        if(element.estado != 'Cancelado'){
-            contentDates += `
-            <tr data-id="${element.codigo}" >
-                <th scope="row" data-id="${element.codigo}" >${element.estado}</th>
-                <td  data-id="${element.codigo}" >${element.fecha}</td>
-                <td data-id="${element.codigo}" >${element.motivo}</td>
-                <td data-id="${element.codigo}" >${element.codigo}</td>
-            </tr>
-            `;
+        contentDates += `
+        <tr data-id="${element.codigo}" >
+            <th scope="row" data-id="${element.codigo}" >${element.estado}</th>
+            <td  data-id="${element.codigo}" >${element.fecha}</td>
+            <td data-id="${element.codigo}" >${element.motivo}</td>
+            <td data-id="${element.codigo}" >${element.codigo}</td>
+        </tr>
+        `;
+        // if(element.estado != 'Cancelado'){
 
-        }
+        // }
     });
 
     modalTableBody.innerHTML = contentDates;
@@ -183,7 +183,7 @@ const atenderCita = (cita) => {
               <div class="row">
                 <div class="col mt-4">
                   <button type="submit" class="btn btn-primary">Aceptar</button>
-                  <button type="button" id="btn-cancel" data-id-cita${cita.codigo} class="btn btn-danger">Cancelar</button>
+                  <button type="button" id="btn-cancel" data-id-cita='${cita.codigo}' class="btn btn-danger">Cancelar</button>
                 </div>
               </div>
              
@@ -191,6 +191,14 @@ const atenderCita = (cita) => {
           <div class="col"></div>
   </div>
   </form>`;
+
+
+  const btnCancel= document.getElementById('btn-cancel');
+  console.log(btnCancel);
+  btnCancel.onclick = (e) =>{
+    citasDELETE(e.target.dataset.idCita);
+    $("#modal-container").modal("hide");
+  }
 
 };
 const verCita = (cita) => {
@@ -301,6 +309,25 @@ const verCita = (cita) => {
 };
 
 //REST API
+
+
+const citasDELETE = async (id) => {
+  const req = new Request(backend + "/citas/cancelar/"+id, {
+    method: "POST",
+    headers: {}
+  });
+  try {
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al cancelar cita");
+      return;
+    }
+    console.log("Se cancela la cita");
+  } catch (error) {
+    console.log(error);
+  }
+
+};
 const citasGET = async (id) =>{
     try {
         const req = new Request(backend + "/citas/paciente/"+id, {

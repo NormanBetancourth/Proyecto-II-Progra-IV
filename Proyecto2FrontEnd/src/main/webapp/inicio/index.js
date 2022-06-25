@@ -144,8 +144,7 @@ const GetCitas = async () =>{
         cita.forEach(element => {
           element.hora = RetornaHoraDeCita(element);
           element.fecha = RetornaFechaDeCita(element);
-          
-          // console.log(element);
+          console.log(element);
           citas.push(element);
         });
     } catch (error) {
