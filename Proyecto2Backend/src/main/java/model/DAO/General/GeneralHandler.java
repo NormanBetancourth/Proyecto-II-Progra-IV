@@ -762,7 +762,9 @@ public class GeneralHandler {
      
      //MODIFICAR ESTADO DE UN HORARIO DE UN MEDICO
     public void modificarHorario(String idMed, String dia, String estado, String horaI, String horaF, String frec) {
+         System.out.println("a3");
         if (this.verificaUsuarioExiste(idMed)) {
+             System.out.println("a4");
             try {
                 executor = new SQLExecutor(usernameBD, passwordBD);
                 String valores[] = new String[7];
@@ -774,6 +776,7 @@ public class GeneralHandler {
                 valores[5] = idMed;
                 valores[6] = dia;
                 executor.prepareStatement(valores);
+                  System.out.println("a5");
             } catch (Exception throwables) {
                 throwables.printStackTrace();
             }
@@ -825,10 +828,12 @@ public class GeneralHandler {
      public void modificarHorariosMedico(List<Horario> h, String idMed) {
         if (this.verificaUsuarioExiste(idMed)) {
             //verifica que la lista que se le mande no este vacia, para setear todos los horarios a valores default u inactivos
+            System.out.println("a");
             if(h.size() != 0){
                 putHorariosDeafult(idMed);
             }
             for(Horario ho : h){
+                System.out.println("a"+ho.toString());
                 //por cada horario que se le haya mandando cambia su estado a activo y les coloca sus valores
                     modificarHorario(idMed, ho.getDia(), "activo", ho.getHoraInicio(),ho.getHoraFinal(), ho.getFrecuencia());
             }

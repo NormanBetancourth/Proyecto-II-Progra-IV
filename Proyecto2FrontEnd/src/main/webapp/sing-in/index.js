@@ -58,21 +58,14 @@ modalSaveBtn.onclick = () => {
 
 function loadDoctor(){
     let foto = document.getElementsByName("foto")[0].value;
-    console.log($("#id").val());
+    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
     doctor.id = $("#id").val();
-    console.log($("#name").val());
     doctor.nombre = $("#name").val();
-    console.log($("#password").val());
     doctor.password = $("#password").val();
-    console.log($("#location").val());
     doctor.localidad = $("#location").val();
-    console.log($("#clinica").val());
     doctor.clinica = $("#clinica").val();
-    console.log($("#speciality").val());
     doctor.especialidad = $("#speciality").val();
-    console.log($("#fee").val());
     doctor.fee = $("#fee").val();
-    console.log($("#foto").val());
     doctor.fotoPath = foto;
 }
 
@@ -99,8 +92,12 @@ function addDoctor() {
     (async () => {
       try {
          await addMed(); //funciona
-         console.log("Se ha agredo el medico");
+            setTimeout(function () {
+                console.log("I am the third log after 5 seconds");
+            }, 5000);
+         console.log("Se ha agredo el medicoOOOOOOOOO");
             mappedDays.forEach(element => {
+                console.log("MAPPED");
                 element.codigo = '-1';
                 element.idMedico = doctor.id;
                 element.frecuencia = frecuencia;
@@ -131,7 +128,6 @@ function addMed() {
                 //errorMessage(response.status, $("#add-modal #errorDiv"));
                 return;
             }
-             await addImagen();
             //$('#add-modal').modal('hide');
         } catch (e) {
             errorMessage(NET_ERR, $("#add-modal #errorDiv"));
@@ -335,12 +331,12 @@ function LoadSchedule() {
         error = "Error de comunicación";
         break;
     }
-    place[0].innerHTML =
-      '<div class="alert alert-danger fade show">' +
-      '<h4 class="alert-heading">Error!</h4>' +
-      error +
-      "</div>";
-    return;
+//    place[0].innerHTML =
+//      '<div class="alert alert-danger fade show">' +
+//      '<h4 class="alert-heading">Error!</h4>' +
+//      error +
+//      "</div>";
+//    return;
   };
   
   document.addEventListener("DOMContentLoaded", load2);
