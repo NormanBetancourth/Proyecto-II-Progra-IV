@@ -1,7 +1,7 @@
 var metaData = {id:'', pwd:''};
 var backend = "http://localhost:8080/Proyecto2Backend/api";
 const NET_ERR = 999;
-var doctor = {clinica: "", especialidad: "", estado: "Espera", fee: "", fotoPath: "", id: "", localidad: "", nombre: "", password: "", presentacion: "presentacion...", tipo: "Medico"};
+var doctor = {clinica: "", especialidad: "", estado: "Espera", fee: "", id: "", localidad: "", nombre: "", password: "", presentacion: "presentacion...", tipo: "Medico", fotoPath:""};
 const dias = [
     { dia: "Lunes", num: 0 },
     { dia: "Martes", num: 1 },
@@ -54,14 +54,18 @@ modalSaveBtn.onclick = () => {
     console.log(mappedDays);
 };
 
-function fotoPathDoctor(){
-    let foto = document.getElementsByName("foto")[0].value+'';
-    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
-    let fotoPath = foto.substring(12, 50);
-}
+//function fotoPathDoctor(){
+//    let foto = document.getElementsByName("foto")[0].value+'';
+//    console.log("IMAGEN : "+document.getElementsByName("foto")[0].value);
+//    let fotoPath = foto.substring(12, 50);
+//    console.log("IMG: "+ fotoPath);
+//}
 
 function loadDoctor(){
-    console.log("IMG: "+ fotoPath);
+    let foto = document.getElementsByName("foto")[0].value+'';
+    let fotoPath1 = foto.substring(12, 50);
+    
+    doctor.fotoPath = fotoPath1;
     doctor.id = $("#id").val();
     doctor.nombre = $("#name").val();
     doctor.password = $("#password").val();
@@ -69,7 +73,6 @@ function loadDoctor(){
     doctor.clinica = $("#clinica").val();
     doctor.especialidad = $("#speciality").val();
     doctor.fee = $("#fee").val();
-    doctor.fotoPath = foto;
 }
 
 function resetDoc(){
