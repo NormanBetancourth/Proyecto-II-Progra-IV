@@ -138,11 +138,35 @@ errorMessage = (status, place) => {
 };
 
 
+const invalidarMedico = async () => {
+  try {
+    const req = new Request(backend + "/session/logout", {
+      method: "POST",
+      headers: {},
+    });
+    const res = await fetch(req);
+    if (!res.ok) {
+      console.log("error al guardad user de session");
+      return;
+    }
+    var result = await res.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 
-const load = () => {
+};
+
+
+const load = async () => {
   $("form").submit(function (e) {
     e.preventDefault();
   });
+
+
+  await invalidarMedico();
+
+  
   
 };
 
