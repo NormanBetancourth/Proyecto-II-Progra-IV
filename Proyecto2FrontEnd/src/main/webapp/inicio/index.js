@@ -726,6 +726,8 @@ function LoadInforModal(event) {
           <div class="form-group">
             <form>
               <div>
+              <label>Numero de cita</label>
+              <input type="text" class="form-control" id='numero-cita'required>      
               <label>Identificación del médico</label>
               <input type="text" class="form-control" id='medico-id-cita' value=${medicoRegistrado.id} readonly>
               <label>Nombre del médico</label>
@@ -864,7 +866,7 @@ const RegistrarCita = async () => {
   let cita = {
     paciente: await CargarPacientePorId($('#inputGroupSelect01').find(":selected").text().split(', ')[1]),
     medico: medicoRegistrado,
-    numero:  $('#numero-cita').val(),
+    codigo:  $('#numero-cita').val(),
     fecha: $('#fecha-cita').val() + 'T' + $('#hora-cita').val() + ':00',
     motivo: $('#motivo-cita').val(),
     signos: "",
