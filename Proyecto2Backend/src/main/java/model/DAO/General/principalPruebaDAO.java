@@ -27,10 +27,10 @@ public class principalPruebaDAO {
         //=============METODOS DE REGISTRAR EN LA BD====================//
 
         //===prueba de registrar un medico [exitosa]===
-        gen.registrarMedico("Mauriciooo", "120", "password", "4", "100000", "1000", "clinica", "presentacion");
+        gen.registrarMedico("Mauriciooo", "120", "password", "4", "100000", "1000", "clinica", "presentacion", "foto3.jpg");
 
         //===prueba de registrar un paciente [exitosa]===
-        gen.registrarPaciente("130", "nombre paciente", "60901876", "101");
+        gen.registrarPaciente("130", "nombre paciente", "60901876", "101", "foto2.jpg");
 
         //===prueba de registrar un horario [exitosa]===
         //gen.registrarHorario("101", "inactivo", "Lunes", "13:00:00",  "16:00:00", "00:30");

@@ -12,7 +12,6 @@ import java.util.List;
  * @author norma
  */
 public class Paciente extends Usuario {
-    String fotoPath;
     String telefono;
     String idMed;
     
@@ -28,13 +27,13 @@ public class Paciente extends Usuario {
     }
      
     public Paciente(String nombre, String id, String tipo, String fotoPath, String telefono, String idMed) {
-        super(nombre, id, tipo);
-        this.fotoPath = fotoPath;
+        super(nombre, id, tipo, fotoPath);
         this.telefono = telefono;
         this.idMed = idMed;
     }
 
     public Paciente() {
+        this.nombre = "";
         this.fotoPath="";
         this.id="";
         this.idMed="";
@@ -45,6 +44,7 @@ public class Paciente extends Usuario {
     public String getFotoPath() {
         return fotoPath;
     }
+    
 
     public String getTelefono() {
         return telefono;

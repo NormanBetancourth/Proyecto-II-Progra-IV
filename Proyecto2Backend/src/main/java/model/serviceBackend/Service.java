@@ -33,7 +33,6 @@ public class Service {
         return uniqueInstance;
     }
     
-    
 
     private Service() {
      genDB = new GeneralHandler();
@@ -45,7 +44,7 @@ public class Service {
     }
     
      public void registrarMedico(Medico med){
-        genDB.registrarMedico(med.getNombre(), med.getId(), med.getPassword(), "4", (med.getFee()+""), "1000", med.getClinica(), med.getPresentacion());
+        genDB.registrarMedico(med.getNombre(), med.getId(), med.getPassword(), "4", (med.getFee()+""), "1000", med.getClinica(), med.getPresentacion(), med.getFotoPath());
     }
      
      public void borrarMedico(String id){
@@ -70,7 +69,7 @@ public class Service {
     //===========Metodos de servicio para el Paciente========
     
     public void registrarPaciente(Paciente pac) {
-        genDB.registrarPaciente(pac.getId(), pac.getNombre(), pac.getTelefono(), pac.getIdMed());
+        genDB.registrarPaciente(pac.getId(), pac.getNombre(), pac.getTelefono(), pac.getIdMed(), pac.getFotoPath());
     }
     
     public Paciente retornarPaciente(String idPac){
